@@ -1,0 +1,5 @@
+package-lock.json
+node_modules
+dst
+var/canvas-ai-state.yaml
+var/canvas-ai-state*.OLD.*
