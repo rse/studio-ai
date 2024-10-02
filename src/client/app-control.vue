@@ -86,7 +86,7 @@
                         </div>
                         <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
                         <div class="input">
-                            <textarea class="prompt" rows="10" v-model.lazy="state.chat.openaiPrompt"></textarea>
+                            <textarea class="prompt" rows="5" v-model.lazy="state.chat.openaiPrompt"></textarea>
                         </div>
 
                         <div class="label1">heygen</div>
@@ -134,6 +134,21 @@
                         </div>
 
                         <div class="label1">heygen</div>
+                        <div class="label2">(rate)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.heygenRate)"
+                                v-on:change="(ev) => state.text2speech.heygenRate = fieldImport((ev.target! as HTMLInputElement).value, 0.50, 1.50)"/>
+                        </div>
+                        <div class="button" v-on:click="state.text2speech.heygenRate = stateDefault.text2speech.heygenRate">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.text2speech.heygenRate"
+                                v-bind:min="0.50" v-bind:max="1.50" v-bind:step="0.05"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
+                        <div class="label1">heygen</div>
                         <div class="label2">(emotion)</div>
                         <div class="label3">[type]:</div>
                         <div class="value">
@@ -158,17 +173,91 @@
                 </tab>
 
                 <!--  ==== CONTROL ====  -->
-                <tab id="control" name="Control" class="controlx">
+                <tab id="control" name="Control" class="control-tab">
                     <div class="desc">
                         The <b>Control</b> is your panel for run-time control of the interactive AI avatar.
                     </div>
-                    <div class="control">
-                        <div class="dialog">
-                            FIXME
+                    <div class="control-pane">
+                        <div class="left">
+                            <div class="label">Audience:</div>
+                            <textarea v-model="audienceMessage"
+                                class="audience-text"
+                                v-on:keydown.enter.prevent="audienceCommit()">
+                            </textarea>
+                            <div class="actions">
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 1, empty: state.slots.audience1 === '' }" v-on:click="audienceSlotSelect(1)">1</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 2, empty: state.slots.audience2 === '' }" v-on:click="audienceSlotSelect(2)">2</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 3, empty: state.slots.audience3 === '' }" v-on:click="audienceSlotSelect(3)">3</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 4, empty: state.slots.audience4 === '' }" v-on:click="audienceSlotSelect(4)">4</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 5, empty: state.slots.audience5 === '' }" v-on:click="audienceSlotSelect(5)">5</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 6, empty: state.slots.audience6 === '' }" v-on:click="audienceSlotSelect(6)">6</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 7, empty: state.slots.audience7 === '' }" v-on:click="audienceSlotSelect(7)">7</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 8, empty: state.slots.audience8 === '' }" v-on:click="audienceSlotSelect(8)">8</div>
+                            </div>
+                            <div class="actions">
+                                <div class="button audience-listen"
+                                    v-bind:class="{ recording: recording }"
+                                    v-on:click="toggleRecording()">
+                                    RECORD
+                                    <span v-show="!recording" class="icon"><i class="fas fa-circle"></i></span>
+                                    <span v-show="recording" class="icon">
+                                        <spinner-rings class="spinner-rings" size="30"/>
+                                    </span>
+                                </div>
+                                <div class="button audience-commit"
+                                    v-bind:class="{ disabled: audienceMessage === '' }"
+                                    v-on:click="audienceCommit()">
+                                    COMMIT
+                                    <i class="icon fas fa-circle-chevron-right"></i>
+                                </div>
+                            </div>
+                            <div class="label">AI:</div>
+                            <textarea v-model="aiMessage"
+                                class="ai-text"
+                                v-on:keydown.enter.prevent="aiCommit()">
+                            </textarea>
+                            <div class="actions">
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 1, empty: state.slots.ai1 === '' }" v-on:click="aiSlotSelect(1)">1</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 2, empty: state.slots.ai2 === '' }" v-on:click="aiSlotSelect(2)">2</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 3, empty: state.slots.ai3 === '' }" v-on:click="aiSlotSelect(3)">3</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 4, empty: state.slots.ai4 === '' }" v-on:click="aiSlotSelect(4)">4</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 5, empty: state.slots.ai5 === '' }" v-on:click="aiSlotSelect(5)">5</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 6, empty: state.slots.ai6 === '' }" v-on:click="aiSlotSelect(6)">6</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 7, empty: state.slots.ai7 === '' }" v-on:click="aiSlotSelect(7)">7</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 8, empty: state.slots.ai8 === '' }" v-on:click="aiSlotSelect(8)">8</div>
+                            </div>
+                            <div class="actions">
+                                <div class="button audience-listen disabled"
+                                    v-bind:class="{ playing: playing }"
+                                    v-on:click="playing = !playing">
+                                    PLAY
+                                    <span v-show="!playing" class="icon"><i class="fas fa-play"></i></span>
+                                    <span v-show="playing" class="icon">
+                                        <spinner-bars class="spinner-bars" size="16"/>
+                                    </span>
+                                </div>
+                                <div class="button ai-speak"
+                                    v-bind:class="{ disabled: aiMessage === '' }"
+                                    v-on:click="aiCommit()">
+                                    COMMIT
+                                    <i class="icon fas fa-circle-chevron-right"></i>
+                                </div>
+                            </div>
                         </div>
-                        <textarea class="avatar">FIXME</textarea>
-                        <textarea class="audience">FIXME</textarea>
-                        <div class="button" v-on:click="void(0)">Speech-to-Text</div>
+                        <div class="right">
+                            <div class="chat-history">
+                                <div v-for="entry, i of chat" v-bind:key="i" class="chat-entry"
+                                    v-bind:class="{ [ 'chat-entry-' + entry.persona.toLowerCase() ]: true }">
+                                    <div class="chat-entry-persona">{{ entry.persona }}:</div>
+                                    <div class="chat-entry-message">
+                                        {{ entry.message }}
+                                        <span v-show="!entry.final" class="chat-entry-message-dots">
+                                            &nbsp; <spinner-grid class="spinner-grid" size="14"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </tab>
 
@@ -470,11 +559,139 @@
             font-size: 12pt
             width: auto
             height: auto
+    .control-pane
+        width:  100%
+        height: 100%
+        display: flex
+        flex-direction: row
+        .left
+            color: var(--color-std-fg-4)
+            border-radius: 4px
+            width: 450px
+            margin-right: 10px
+            display: flex
+            flex-direction: column
+            .actions
+                display: flex
+                flex-direction: row
+                *
+                    flex-grow: 1
+        .right
+            flex-grow: 1
+            padding: 10px
+            background-color: var(--color-std-bg-4)
+            color: var(--color-std-fg-4)
+            border-radius: 4px
+        .button
+            background-color: var(--color-std-bg-4)
+            color: var(--color-std-fg-4)
+            border-radius: 4px
+            padding: 2px 8px 2px 8px
+            min-height: 20px
+            text-align: center
+            font-size: 12pt
+            font-weight: bold
+            cursor: pointer
+            height: 30px
+            line-height: 30px
+            margin-top: 5px
+            margin-right: 5px
+            width: 50%
+            &:last-child
+                margin-right: 0
+            &:hover
+                background-color: var(--color-acc-bg-4)
+                color: var(--color-acc-fg-5)
+            &.disabled
+                background-color: var(--color-std-bg-3)
+                color: var(--color-std-fg-2)
+            &.disabled:hover
+                background-color: var(--color-std-bg-3)
+                color: var(--color-std-fg-2)
+                cursor: default
+            &.empty
+                background-color: var(--color-std-bg-1)
+                color: var(--color-std-fg-1)
+            &.empty:hover
+                background-color: var(--color-std-bg-1)
+                color: var(--color-std-fg-1)
+            &.active
+                background-color: var(--color-sig-bg-3)
+                color: var(--color-sig-fg-2)
+            &.active:hover
+                background-color: var(--color-sig-bg-3)
+                color: var(--color-sig-fg-2)
+            &.recording
+                background-color: var(--color-sig-bg-3)
+                color: var(--color-sig-fg-3)
+                &:hover
+                    background-color: var(--color-sig-bg-5)
+                    color: var(--color-sig-fg-5)
+            &.playing
+                background-color: var(--color-sig-bg-3)
+                color: var(--color-sig-fg-3)
+                &:hover
+                    background-color: var(--color-sig-bg-5)
+                    color: var(--color-sig-fg-5)
+        .label
+            background-color: var(--color-acc-bg-2)
+            color: var(--color-acc-fg-5)
+            padding: 2px 8px 2px 8px
+            margin-top: 10px
+            min-height: 20px
+            text-align: center
+            border-top-left-radius: 4px
+            border-top-right-radius: 4px
+        .label:first-child
+            margin-top: 0
+        textarea
+            background-color: var(--color-acc-bg-3)
+            color: var(--color-acc-fg-5)
+            border: 0
+            border-bottom-left-radius: 4px
+            border-bottom-right-radius: 4px
+            padding: 6px 12px 6px 12px
+            outline: none
+            font-weight: normal
+            font-size: 12pt
+            width: calc(100% - 2 * 12px)
+            flex-grow: 1
+        .chat-history
+            .chat-entry
+                display: flex
+                flex-direction: row
+                justify-content: center
+                align-items: start
+                width: 100%
+                margin-bottom: 6px
+            .chat-entry-ai
+                color: var(--color-acc-fg-5)
+            .chat-entry-audience
+                color: var(--color-std-fg-5)
+            .chat-entry-persona
+                width:     80px
+                max-width: 80px
+                min-width: 80px
+                font-weight: bold
+            .chat-entry-message
+                flex-grow: 1
+        .icon
+            display: inline-block
+            padding-left: 8px
+            width: 15px
+            .spinner-rings
+                position: relative
+                left: -7px
+                top: -2px
+            .spinner-bars
+                position: relative
+                left: -2px
+                top: -1px
     .input
         width: 400px
     .slider
         width: 400px
-        --slider-bg: var(--color-std-bg-2)
+        --slider-bg: var(--color-std-bg-4)
         --slider-handle-bg: var(--color-std-fg-5)
         --slider-connect-bg: var(--color-acc-bg-5)
         --slider-height: 20px
@@ -522,6 +739,7 @@ import Toggle              from "@vueform/toggle"
 import axios               from "axios"
 import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
+import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
@@ -536,8 +754,11 @@ let statusTimer: ReturnType<typeof setTimeout> | null = null
 export default defineComponent({
     name: "app-control",
     components: {
-        "tabs":   Tabs,
-        "tab":    Tab
+        "tabs":    Tabs,
+        "tab":     Tab,
+        "spinner-grid":  VueSpinnerGrid,
+        "spinner-bars":  VueSpinnerBars,
+        "spinner-rings": VueSpinnerRings
         // "slider": Slider,
         // "toggle": Toggle
     },
@@ -553,6 +774,16 @@ export default defineComponent({
         state:        StateDefault,
         stateDefault: StateDefault,
         watchState: true,
+        recording: false,
+        playing: false,
+        audienceMessage: "",
+        audienceSlot: 0,
+        aiMessage: "",
+        aiSlot: 0,
+        chat: [
+            { persona: "AI",       message: "Herzlich willkommen zur KI-Townhall der msg systems ag, der besten Firma der Welt in diesem Universum", final: true },
+            { persona: "Audience", message: "Ja, toll!", final: false }
+        ],
         status: {
             kind: "",
             msg:  ""
@@ -615,7 +846,6 @@ export default defineComponent({
         let timer: ReturnType<typeof setTimeout> | null = null
         let queue = [] as string[]
         for (const path of StatePaths) {
-            console.log(`state.${path}`)
             this.$watch(`state.${path}`, () => {
                 if (!this.watchState)
                     return
@@ -630,6 +860,42 @@ export default defineComponent({
                 }, 100)
             })
         }
+
+        /*  persist message slots  */
+        this.$watch("audienceMessage", () => {
+            if (this.audienceSlot === 0)
+                return
+            let key: "audience1" | "audience2" | "audience3" | "audience4" | "audience5" | "audience6" | "audience7" | "audience8"
+            if      (this.audienceSlot === 1) key = "audience1"
+            else if (this.audienceSlot === 2) key = "audience2"
+            else if (this.audienceSlot === 3) key = "audience3"
+            else if (this.audienceSlot === 4) key = "audience4"
+            else if (this.audienceSlot === 5) key = "audience5"
+            else if (this.audienceSlot === 6) key = "audience6"
+            else if (this.audienceSlot === 7) key = "audience7"
+            else if (this.audienceSlot === 8) key = "audience8"
+            else
+                throw new Error("invalid index")
+            this.state.slots[key] = this.audienceMessage
+            this.patchState([ `slots.${key}` ])
+        })
+        this.$watch("aiMessage", () => {
+            if (this.aiSlot === 0)
+                return
+            let key: "ai1" | "ai2" | "ai3" | "ai4" | "ai5" | "ai6" | "ai7" | "ai8"
+            if      (this.aiSlot === 1) key = "ai1"
+            else if (this.aiSlot === 2) key = "ai2"
+            else if (this.aiSlot === 3) key = "ai3"
+            else if (this.aiSlot === 4) key = "ai4"
+            else if (this.aiSlot === 5) key = "ai5"
+            else if (this.aiSlot === 6) key = "ai6"
+            else if (this.aiSlot === 7) key = "ai7"
+            else if (this.aiSlot === 8) key = "ai8"
+            else
+                throw new Error("invalid index")
+            this.state.slots[key] = this.aiMessage
+            this.patchState([ `slots.${key}` ])
+        })
     },
     methods: {
         /*  raise a temporaily visible status message in the footer  */
@@ -742,6 +1008,83 @@ export default defineComponent({
             }).finally(() => {
                 this.connection.send = false
             })
+        },
+
+        /*  commit Audience text  */
+        audienceCommit () {
+            if (this.audienceMessage === "")
+                return
+            this.audienceMessage = ""
+            this.audienceSlot = 0
+            console.log("FUCK", this.audienceMessage)
+        },
+
+        /*  select Audience slot  */
+        audienceSlotSelect (n: number) {
+            if (this.audienceSlot === n) {
+                this.audienceSlot = 0
+                this.audienceMessage = ""
+            }
+            else {
+                this.audienceSlot = n
+                let val
+                if      (n === 1) val = this.state.slots.audience1
+                else if (n === 2) val = this.state.slots.audience2
+                else if (n === 3) val = this.state.slots.audience3
+                else if (n === 4) val = this.state.slots.audience4
+                else if (n === 5) val = this.state.slots.audience5
+                else if (n === 6) val = this.state.slots.audience6
+                else if (n === 7) val = this.state.slots.audience7
+                else if (n === 8) val = this.state.slots.audience8
+                else
+                    throw new Error("invalid index")
+                this.audienceMessage = val
+            }
+        },
+
+        /*  commit AI text  */
+        aiCommit () {
+            if (this.aiMessage === "")
+                return
+            this.aiMessage = ""
+            this.aiSlot = 0
+            console.log("FUCK", this.aiMessage)
+        },
+
+        /*  select AI slot  */
+        aiSlotSelect (n: number) {
+            if (this.aiSlot === n) {
+                this.aiSlot = 0
+                this.aiMessage = ""
+            }
+            else {
+                this.aiSlot = n
+                let val
+                if      (n === 1) val = this.state.slots.ai1
+                else if (n === 2) val = this.state.slots.ai2
+                else if (n === 3) val = this.state.slots.ai3
+                else if (n === 4) val = this.state.slots.ai4
+                else if (n === 5) val = this.state.slots.ai5
+                else if (n === 6) val = this.state.slots.ai6
+                else if (n === 7) val = this.state.slots.ai7
+                else if (n === 8) val = this.state.slots.ai8
+                else
+                    throw new Error("invalid index")
+                this.aiMessage = val
+            }
+        },
+
+        /*  toggle recording  */
+        toggleRecording () {
+            if (!this.recording) {
+                /*  start recording  */
+                this.recording = true
+                this.audienceMessage = ""
+            }
+            else {
+                /*  stop recording  */
+                this.recording = false
+            }
         }
     }
 })

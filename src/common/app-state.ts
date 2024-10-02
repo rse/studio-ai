@@ -25,8 +25,27 @@ export type StateType = {
         heygenAvatarId:   string,
         heygenQuality:    string,
         heygenVoiceId:    string,
+        heygenRate:       number,
         heygenEmotion:    string,
         speakerDevice:    string
+    },
+    slots: {
+        audience1:        string,
+        audience2:        string,
+        audience3:        string,
+        audience4:        string,
+        audience5:        string,
+        audience6:        string,
+        audience7:        string,
+        audience8:        string,
+        ai1:              string,
+        ai2:              string,
+        ai3:              string,
+        ai4:              string,
+        ai5:              string,
+        ai6:              string,
+        ai7:              string,
+        ai8:              string
     }
 }
 
@@ -50,8 +69,27 @@ export const StateSchema = `{
         heygenAvatarId:   string,
         heygenQuality:    string,
         heygenVoiceId:    string,
+        heygenRate:       number,
         heygenEmotion:    string,
         speakerDevice:    string
+    },
+    slots: {
+        audience1:        string,
+        audience2:        string,
+        audience3:        string,
+        audience4:        string,
+        audience5:        string,
+        audience6:        string,
+        audience7:        string,
+        audience8:        string,
+        ai1:              string,
+        ai2:              string,
+        ai3:              string,
+        ai4:              string,
+        ai5:              string,
+        ai6:              string,
+        ai7:              string,
+        ai8:              string
     }
 }`
 
@@ -101,8 +139,27 @@ export const StateDefault: StateType = {
         heygenAvatarId:   "Kayla-incasualsuit-20220818",
         heygenQuality:    "high",
         heygenVoiceId:    "21d9632a2fc842308ad9b5c5b5014e3a",
+        heygenRate:       1.2,
         heygenEmotion:    "Broadcaster",
         speakerDevice:    "default"
+    },
+    slots: {
+        audience1:        "Hallo Dr. Futura. Bitte stelle dich kurz vor!",
+        audience2:        "",
+        audience3:        "",
+        audience4:        "",
+        audience5:        "",
+        audience6:        "",
+        audience7:        "",
+        audience8:        "",
+        ai1:              "Hallo, ich bin Dr. A.I. Futura, eine virtuelle KI-Expertin der msg.",
+        ai2:              "",
+        ai3:              "",
+        ai4:              "",
+        ai5:              "",
+        ai6:              "",
+        ai7:              "",
+        ai8:              ""
     }
 } satisfies StateType
 
