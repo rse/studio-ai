@@ -5,6 +5,7 @@
 */
 
 /*  load external requirements  */
+import dotenvx        from "@dotenvx/dotenvx"
 import * as awilix    from "awilix"
 
 /*  load internal requirements  */
@@ -18,6 +19,9 @@ import DB             from "./app-db"
 
 /*  establish environment  */
 ;(async () => {
+    /*  bootstrap environment  */
+    dotenvx.config({ quiet: true })
+
     /*  create dependency injection (DI) container  */
     const container = awilix.createContainer({
         injectionMode: awilix.InjectionMode.CLASSIC
