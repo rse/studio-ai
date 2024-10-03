@@ -45,6 +45,7 @@
         "hapi-plugin-ducky":                     "1.1.9",
 
         "@types/node":                           "22.7.4",
+        "@types/clone":                          "2.1.4",
         "@types/hapi__inert":                    "5.2.10",
         "@types/js-yaml":                        "4.0.9",
         "@types/urijs":                          "1.19.25",
@@ -59,6 +60,7 @@
         "@types/write-file-atomic":              "4.0.3",
 
         "chalk":                                 "4.1.2",
+        "clone":                                 "2.1.2",
         "minimatch":                             "10.0.1",
         "glob-promise":                          "6.0.7",
         "eventemitter2":                         "6.4.9",
