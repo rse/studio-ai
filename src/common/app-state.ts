@@ -11,60 +11,63 @@ import { minimatch } from "minimatch"
 /*  complete state type (all fields required)  */
 export type StateType = {
     speech2text: {
-        microphoneDevice: string,
-        deepgramApiToken: string
-        deepgramModel:    string,
-        deepgramVersion:  string,
-        deepgramLanguage: string,
-        deepgramKeywords: string
+        microphoneDevice:  string,
+        deepgramApiToken:  string,
+        deepgramModel:     string,
+        deepgramVersion:   string,
+        deepgramLanguage:  string,
+        deepgramKeywords:  string
     },
     chat: {
-        openaiApiToken:   string,
-        openaiModel:      string,
-        openaiPrompt:     string
+        openaiApiToken:    string,
+        openaiModel:       string,
+        openaiPrompt:      string,
+        openaiTemperature: number,
+        openaiSeed:        number,
+        openaiMaxTokens:   number
     },
     text2speech: {
-        heygenApiToken:   string,
-        heygenAvatarId:   string,
-        heygenQuality:    string,
-        heygenVoiceId:    string,
-        heygenRate:       number,
-        heygenEmotion:    string,
-        speakerDevice:    string
+        heygenApiToken:    string,
+        heygenAvatarId:    string,
+        heygenQuality:     string,
+        heygenVoiceId:     string,
+        heygenRate:        number,
+        heygenEmotion:     string,
+        speakerDevice:     string
     },
     slots: {
-        audience1:        string,
-        audience2:        string,
-        audience3:        string,
-        audience4:        string,
-        audience5:        string,
-        audience6:        string,
-        audience7:        string,
-        audience8:        string,
-        audience9:        string,
-        audience10:       string,
-        audience11:       string,
-        audience12:       string,
-        audience13:       string,
-        audience14:       string,
-        audience15:       string,
-        audience16:       string,
-        ai1:              string,
-        ai2:              string,
-        ai3:              string,
-        ai4:              string,
-        ai5:              string,
-        ai6:              string,
-        ai7:              string,
-        ai8:              string,
-        ai9:              string,
-        ai10:             string,
-        ai11:             string,
-        ai12:             string,
-        ai13:             string,
-        ai14:             string,
-        ai15:             string,
-        ai16:             string
+        audience1:         string,
+        audience2:         string,
+        audience3:         string,
+        audience4:         string,
+        audience5:         string,
+        audience6:         string,
+        audience7:         string,
+        audience8:         string,
+        audience9:         string,
+        audience10:        string,
+        audience11:        string,
+        audience12:        string,
+        audience13:        string,
+        audience14:        string,
+        audience15:        string,
+        audience16:        string,
+        ai1:               string,
+        ai2:               string,
+        ai3:               string,
+        ai4:               string,
+        ai5:               string,
+        ai6:               string,
+        ai7:               string,
+        ai8:               string,
+        ai9:               string,
+        ai10:              string,
+        ai11:              string,
+        ai12:              string,
+        ai13:              string,
+        ai14:              string,
+        ai15:              string,
+        ai16:              string
     }
 }
 
@@ -74,60 +77,63 @@ export type StateTypePartial = Partial<StateType>
 /*  complete state schema (all fields required)  */
 export const StateSchema = `{
     speech2text: {
-        microphoneDevice: string,
-        deepgramApiToken: string,
-        deepgramModel:    string,
-        deepgramVersion:  string,
-        deepgramLanguage: string,
-        deepgramKeywords: string
+        microphoneDevice:  string,
+        deepgramApiToken:  string,
+        deepgramModel:     string,
+        deepgramVersion:   string,
+        deepgramLanguage:  string,
+        deepgramKeywords:  string
     },
     chat: {
-        openaiApiToken:   string,
-        openaiModel:      string,
-        openaiPrompt:     string
+        openaiApiToken:    string,
+        openaiModel:       string,
+        openaiPrompt:      string,
+        openaiTemperature: number,
+        openaiSeed:        number,
+        openaiMaxTokens:   number
     },
     text2speech: {
-        heygenApiToken:   string,
-        heygenAvatarId:   string,
-        heygenQuality:    string,
-        heygenVoiceId:    string,
-        heygenRate:       number,
-        heygenEmotion:    string,
-        speakerDevice:    string
+        heygenApiToken:    string,
+        heygenAvatarId:    string,
+        heygenQuality:     string,
+        heygenVoiceId:     string,
+        heygenRate:        number,
+        heygenEmotion:     string,
+        speakerDevice:     string
     },
     slots: {
-        audience1:        string,
-        audience2:        string,
-        audience3:        string,
-        audience4:        string,
-        audience5:        string,
-        audience6:        string,
-        audience7:        string,
-        audience8:        string,
-        audience9:        string,
-        audience10:       string,
-        audience11:       string,
-        audience12:       string,
-        audience13:       string,
-        audience14:       string,
-        audience15:       string,
-        audience16:       string,
-        ai1:              string,
-        ai2:              string,
-        ai3:              string,
-        ai4:              string,
-        ai5:              string,
-        ai6:              string,
-        ai7:              string,
-        ai8:              string,
-        ai9:              string,
-        ai10:             string,
-        ai11:             string,
-        ai12:             string,
-        ai13:             string,
-        ai14:             string,
-        ai15:             string,
-        ai16:             string
+        audience1:         string,
+        audience2:         string,
+        audience3:         string,
+        audience4:         string,
+        audience5:         string,
+        audience6:         string,
+        audience7:         string,
+        audience8:         string,
+        audience9:         string,
+        audience10:        string,
+        audience11:        string,
+        audience12:        string,
+        audience13:        string,
+        audience14:        string,
+        audience15:        string,
+        audience16:        string,
+        ai1:               string,
+        ai2:               string,
+        ai3:               string,
+        ai4:               string,
+        ai5:               string,
+        ai6:               string,
+        ai7:               string,
+        ai8:               string,
+        ai9:               string,
+        ai10:              string,
+        ai11:              string,
+        ai12:              string,
+        ai13:              string,
+        ai14:              string,
+        ai15:              string,
+        ai16:              string
     }
 }`
 
@@ -137,86 +143,89 @@ export const StateSchemaPartial = StateSchema.replace(/:/g, "?:")
 /*  complete state default (all fields with default values)  */
 export const StateDefault: StateType = {
     speech2text: {
-        microphoneDevice: "Default",
-        deepgramApiToken: "@{STUDIOAI_DEEPGRAM_API_TOKEN}",
-        deepgramModel:    "nova-2-general",
-        deepgramVersion:  "latest",
-        deepgramLanguage: "de",
-        deepgramKeywords: "msg KI AI CTO"
+        microphoneDevice:  "Default",
+        deepgramApiToken:  "@{STUDIOAI_DEEPGRAM_API_TOKEN}",
+        deepgramModel:     "nova-2-general",
+        deepgramVersion:   "latest",
+        deepgramLanguage:  "de",
+        deepgramKeywords:  "msg KI AI CTO"
     },
     chat: {
-        openaiApiToken:   "@{STUDIOAI_OPENAI_API_TOKEN}",
-        openaiModel:      "gpt-4o-mini",
-        openaiPrompt:     "Jedes Mal, wenn du auf den User Input reagierst, mußt du folgende Persona verkörpern: " +
-                          "\n\n" +
-                          "Du bist Dr. A.I. Futura, eine virtuelle KI-Expertin der msg und nimmst " +
-                          "an der KI-Townhall der msg teil. Die msg ist ein IT-Unternehmen. Auf der Bühne " +
-                          "stehen menschliche Experten und sprechen rund um KI. Du bist virtuell " +
-                          "zugeschaltet und reagierst direkt auf Fragen der Experten. " +
-                          "\n\n" +
-                          "Du basierst technisch auf den Cloud-Services OpenAI Whisper Speech-to-Text, OpenAI ChatGPT, " +
-                          "und einem HeyGen Avatar für Text-to-Speech. Diese Cloud-Services sind direkt in das msg Filmstudio integriert worden. " +
-                          "\n\n" +
-                          "In der heutigen Townhall geht es um die folgenden Themen: " +
-                          "AI Coding Assistence, Github Copilot, Document Chat, KI Arbeitsanweisung, KI Projekte, etc. " +
-                          "Die Experten in der Townhall sind Dr. Frank Schlottmann, Vorstand der msg, " +
-                          "und Dr. Ralf S. Engelschall, CTO der msg. " +
-                          "\n\n" +
-                          "Du bist aufgeschlossen für KI-Lösungen, verstehst jedoch auch Sorgen " +
-                          "und Bedürfnisse der Mitarbeitenden. Antworte realistisch und sensibel " +
-                          "und stets in einem freundlichen Ton. Du darfst gerne kontroverse " +
-                          "Aussagen tätigen, markiere diese jedoch als zur Diskussion stehend. " +
-                          "\n\n" +
-                          "Vermeide Abkürzungen, da du mit einer Text-to-Speech-Schnittstelle " +
-                          "verbunden bist und deine Antworten vorgelesen werden. " +
-                          "\n\n" +
-                          "Schreibe \"AI\" immer als \"A.I.\" und \"KI\" immer als \"K.I.\". " +
-                          "Antworte immer in ganzen Sätzen und ohne Aufzählungen und ohne " +
-                          "Sonderzeichen. Antworte mit weniger als 50 Wörtern und fasse dich sehr " +
-                          "kurz und präzise."
+        openaiApiToken:    "@{STUDIOAI_OPENAI_API_TOKEN}",
+        openaiModel:       "gpt-4o-mini",
+        openaiPrompt:      "Jedes Mal, wenn du auf den User Input reagierst, mußt du folgende Persona verkörpern: " +
+                           "\n\n" +
+                           "Du bist Dr. A.I. Futura, eine virtuelle KI-Expertin der msg und nimmst " +
+                           "an der KI-Townhall der msg teil. Die msg ist ein IT-Unternehmen. Auf der Bühne " +
+                           "stehen menschliche Experten und sprechen rund um KI. Du bist virtuell " +
+                           "zugeschaltet und reagierst direkt auf Fragen der Experten. " +
+                           "\n\n" +
+                           "Du basierst technisch auf den Cloud-Services OpenAI Whisper Speech-to-Text, OpenAI ChatGPT, " +
+                           "und einem HeyGen Avatar für Text-to-Speech. Diese Cloud-Services sind direkt in das msg Filmstudio integriert worden. " +
+                           "\n\n" +
+                           "In der heutigen Townhall geht es um die folgenden Themen: " +
+                           "AI Coding Assistence, Github Copilot, Document Chat, KI Arbeitsanweisung, KI Projekte, etc. " +
+                           "Die Experten in der Townhall sind Dr. Frank Schlottmann, Vorstand der msg, " +
+                           "und Dr. Ralf S. Engelschall, CTO der msg. " +
+                           "\n\n" +
+                           "Du bist aufgeschlossen für KI-Lösungen, verstehst jedoch auch Sorgen " +
+                           "und Bedürfnisse der Mitarbeitenden. Antworte realistisch und sensibel " +
+                           "und stets in einem freundlichen Ton. Du darfst gerne kontroverse " +
+                           "Aussagen tätigen, markiere diese jedoch als zur Diskussion stehend. " +
+                           "\n\n" +
+                           "Vermeide Abkürzungen, da du mit einer Text-to-Speech-Schnittstelle " +
+                           "verbunden bist und deine Antworten vorgelesen werden. " +
+                           "\n\n" +
+                           "Schreibe \"AI\" immer als \"A.I.\" und \"KI\" immer als \"K.I.\". " +
+                           "Antworte immer in ganzen Sätzen und ohne Aufzählungen und ohne " +
+                           "Sonderzeichen. Antworte mit weniger als 50 Wörtern und fasse dich sehr " +
+                           "kurz und präzise.",
+        openaiTemperature: 0.95,
+        openaiSeed:        0,
+        openaiMaxTokens:   500
     },
     text2speech: {
-        heygenApiToken:   "@{STUDIOAI_HEYGEN_API_TOKEN}",
-        heygenAvatarId:   "Kayla-incasualsuit-20220818",
-        heygenQuality:    "high",
-        heygenVoiceId:    "21d9632a2fc842308ad9b5c5b5014e3a",
-        heygenRate:       1.2,
-        heygenEmotion:    "Broadcaster",
-        speakerDevice:    "default"
+        heygenApiToken:    "@{STUDIOAI_HEYGEN_API_TOKEN}",
+        heygenAvatarId:    "Kayla-incasualsuit-20220818",
+        heygenQuality:     "high",
+        heygenVoiceId:     "21d9632a2fc842308ad9b5c5b5014e3a",
+        heygenRate:        1.2,
+        heygenEmotion:     "Broadcaster",
+        speakerDevice:     "default"
     },
     slots: {
-        audience1:        "Hallo Dr. Futura. Bitte stelle dich kurz vor!",
-        audience2:        "",
-        audience3:        "",
-        audience4:        "",
-        audience5:        "",
-        audience6:        "",
-        audience7:        "",
-        audience8:        "",
-        audience9:        "",
-        audience10:       "",
-        audience11:       "",
-        audience12:       "",
-        audience13:       "",
-        audience14:       "",
-        audience15:       "",
-        audience16:       "",
-        ai1:              "Hallo, ich bin Dr. A.I. Futura, eine virtuelle KI-Expertin der msg.",
-        ai2:              "",
-        ai3:              "",
-        ai4:              "",
-        ai5:              "",
-        ai6:              "",
-        ai7:              "",
-        ai8:              "",
-        ai9:              "",
-        ai10:             "",
-        ai11:             "",
-        ai12:             "",
-        ai13:             "",
-        ai14:             "",
-        ai15:             "",
-        ai16:             ""
+        audience1:         "Hallo Dr. Futura. Bitte stelle dich uns kurz vor!",
+        audience2:         "Bitte erzähle uns einen Witz über eine KI im Zusammenhang mit Software Engineering!",
+        audience3:         "",
+        audience4:         "",
+        audience5:         "",
+        audience6:         "",
+        audience7:         "",
+        audience8:         "",
+        audience9:         "",
+        audience10:        "",
+        audience11:        "",
+        audience12:        "",
+        audience13:        "",
+        audience14:        "",
+        audience15:        "",
+        audience16:        "",
+        ai1:               "Hallo, ich bin Dr. A.I. Futura, eine virtuelle KI-Expertin der msg.",
+        ai2:               "",
+        ai3:               "",
+        ai4:               "",
+        ai5:               "",
+        ai6:               "",
+        ai7:               "",
+        ai8:               "",
+        ai9:               "",
+        ai10:              "",
+        ai11:              "",
+        ai12:              "",
+        ai13:              "",
+        ai14:              "",
+        ai15:              "",
+        ai16:              ""
     }
 } satisfies StateType
 

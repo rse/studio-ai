@@ -122,6 +122,51 @@
                             <textarea class="prompt" rows="5" v-model.lazy="state.chat.openaiPrompt"></textarea>
                         </div>
 
+                        <div class="label1">openai</div>
+                        <div class="label2">(temperature)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiTemperature)"
+                                v-on:change="(ev) => state.chat.openaiTemperature = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 2.0)"/>
+                        </div>
+                        <div class="button" v-on:click="state.chat.openaiTemperature = stateDefault.chat.openaiTemperature">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.chat.openaiTemperature"
+                                v-bind:min="0.0" v-bind:max="2.0" v-bind:step="0.05"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
+                        <div class="label1">openai</div>
+                        <div class="label2">(seed)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiSeed)"
+                                v-on:change="(ev) => state.chat.openaiSeed = fieldImport((ev.target! as HTMLInputElement).value, 0, 100)"/>
+                        </div>
+                        <div class="button" v-on:click="state.chat.openaiSeed = stateDefault.chat.openaiSeed">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.chat.openaiSeed"
+                                v-bind:min="0" v-bind:max="100" v-bind:step="1"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
+                        <div class="label1">openai</div>
+                        <div class="label2">(max-tokens)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiMaxTokens)"
+                                v-on:change="(ev) => state.chat.openaiMaxTokens = fieldImport((ev.target! as HTMLInputElement).value, 10, 1000)"/>
+                        </div>
+                        <div class="button" v-on:click="state.chat.openaiMaxTokens = stateDefault.chat.openaiMaxTokens">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.chat.openaiMaxTokens"
+                                v-bind:min="10" v-bind:max="1000" v-bind:step="10"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
                         <div class="label1">heygen</div>
                         <div class="label2">(API)</div>
                         <div class="label3">[token]:</div>
@@ -1200,9 +1245,12 @@ export default defineComponent({
         /*  establish Chat engine  */
         this.log("INFO", "establishing Chat engine")
         chat = new Chat({
-            apiToken: this.state.chat.openaiApiToken,
-            model:    this.state.chat.openaiModel,
-            prompt:   this.state.chat.openaiPrompt
+            apiToken:     this.state.chat.openaiApiToken,
+            model:        this.state.chat.openaiModel,
+            prompt:       this.state.chat.openaiPrompt,
+            temperature:  this.state.chat.openaiTemperature,
+            seed:         this.state.chat.openaiSeed,
+            maxTokens:    this.state.chat.openaiMaxTokens
         })
         chat.on("log", (level: string, msg: string) => {
             this.log(level, `Chat: ${msg}`)

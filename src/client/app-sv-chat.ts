@@ -11,9 +11,12 @@ import OpenAI           from "openai"
 
 /*  type of constructor options  */
 export type ChatOptions = {
-    apiToken: string,
-    model:    string,
-    prompt:   string
+    apiToken:     string,
+    model:        string,
+    prompt:       string,
+    temperature:  number,
+    seed:         number,
+    maxTokens:    number
 }
 
 /*  type of text chunk  */
@@ -33,13 +36,17 @@ export default class Chat extends EventEmitter {
     /*  internal state  */
     private client: OpenAI | null = null
     private stream: Stream | null = null
+    private dialog = [] as Array<OpenAI.ChatCompletionMessageParam>
 
     /*  API class constructor  */
     constructor (options: ChatOptions) {
         super()
-        this.options.apiToken = options.apiToken
-        this.options.model    = options.model
-        this.options.prompt   = options.prompt
+        this.options.apiToken     = options.apiToken
+        this.options.model        = options.model
+        this.options.prompt       = options.prompt
+        this.options.temperature  = options.temperature
+        this.options.seed         = options.seed
+        this.options.maxTokens    = options.maxTokens
     }
 
     /*  minimum logging handling  */
@@ -64,6 +71,7 @@ export default class Chat extends EventEmitter {
             apiKey: this.options.apiToken,
             dangerouslyAllowBrowser: true
         })
+        this.dialog = [] as Array<OpenAI.ChatCompletionMessageParam>
         this.log("INFO", "OpenAI: ready for operation")
         this.emit("open")
     }
@@ -71,17 +79,17 @@ export default class Chat extends EventEmitter {
     async send (message: string) {
         if (this.client === null)
             return
+        if (this.dialog.length === 0)
+            this.dialog.push({ role: "system", content: this.options.prompt })
+        this.dialog.push({ role: "user", content: message })
         const stream = this.client.beta.chat.completions.stream({
-            stream: true,
-            model:  this.options.model,
-            messages: [
-                { role: "system", content: this.options.prompt },
-                { role: "user",   content: message }
-            ],
-            seed: null,
-            temperature: 0.90,
-            n: 1,
-            max_completion_tokens: 1000
+            stream:                true,
+            model:                 this.options.model,
+            seed:                  this.options.seed !== 0 ? this.options.seed : null,
+            temperature:           this.options.temperature,
+            max_completion_tokens: this.options.maxTokens,
+            n:                     1,
+            messages:              this.dialog
         })
         stream.on("content", (delta, snapshot) => {
             this.emit("text", {
@@ -90,11 +98,12 @@ export default class Chat extends EventEmitter {
             } as ChatChunk)
         })
         const completion = await stream.finalChatCompletion()
-        const response = completion.choices[0].message.content
+        const response = completion.choices[0].message.content!
         this.emit("text", {
             text:  response,
             final: true
         } as ChatChunk)
+        this.dialog.push({ role: "assistant", content: response })
         return response
     }
 
