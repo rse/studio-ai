@@ -19,9 +19,6 @@
             <tabs ref="tabs" v-bind:options="{ useUrlFragment: false }" v-bind:cache-lifetime="0" class="tabs-level-1" v-on:changed="tabChanged">
                 <!--  ==== SETTINGS ====  -->
                 <tab id="settings" name="Settings">
-                    <div class="desc">
-                        The <b>Settings</b> are the configuration settings of this application.
-                    </div>
                     <div class="control">
                         <div class="label1">deepgram</div>
                         <div class="label2">(microphone)</div>
@@ -252,9 +249,6 @@
 
                 <!--  ==== CONTROL ====  -->
                 <tab id="control" name="Control" class="control-tab">
-                    <div class="desc">
-                        The <b>Control</b> is your panel for run-time control of the interactive AI avatar.
-                    </div>
                     <div class="control-pane">
                         <div class="left">
                             <div class="actions">
@@ -301,7 +295,7 @@
                                     T2S
                                 </div>
                             </div>
-                            <div class="label" v-bind:class="{ 'during-recording': recording }">Audience:</div>
+                            <div class="label" v-bind:class="{ 'during-recording': recording }">Studio:</div>
                             <div class="audience-text">
                                 <textarea v-show="!recording" v-model="audienceMessage"
                                     v-bind:disabled="recording"
@@ -416,11 +410,6 @@
 
                 <!--  ==== PREVIEW ====  -->
                 <tab id="preview" name="Preview" class="preview">
-                    <div class="desc">
-                        The <b>Preview</b> is a preview of the interactive AI avatar.
-                        It is exactly the same content intended to be loaded into the <b>vMix</b> Browser input
-                        or <b>OBS Studio</b> Browser source and allows you to preview the avatar in the browser here, too.
-                    </div>
                     <div class="preview-url" v-on:click="previewCopy()">
                         {{ `${serviceUrl}#/render` }}
                     </div>
@@ -747,7 +736,7 @@
             border-radius: 4px
             position: relative
             overflow: hidden
-            height: calc(100vh - 136px - 40px - 10px - 10px - 40px)
+            height: calc(100vh - 136px - 40px)
         .button
             background-color: var(--color-std-bg-4)
             color: var(--color-std-fg-4)
@@ -879,16 +868,23 @@
                 flex-direction: row
                 justify-content: center
                 align-items: start
-                width: 100%
-                margin-bottom: 8px
+                padding-top: 4px
+                padding-bottom: 4px
+                padding-left: 10px
+                padding-right: 10px
+                margin-bottom: 4px
+                width: calc(100% - 20px)
+                border-radius: 4px
             .chat-entry-ai
-                color: var(--color-acc-fg-5)
-            .chat-entry-audience
+                background-color: var(--color-std-bg-2)
+                color: var(--color-acc-fg-4)
+            .chat-entry-studio
+                background-color: var(--color-std-bg-3)
                 color: var(--color-std-fg-5)
             .chat-entry-persona
-                width:     80px
-                max-width: 80px
-                min-width: 80px
+                width:     70px
+                max-width: 70px
+                min-width: 70px
                 font-weight: bold
             .chat-entry-message
                 flex-grow: 1
@@ -1258,7 +1254,7 @@ export default defineComponent({
         chat.on("text", (chunk: ChatChunk) => {
             const chatLog = this.chatLog as Array<ChatLogEntry>
             if (this.chatLog.length === 0
-                || chatLog[chatLog.length - 1].persona === "Audience"
+                || chatLog[chatLog.length - 1].persona === "Studio"
                 || chatLog[chatLog.length - 1].final)
                 chatLog.push({ persona: "AI", message: "", final: false })
             const entry = chatLog[chatLog.length - 1]
@@ -1423,7 +1419,7 @@ export default defineComponent({
         audienceCommit () {
             if (this.audienceMessage === "" || !this.engine.chat || chat === null)
                 return
-            this.chatLog.push({ persona: "Audience", message: this.audienceMessage, final: true })
+            this.chatLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
             // this.audienceMessage = ""
             // this.audienceSlot = 0
             chat.send(this.audienceMessage)
