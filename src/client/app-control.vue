@@ -245,12 +245,19 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="label">Audience:</div>
-                            <textarea v-model="audienceMessage"
-                                class="audience-text"
-                                v-bind:disabled="recording"
-                                v-on:keydown.enter.prevent="audienceCommit()">
-                            </textarea>
+                            <div class="label" v-bind:class="{ 'during-recording': recording }">Audience:</div>
+                            <div class="audience-text">
+                                <textarea v-show="!recording" v-model="audienceMessage"
+                                    v-bind:disabled="recording"
+                                    v-on:keydown.enter.prevent="audienceCommit()">
+                                </textarea>
+                                <div v-show="recording" class="audience-text-during-recording">
+                                    {{ audienceMessage }}
+                                    <span v-show="!audienceMessageFinal" class="icon">
+                                        <spinner-grid class="spinner-grid" size="12"/>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="actions">
                                 <div class="button slot" v-bind:class="{ active: audienceSlot === 1, empty: state.slots.audience1 === '' }" v-on:click="audienceSlotSelect(1)">1</div>
                                 <div class="button slot" v-bind:class="{ active: audienceSlot === 2, empty: state.slots.audience2 === '' }" v-on:click="audienceSlotSelect(2)">2</div>
@@ -290,10 +297,12 @@
                                 </div>
                             </div>
                             <div class="label">AI:</div>
-                            <textarea v-model="aiMessage"
-                                class="ai-text"
-                                v-on:keydown.enter.prevent="aiCommit()">
-                            </textarea>
+                            <div class="ai-text">
+                                <textarea v-model="aiMessage"
+                                    class="ai-text"
+                                    v-on:keydown.enter.prevent="aiCommit()">
+                                </textarea>
+                            </div>
                             <div class="actions">
                                 <div class="button slot" v-bind:class="{ active: aiSlot === 1, empty: state.slots.ai1 === '' }" v-on:click="aiSlotSelect(1)">1</div>
                                 <div class="button slot" v-bind:class="{ active: aiSlot === 2, empty: state.slots.ai2 === '' }" v-on:click="aiSlotSelect(2)">2</div>
@@ -659,6 +668,8 @@
             margin-right: 10px
             display: flex
             flex-direction: column
+            justify-content: flex-first
+            align-items: flex-first
             .actions
                 display: flex
                 flex-direction: row
@@ -732,21 +743,69 @@
             border-top-right-radius: 4px
         .label:first-child
             margin-top: 0
-        textarea
-            background-color: var(--color-acc-bg-3)
-            color: var(--color-acc-fg-5)
-            border: 0
-            border-bottom-left-radius: 4px
-            border-bottom-right-radius: 4px
-            padding: 6px 12px 6px 12px
-            outline: none
-            font-weight: normal
-            font-size: 12pt
-            width: calc(100% - 2 * 12px)
+        .label.during-recording
+            background-color: var(--color-sig-bg-2)
+            color: var(--color-sig-fg-5)
+        .audience-text
             flex-grow: 1
-            &:disabled
-                background-color: var(--color-acc-bg-1)
-                color: var(--color-acc-fg-3)
+            flex-shrink: 1
+            flex-basis: 50%
+            overflow: hidden
+            textarea
+                overflow: scroll
+                background-color: var(--color-acc-bg-3)
+                color: var(--color-acc-fg-5)
+                border: 0
+                border-bottom-left-radius: 4px
+                border-bottom-right-radius: 4px
+                padding: 6px 12px 6px 12px
+                margin: 0
+                outline: none
+                font-weight: normal
+                font-size: 12pt
+                width: calc(100% - 2 * 12px)
+                height: calc(100% - 2 * 6px)
+                resize: none
+                &:disabled
+                    background-color: var(--color-acc-bg-1)
+                    color: var(--color-acc-fg-3)
+            .audience-text-during-recording
+                overflow: scroll
+                background-color: var(--color-sig-bg-3)
+                color: var(--color-sig-fg-5)
+                border: 0
+                border-bottom-left-radius: 4px
+                border-bottom-right-radius: 4px
+                padding: 6px 12px 6px 12px
+                margin: 0
+                outline: none
+                font-weight: normal
+                font-size: 12pt
+                width: calc(100% - 2 * 12px)
+                height: calc(100% - 2 * 6px)
+        .ai-text
+            flex-grow: 1
+            flex-shrink: 1
+            flex-basis: 50%
+            overflow: hidden
+            textarea
+                overflow: scroll
+                background-color: var(--color-acc-bg-3)
+                color: var(--color-acc-fg-5)
+                border: 0
+                border-bottom-left-radius: 4px
+                border-bottom-right-radius: 4px
+                padding: 6px 12px 6px 12px
+                margin: 0
+                outline: none
+                font-weight: normal
+                font-size: 12pt
+                width: calc(100% - 2 * 12px)
+                height: calc(100% - 2 * 6px)
+                resize: none
+                &:disabled
+                    background-color: var(--color-acc-bg-1)
+                    color: var(--color-acc-fg-3)
         .chat-history
             .chat-entry
                 display: flex
@@ -879,6 +938,7 @@ export default defineComponent({
         recording: false,
         playing: false,
         audienceMessage: "",
+        audienceMessageFinal: true,
         audienceSlot: 0,
         aiMessage: "",
         aiSlot: 0,
@@ -1042,18 +1102,19 @@ export default defineComponent({
             this.log(level, `Speech-to-Text: ${msg}`)
         })
         let audienceBuffer = [ "" ]
-        let audienceBufferFinal = true
         speech2text.on("text", (chunk: Speech2TextChunk) => {
             audienceBuffer[audienceBuffer.length - 1] = chunk.text
             if (chunk.final) {
                 audienceBuffer.push("")
-                audienceBufferFinal = true
+                this.audienceMessageFinal = true
             }
             else
-                audienceBufferFinal = false
+                this.audienceMessageFinal = false
             this.audienceMessage = audienceBuffer.join(" ")
-            if (!audienceBufferFinal)
+            /*
+            if (!this.audienceMessageFinal)
                 this.audienceMessage += "[...]"
+            */
         })
         await speech2text.init()
 
