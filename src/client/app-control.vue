@@ -78,6 +78,17 @@
                             <input class="text" v-model.lazy="state.speech2text.deepgramLanguage"/>
                         </div>
 
+                        <div class="label1">deepgram</div>
+                        <div class="label2">(keywords)</div>
+                        <div class="label3">[string]:</div>
+                        <div class="value">
+                            <div class="fixed">*</div>
+                        </div>
+                        <div class="button" v-on:click="state.speech2text.deepgramKeywords = stateDefault.speech2text.deepgramKeywords">RESET</div>
+                        <div class="input">
+                            <input class="text" v-model.lazy="state.speech2text.deepgramKeywords"/>
+                        </div>
+
                         <div class="label1">openai</div>
                         <div class="label2">(API)</div>
                         <div class="label3">[token]:</div>
@@ -900,6 +911,7 @@ import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
+import Chat, { ChatChunk } from "./app-sv-chat"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
@@ -1096,7 +1108,8 @@ export default defineComponent({
             apiToken: this.state.speech2text.deepgramApiToken,
             model:    this.state.speech2text.deepgramModel,
             version:  this.state.speech2text.deepgramVersion,
-            language: this.state.speech2text.deepgramLanguage
+            language: this.state.speech2text.deepgramLanguage,
+            keywords: this.state.speech2text.deepgramKeywords
         })
         speech2text.on("log", (level: string, msg: string) => {
             this.log(level, `Speech-to-Text: ${msg}`)

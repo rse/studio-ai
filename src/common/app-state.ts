@@ -15,7 +15,8 @@ export type StateType = {
         deepgramApiToken: string
         deepgramModel:    string,
         deepgramVersion:  string,
-        deepgramLanguage: string
+        deepgramLanguage: string,
+        deepgramKeywords: string
     },
     chat: {
         openaiApiToken:   string,
@@ -77,7 +78,8 @@ export const StateSchema = `{
         deepgramApiToken: string,
         deepgramModel:    string,
         deepgramVersion:  string,
-        deepgramLanguage: string
+        deepgramLanguage: string,
+        deepgramKeywords: string
     },
     chat: {
         openaiApiToken:   string,
@@ -135,11 +137,12 @@ export const StateSchemaPartial = StateSchema.replace(/:/g, "?:")
 /*  complete state default (all fields with default values)  */
 export const StateDefault: StateType = {
     speech2text: {
-        microphoneDevice: "default",
+        microphoneDevice: "Default",
         deepgramApiToken: "",
-        deepgramModel:    "nova-2",
+        deepgramModel:    "nova-2-general",
         deepgramVersion:  "latest",
-        deepgramLanguage: "de"
+        deepgramLanguage: "de",
+        deepgramKeywords: "msg KI AI CTO"
     },
     chat: {
         openaiApiToken:   "FIXME",

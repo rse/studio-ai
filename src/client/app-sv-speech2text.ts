@@ -21,7 +21,8 @@ export type Speech2TextOptions = {
     apiToken: string,
     model:    string,
     version:  string,
-    language: string
+    language: string,
+    keywords: string
 }
 
 /*  type of text chunk  */
@@ -36,9 +37,10 @@ export default class Speech2Text extends EventEmitter {
     private options = {
         device:   "Default",
         apiToken: "",
-        model:    "nova-2",
+        model:    "nova-2-general",
         version:  "latest",
-        language: "en"
+        language: "en",
+        keywords: ""
     } as Speech2TextOptions
 
     /*  internal state  */
@@ -60,6 +62,7 @@ export default class Speech2Text extends EventEmitter {
         this.options.model    = options.model
         this.options.version  = options.version
         this.options.language = options.language
+        this.options.keywords = options.keywords
     }
 
     /*  minimum logging handling  */
@@ -172,25 +175,32 @@ export default class Speech2Text extends EventEmitter {
         /*  connect to Deepgram API  */
         this.log("INFO", "Deepgram: connection to Websocket API initiating")
         const deepgramClient = Deepgram.createClient(this.options.apiToken)
-        this.deepgram = deepgramClient.listen.live({
+        const options = {
             model:            this.options.model,
             version:          this.options.version,
             language:         this.options.language,
             channels:         channelCount,
+            multichannel:     false,
             sample_rate:      sampleRate,
             encoding:         "linear16",
-            multichannel:     false,
             endpointing:      false,
             interim_results:  true,
-            smart_format:     true,
-            punctuate:        true,
-            filler_words:     true,
-            diarize:          true,
             numerals:         true,
+            punctuate:        true,
             paragraphs:       true,
-            profanity_filter: true,
+            smart_format:     true,
+            diarize:          false,
+            dictation:        false,
+            filler_words:     false,
+            measurements:     false,
+            profanity_filter: false,
             utterances:       false
-        })
+        } as Deepgram.LiveSchema
+        if (this.options.keywords !== "")
+            options.keywords = this.options.keywords
+                .split(/(?:\s+|\s*,\s*)/)
+                .map((kw) => `${kw}:1`)
+        this.deepgram = deepgramClient.listen.live(options)
         await new Promise((resolve, reject) => {
             this.deepgram!.once(Deepgram.LiveTranscriptionEvents.Open, () => {
                 resolve(null)
@@ -243,7 +253,7 @@ export default class Speech2Text extends EventEmitter {
                 this.deepgram!.keepAlive()
             }
         }, 3000)
-        this.log("INFO", "Deepgram: ready for recording")
+        this.log("INFO", "Deepgram: ready for operation")
     }
 
     /*  apply audio meter to canvas DOM element  */
