@@ -205,7 +205,6 @@
                                 <div class="button engine"
                                     v-bind:class="{ active: engine.speech2text > 0 }"
                                     v-on:click="engineToggle('speech2text')">
-                                    S2T
                                     <span v-show="engine.speech2text === 0" class="icon">
                                         <i class="fas fa-square"></i>
                                     </span>
@@ -215,11 +214,11 @@
                                     <span v-show="engine.speech2text === 2" class="icon">
                                         <spinner-grid class="spinner-grid" size="16"/>
                                     </span>
+                                    S2T
                                 </div>
                                 <div class="button chat"
                                     v-bind:class="{ active: engine.chat > 0 }"
                                     v-on:click="engineToggle('chat')">
-                                    T2T
                                     <span v-show="engine.chat === 0" class="icon">
                                         <i class="fas fa-square"></i>
                                     </span>
@@ -229,11 +228,11 @@
                                     <span v-show="engine.chat === 2" class="icon">
                                         <spinner-grid class="spinner-grid" size="16"/>
                                     </span>
+                                    T2T
                                 </div>
                                 <div class="button engine"
                                     v-bind:class="{ active: engine.text2speech > 0 }"
                                     v-on:click="engineToggle('text2speech')">
-                                    T2S
                                     <span v-show="engine.text2speech === 0" class="icon">
                                         <i class="fas fa-square"></i>
                                     </span>
@@ -243,6 +242,7 @@
                                     <span v-show="engine.text2speech === 2" class="icon">
                                         <spinner-grid class="spinner-grid" size="16"/>
                                     </span>
+                                    T2S
                                 </div>
                             </div>
                             <div class="label" v-bind:class="{ 'during-recording': recording }">Audience:</div>
@@ -283,17 +283,17 @@
                                     v-bind:class="{ recording: recording, disabled: engine.speech2text !== 2 }"
                                     v-on:click="toggleRecording()">
                                     <canvas v-show="engine.speech2text === 2" ref="audienceMeter" class="audience-meter"></canvas>
-                                    RECORD
                                     <span v-show="!recording" class="icon"><i class="fas fa-circle"></i></span>
                                     <span v-show="recording" class="icon">
                                         <spinner-rings class="spinner-rings" size="30"/>
                                     </span>
+                                    RECORD
                                 </div>
                                 <div class="button audience-commit"
                                     v-bind:class="{ disabled: audienceMessage === '' || engine.chat !== 2 }"
                                     v-on:click="audienceCommit()">
-                                    COMMIT
                                     <i class="icon fas fa-circle-chevron-right"></i>
+                                    COMMIT
                                 </div>
                             </div>
                             <div class="label">AI:</div>
@@ -327,17 +327,17 @@
                                 <div class="button ai-listen disabled"
                                     v-bind:class="{ playing: playing }"
                                     v-on:click="playing = !playing">
-                                    PLAY
                                     <span v-show="!playing" class="icon"><i class="fas fa-play"></i></span>
                                     <span v-show="playing" class="icon">
                                         <spinner-bars class="spinner-bars" size="16"/>
                                     </span>
+                                    PLAY
                                 </div>
                                 <div class="button ai-speak"
                                     v-bind:class="{ disabled: aiMessage === '' || engine.text2speech !== 2 }"
                                     v-on:click="aiCommit()">
-                                    COMMIT
                                     <i class="icon fas fa-circle-chevron-right"></i>
+                                    COMMIT
                                 </div>
                             </div>
                         </div>
@@ -827,7 +827,7 @@
                 flex-grow: 1
         .icon
             display: inline-block
-            padding-left: 8px
+            padding-right: 8px
             width: 15px
             .spinner-rings
                 position: relative
