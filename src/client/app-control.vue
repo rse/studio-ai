@@ -56,6 +56,28 @@
                             <input class="text" v-model.lazy="state.speech2text.deepgramModel"/>
                         </div>
 
+                        <div class="label1">deepgram</div>
+                        <div class="label2">(version)</div>
+                        <div class="label3">[string]:</div>
+                        <div class="value">
+                            <div class="fixed">*</div>
+                        </div>
+                        <div class="button" v-on:click="state.speech2text.deepgramVersion = stateDefault.speech2text.deepgramVersion">RESET</div>
+                        <div class="input">
+                            <input class="text" v-model.lazy="state.speech2text.deepgramVersion"/>
+                        </div>
+
+                        <div class="label1">deepgram</div>
+                        <div class="label2">(language)</div>
+                        <div class="label3">[iso-code]:</div>
+                        <div class="value">
+                            <div class="fixed">*</div>
+                        </div>
+                        <div class="button" v-on:click="state.speech2text.deepgramLanguage = stateDefault.speech2text.deepgramLanguage">RESET</div>
+                        <div class="input">
+                            <input class="text" v-model.lazy="state.speech2text.deepgramLanguage"/>
+                        </div>
+
                         <div class="label1">openai</div>
                         <div class="label2">(API)</div>
                         <div class="label3">[token]:</div>
@@ -179,9 +201,54 @@
                     </div>
                     <div class="control-pane">
                         <div class="left">
+                            <div class="actions">
+                                <div class="button engine"
+                                    v-bind:class="{ active: engine.speech2text > 0 }"
+                                    v-on:click="engineToggle('speech2text')">
+                                    S2T
+                                    <span v-show="engine.speech2text === 0" class="icon">
+                                        <i class="fas fa-square"></i>
+                                    </span>
+                                    <span v-show="engine.speech2text === 1" class="icon">
+                                        <i class="fas fa-gear fa-spin"></i>
+                                    </span>
+                                    <span v-show="engine.speech2text === 2" class="icon">
+                                        <spinner-grid class="spinner-grid" size="16"/>
+                                    </span>
+                                </div>
+                                <div class="button chat"
+                                    v-bind:class="{ active: engine.chat > 0 }"
+                                    v-on:click="engineToggle('chat')">
+                                    T2T
+                                    <span v-show="engine.chat === 0" class="icon">
+                                        <i class="fas fa-square"></i>
+                                    </span>
+                                    <span v-show="engine.chat === 1" class="icon">
+                                        <i class="fas fa-gear fa-spin"></i>
+                                    </span>
+                                    <span v-show="engine.chat === 2" class="icon">
+                                        <spinner-grid class="spinner-grid" size="16"/>
+                                    </span>
+                                </div>
+                                <div class="button engine"
+                                    v-bind:class="{ active: engine.text2speech > 0 }"
+                                    v-on:click="engineToggle('text2speech')">
+                                    T2S
+                                    <span v-show="engine.text2speech === 0" class="icon">
+                                        <i class="fas fa-square"></i>
+                                    </span>
+                                    <span v-show="engine.text2speech === 1" class="icon">
+                                        <i class="fas fa-gear fa-spin"></i>
+                                    </span>
+                                    <span v-show="engine.text2speech === 2" class="icon">
+                                        <spinner-grid class="spinner-grid" size="16"/>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="label">Audience:</div>
                             <textarea v-model="audienceMessage"
                                 class="audience-text"
+                                v-bind:disabled="recording"
                                 v-on:keydown.enter.prevent="audienceCommit()">
                             </textarea>
                             <div class="actions">
@@ -195,9 +262,20 @@
                                 <div class="button slot" v-bind:class="{ active: audienceSlot === 8, empty: state.slots.audience8 === '' }" v-on:click="audienceSlotSelect(8)">8</div>
                             </div>
                             <div class="actions">
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 9,  empty: state.slots.audience9  === '' }" v-on:click="audienceSlotSelect(9)">9</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 10, empty: state.slots.audience10 === '' }" v-on:click="audienceSlotSelect(10)">10</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 11, empty: state.slots.audience11 === '' }" v-on:click="audienceSlotSelect(11)">11</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 12, empty: state.slots.audience12 === '' }" v-on:click="audienceSlotSelect(12)">12</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 13, empty: state.slots.audience13 === '' }" v-on:click="audienceSlotSelect(13)">13</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 14, empty: state.slots.audience14 === '' }" v-on:click="audienceSlotSelect(14)">14</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 15, empty: state.slots.audience15 === '' }" v-on:click="audienceSlotSelect(15)">15</div>
+                                <div class="button slot" v-bind:class="{ active: audienceSlot === 16, empty: state.slots.audience16 === '' }" v-on:click="audienceSlotSelect(16)">16</div>
+                            </div>
+                            <div class="actions">
                                 <div class="button audience-listen"
-                                    v-bind:class="{ recording: recording }"
+                                    v-bind:class="{ recording: recording, disabled: engine.speech2text !== 2 }"
                                     v-on:click="toggleRecording()">
+                                    <canvas v-show="engine.speech2text === 2" ref="audienceMeter" class="audience-meter"></canvas>
                                     RECORD
                                     <span v-show="!recording" class="icon"><i class="fas fa-circle"></i></span>
                                     <span v-show="recording" class="icon">
@@ -205,7 +283,7 @@
                                     </span>
                                 </div>
                                 <div class="button audience-commit"
-                                    v-bind:class="{ disabled: audienceMessage === '' }"
+                                    v-bind:class="{ disabled: audienceMessage === '' || engine.chat !== 2 }"
                                     v-on:click="audienceCommit()">
                                     COMMIT
                                     <i class="icon fas fa-circle-chevron-right"></i>
@@ -227,7 +305,17 @@
                                 <div class="button slot" v-bind:class="{ active: aiSlot === 8, empty: state.slots.ai8 === '' }" v-on:click="aiSlotSelect(8)">8</div>
                             </div>
                             <div class="actions">
-                                <div class="button audience-listen disabled"
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 9,  empty: state.slots.ai9  === '' }" v-on:click="aiSlotSelect(9)">9</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 10, empty: state.slots.ai10 === '' }" v-on:click="aiSlotSelect(10)">10</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 11, empty: state.slots.ai11 === '' }" v-on:click="aiSlotSelect(11)">11</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 12, empty: state.slots.ai12 === '' }" v-on:click="aiSlotSelect(12)">12</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 13, empty: state.slots.ai13 === '' }" v-on:click="aiSlotSelect(13)">13</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 14, empty: state.slots.ai14 === '' }" v-on:click="aiSlotSelect(14)">14</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 15, empty: state.slots.ai15 === '' }" v-on:click="aiSlotSelect(15)">15</div>
+                                <div class="button slot" v-bind:class="{ active: aiSlot === 16, empty: state.slots.ai16 === '' }" v-on:click="aiSlotSelect(16)">16</div>
+                            </div>
+                            <div class="actions">
+                                <div class="button ai-listen disabled"
                                     v-bind:class="{ playing: playing }"
                                     v-on:click="playing = !playing">
                                     PLAY
@@ -237,7 +325,7 @@
                                     </span>
                                 </div>
                                 <div class="button ai-speak"
-                                    v-bind:class="{ disabled: aiMessage === '' }"
+                                    v-bind:class="{ disabled: aiMessage === '' || engine.text2speech !== 2 }"
                                     v-on:click="aiCommit()">
                                     COMMIT
                                     <i class="icon fas fa-circle-chevron-right"></i>
@@ -656,6 +744,9 @@
             font-size: 12pt
             width: calc(100% - 2 * 12px)
             flex-grow: 1
+            &:disabled
+                background-color: var(--color-acc-bg-1)
+                color: var(--color-acc-fg-3)
         .chat-history
             .chat-entry
                 display: flex
@@ -687,6 +778,14 @@
                 position: relative
                 left: -2px
                 top: -1px
+        .audience-meter
+            position: relative
+            top: 3px
+            width:  50px
+            height: 16px
+            margin-right: 10px
+            background-color: #222
+            border-radius: 4px
     .input
         width: 400px
     .slider
@@ -737,9 +836,11 @@ import Ducky               from "ducky"
 import Slider              from "@vueform/slider"
 import Toggle              from "@vueform/toggle"
 import axios               from "axios"
+import moment              from "moment"
 import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
+import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
@@ -751,6 +852,7 @@ import {
 
 <script lang="ts">
 let statusTimer: ReturnType<typeof setTimeout> | null = null
+let speech2text: Speech2Text | null = null
 export default defineComponent({
     name: "app-control",
     components: {
@@ -793,13 +895,19 @@ export default defineComponent({
             send:   false,
             recv:   false
         },
-        pkg
+        pkg,
+        engine: {
+            speech2text: 0,
+            chat:        0,
+            text2speech: 0
+        }
     }),
     async mounted () {
         /*  force particular tab to be selected  */
         (this.$refs.tabs as any).selectTab(`#${this.selectTab}`)
 
         /*  establish server connection  */
+        this.log("INFO", "establishing WebSocket connection")
         const ws = new RecWebSocket(this.wsUrl + "/control", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
@@ -865,15 +973,27 @@ export default defineComponent({
         this.$watch("audienceMessage", () => {
             if (this.audienceSlot === 0)
                 return
-            let key: "audience1" | "audience2" | "audience3" | "audience4" | "audience5" | "audience6" | "audience7" | "audience8"
-            if      (this.audienceSlot === 1) key = "audience1"
-            else if (this.audienceSlot === 2) key = "audience2"
-            else if (this.audienceSlot === 3) key = "audience3"
-            else if (this.audienceSlot === 4) key = "audience4"
-            else if (this.audienceSlot === 5) key = "audience5"
-            else if (this.audienceSlot === 6) key = "audience6"
-            else if (this.audienceSlot === 7) key = "audience7"
-            else if (this.audienceSlot === 8) key = "audience8"
+            let key:
+                "audience1"  | "audience2"  | "audience3"  | "audience4"  |
+                "audience5"  | "audience6"  | "audience7"  | "audience8"  |
+                "audience9"  | "audience10" | "audience11" | "audience12" |
+                "audience13" | "audience14" | "audience15" | "audience16"
+            if      (this.audienceSlot === 1)  key = "audience1"
+            else if (this.audienceSlot === 2)  key = "audience2"
+            else if (this.audienceSlot === 3)  key = "audience3"
+            else if (this.audienceSlot === 4)  key = "audience4"
+            else if (this.audienceSlot === 5)  key = "audience5"
+            else if (this.audienceSlot === 6)  key = "audience6"
+            else if (this.audienceSlot === 7)  key = "audience7"
+            else if (this.audienceSlot === 8)  key = "audience8"
+            else if (this.audienceSlot === 9)  key = "audience9"
+            else if (this.audienceSlot === 10) key = "audience10"
+            else if (this.audienceSlot === 11) key = "audience11"
+            else if (this.audienceSlot === 12) key = "audience12"
+            else if (this.audienceSlot === 13) key = "audience13"
+            else if (this.audienceSlot === 14) key = "audience14"
+            else if (this.audienceSlot === 15) key = "audience15"
+            else if (this.audienceSlot === 16) key = "audience16"
             else
                 throw new Error("invalid index")
             this.state.slots[key] = this.audienceMessage
@@ -882,22 +1002,116 @@ export default defineComponent({
         this.$watch("aiMessage", () => {
             if (this.aiSlot === 0)
                 return
-            let key: "ai1" | "ai2" | "ai3" | "ai4" | "ai5" | "ai6" | "ai7" | "ai8"
-            if      (this.aiSlot === 1) key = "ai1"
-            else if (this.aiSlot === 2) key = "ai2"
-            else if (this.aiSlot === 3) key = "ai3"
-            else if (this.aiSlot === 4) key = "ai4"
-            else if (this.aiSlot === 5) key = "ai5"
-            else if (this.aiSlot === 6) key = "ai6"
-            else if (this.aiSlot === 7) key = "ai7"
-            else if (this.aiSlot === 8) key = "ai8"
+            let key:
+                "ai1"  | "ai2"  | "ai3"  | "ai4"  |
+                "ai5"  | "ai6"  | "ai7"  | "ai8"  |
+                "ai9"  | "ai10" | "ai11" | "ai12" |
+                "ai13" | "ai14" | "ai15" | "ai16"
+            if      (this.aiSlot === 1)  key = "ai1"
+            else if (this.aiSlot === 2)  key = "ai2"
+            else if (this.aiSlot === 3)  key = "ai3"
+            else if (this.aiSlot === 4)  key = "ai4"
+            else if (this.aiSlot === 5)  key = "ai5"
+            else if (this.aiSlot === 6)  key = "ai6"
+            else if (this.aiSlot === 7)  key = "ai7"
+            else if (this.aiSlot === 8)  key = "ai8"
+            else if (this.aiSlot === 9)  key = "ai9"
+            else if (this.aiSlot === 10) key = "ai10"
+            else if (this.aiSlot === 11) key = "ai11"
+            else if (this.aiSlot === 12) key = "ai12"
+            else if (this.aiSlot === 13) key = "ai13"
+            else if (this.aiSlot === 14) key = "ai14"
+            else if (this.aiSlot === 15) key = "ai15"
+            else if (this.aiSlot === 16) key = "ai16"
             else
                 throw new Error("invalid index")
             this.state.slots[key] = this.aiMessage
             this.patchState([ `slots.${key}` ])
         })
+
+        /*  establish speech-to-text engine  */
+        this.log("INFO", "establishing Speech-to-Text engine")
+        speech2text = new Speech2Text({
+            device:   this.state.speech2text.microphoneDevice,
+            apiToken: this.state.speech2text.deepgramApiToken,
+            model:    this.state.speech2text.deepgramModel,
+            version:  this.state.speech2text.deepgramVersion,
+            language: this.state.speech2text.deepgramLanguage
+        })
+        speech2text.on("log", (level: string, msg: string) => {
+            this.log(level, `Speech-to-Text: ${msg}`)
+        })
+        let audienceBuffer = [ "" ]
+        let audienceBufferFinal = true
+        speech2text.on("text", (chunk: Speech2TextChunk) => {
+            audienceBuffer[audienceBuffer.length - 1] = chunk.text
+            if (chunk.final) {
+                audienceBuffer.push("")
+                audienceBufferFinal = true
+            }
+            else
+                audienceBufferFinal = false
+            this.audienceMessage = audienceBuffer.join(" ")
+            if (!audienceBufferFinal)
+                this.audienceMessage += "[...]"
+        })
+        await speech2text.init()
+
+        /*  enable/disable speech-to-text engine  */
+        const engineOpen = async () => {
+            this.log("INFO", "Speech-to-Text: start engine")
+            await speech2text!.open().catch((err) => {
+                this.engine.speech2text = 0
+                this.log("ERROR", `Speech-to-Text engine failed: ${err}`)
+                this.raiseStatus("error", `Speech-to-Text engine failed: ${err}`, 2000)
+            })
+            speech2text!.audioMeterApply(this.$refs.audienceMeter as HTMLCanvasElement)
+        }
+        const engineClose = async () => {
+            this.log("INFO", "Speech-to-Text: stop engine")
+            speech2text!.audioMeterUnapply(this.$refs.audienceMeter as HTMLCanvasElement)
+            await speech2text!.close()
+        }
+        this.$watch("engine.speech2text", async () => {
+            if (speech2text === null)
+                return
+            if (this.engine.speech2text === 1)
+                engineOpen()
+            else if (this.engine.speech2text === 0)
+                engineClose()
+        })
+        speech2text.on("open", () => {
+            if (this.engine.speech2text === 1)
+                this.engine.speech2text = 2
+        })
+        speech2text.on("close", () => {
+            if (this.engine.speech2text === 2) {
+                this.log("INFO", "Speech-to-Text: unexpected engine stop -- re-starting engine")
+                this.engine.speech2text = 1
+            }
+        })
+        this.$watch("recording", () => {
+            if (speech2text === null)
+                return
+            if (this.recording) {
+                this.log("INFO", "Speech-to-Text: start recording")
+                speech2text.setActive(true)
+                audienceBuffer = [ "" ]
+            }
+            else {
+                this.log("INFO", "Speech-to-Text: stop recording")
+                speech2text.setActive(false)
+            }
+        })
     },
     methods: {
+        /*  log to the console  */
+        log (level: string, msg: string) {
+            const timestamp = moment().format("YYYY-MM-DD hh:mm:ss.SSS")
+            const levelStr = `[${level}]:     `.substring(0, 10)
+            console.log(`${timestamp} ${levelStr} ${msg}`)
+        },
+
         /*  raise a temporaily visible status message in the footer  */
         raiseStatus (kind: string, msg: string, duration = 4000) {
             this.status.kind = kind
@@ -1012,11 +1226,11 @@ export default defineComponent({
 
         /*  commit Audience text  */
         audienceCommit () {
-            if (this.audienceMessage === "")
+            if (this.audienceMessage === "" || !this.engine.chat)
                 return
             this.audienceMessage = ""
             this.audienceSlot = 0
-            console.log("FUCK", this.audienceMessage)
+            // FIXME
         },
 
         /*  select Audience slot  */
@@ -1028,14 +1242,22 @@ export default defineComponent({
             else {
                 this.audienceSlot = n
                 let val
-                if      (n === 1) val = this.state.slots.audience1
-                else if (n === 2) val = this.state.slots.audience2
-                else if (n === 3) val = this.state.slots.audience3
-                else if (n === 4) val = this.state.slots.audience4
-                else if (n === 5) val = this.state.slots.audience5
-                else if (n === 6) val = this.state.slots.audience6
-                else if (n === 7) val = this.state.slots.audience7
-                else if (n === 8) val = this.state.slots.audience8
+                if      (n === 1)  val = this.state.slots.audience1
+                else if (n === 2)  val = this.state.slots.audience2
+                else if (n === 3)  val = this.state.slots.audience3
+                else if (n === 4)  val = this.state.slots.audience4
+                else if (n === 5)  val = this.state.slots.audience5
+                else if (n === 6)  val = this.state.slots.audience6
+                else if (n === 7)  val = this.state.slots.audience7
+                else if (n === 8)  val = this.state.slots.audience8
+                else if (n === 9)  val = this.state.slots.audience9
+                else if (n === 10) val = this.state.slots.audience10
+                else if (n === 11) val = this.state.slots.audience11
+                else if (n === 12) val = this.state.slots.audience12
+                else if (n === 13) val = this.state.slots.audience13
+                else if (n === 14) val = this.state.slots.audience14
+                else if (n === 15) val = this.state.slots.audience15
+                else if (n === 16) val = this.state.slots.audience16
                 else
                     throw new Error("invalid index")
                 this.audienceMessage = val
@@ -1044,7 +1266,7 @@ export default defineComponent({
 
         /*  commit AI text  */
         aiCommit () {
-            if (this.aiMessage === "")
+            if (this.aiMessage === "" || !this.engine.text2speech)
                 return
             this.aiMessage = ""
             this.aiSlot = 0
@@ -1060,14 +1282,22 @@ export default defineComponent({
             else {
                 this.aiSlot = n
                 let val
-                if      (n === 1) val = this.state.slots.ai1
-                else if (n === 2) val = this.state.slots.ai2
-                else if (n === 3) val = this.state.slots.ai3
-                else if (n === 4) val = this.state.slots.ai4
-                else if (n === 5) val = this.state.slots.ai5
-                else if (n === 6) val = this.state.slots.ai6
-                else if (n === 7) val = this.state.slots.ai7
-                else if (n === 8) val = this.state.slots.ai8
+                if      (n === 1)  val = this.state.slots.ai1
+                else if (n === 2)  val = this.state.slots.ai2
+                else if (n === 3)  val = this.state.slots.ai3
+                else if (n === 4)  val = this.state.slots.ai4
+                else if (n === 5)  val = this.state.slots.ai5
+                else if (n === 6)  val = this.state.slots.ai6
+                else if (n === 7)  val = this.state.slots.ai7
+                else if (n === 8)  val = this.state.slots.ai8
+                else if (n === 9)  val = this.state.slots.ai9
+                else if (n === 10) val = this.state.slots.ai10
+                else if (n === 11) val = this.state.slots.ai11
+                else if (n === 12) val = this.state.slots.ai12
+                else if (n === 13) val = this.state.slots.ai13
+                else if (n === 14) val = this.state.slots.ai14
+                else if (n === 15) val = this.state.slots.ai15
+                else if (n === 16) val = this.state.slots.ai16
                 else
                     throw new Error("invalid index")
                 this.aiMessage = val
@@ -1075,7 +1305,9 @@ export default defineComponent({
         },
 
         /*  toggle recording  */
-        toggleRecording () {
+        async toggleRecording () {
+            if (this.engine.speech2text !== 2)
+                return
             if (!this.recording) {
                 /*  start recording  */
                 this.recording = true
@@ -1085,6 +1317,14 @@ export default defineComponent({
                 /*  stop recording  */
                 this.recording = false
             }
+        },
+
+        /*  toggle engine  */
+        engineToggle (engine: "speech2text" | "chat" | "text2speech") {
+            if (this.engine[engine] === 2)
+                this.engine[engine] = 0
+            else if (this.engine[engine] === 0)
+                this.engine[engine] = 1
         }
     }
 })

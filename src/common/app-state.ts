@@ -14,6 +14,8 @@ export type StateType = {
         microphoneDevice: string,
         deepgramApiToken: string
         deepgramModel:    string,
+        deepgramVersion:  string,
+        deepgramLanguage: string
     },
     chat: {
         openaiApiToken:   string,
@@ -38,6 +40,14 @@ export type StateType = {
         audience6:        string,
         audience7:        string,
         audience8:        string,
+        audience9:        string,
+        audience10:       string,
+        audience11:       string,
+        audience12:       string,
+        audience13:       string,
+        audience14:       string,
+        audience15:       string,
+        audience16:       string,
         ai1:              string,
         ai2:              string,
         ai3:              string,
@@ -45,7 +55,15 @@ export type StateType = {
         ai5:              string,
         ai6:              string,
         ai7:              string,
-        ai8:              string
+        ai8:              string,
+        ai9:              string,
+        ai10:             string,
+        ai11:             string,
+        ai12:             string,
+        ai13:             string,
+        ai14:             string,
+        ai15:             string,
+        ai16:             string
     }
 }
 
@@ -57,7 +75,9 @@ export const StateSchema = `{
     speech2text: {
         microphoneDevice: string,
         deepgramApiToken: string,
-        deepgramModel:    string
+        deepgramModel:    string,
+        deepgramVersion:  string,
+        deepgramLanguage: string
     },
     chat: {
         openaiApiToken:   string,
@@ -82,6 +102,14 @@ export const StateSchema = `{
         audience6:        string,
         audience7:        string,
         audience8:        string,
+        audience9:        string,
+        audience10:       string,
+        audience11:       string,
+        audience12:       string,
+        audience13:       string,
+        audience14:       string,
+        audience15:       string,
+        audience16:       string,
         ai1:              string,
         ai2:              string,
         ai3:              string,
@@ -89,7 +117,15 @@ export const StateSchema = `{
         ai5:              string,
         ai6:              string,
         ai7:              string,
-        ai8:              string
+        ai8:              string,
+        ai9:              string,
+        ai10:             string,
+        ai11:             string,
+        ai12:             string,
+        ai13:             string,
+        ai14:             string,
+        ai15:             string,
+        ai16:             string
     }
 }`
 
@@ -100,8 +136,10 @@ export const StateSchemaPartial = StateSchema.replace(/:/g, "?:")
 export const StateDefault: StateType = {
     speech2text: {
         microphoneDevice: "default",
-        deepgramApiToken: "FIXME",
-        deepgramModel:    "FIXME"
+        deepgramApiToken: "",
+        deepgramModel:    "nova-2",
+        deepgramVersion:  "latest",
+        deepgramLanguage: "de"
     },
     chat: {
         openaiApiToken:   "FIXME",
@@ -152,6 +190,14 @@ export const StateDefault: StateType = {
         audience6:        "",
         audience7:        "",
         audience8:        "",
+        audience9:        "",
+        audience10:       "",
+        audience11:       "",
+        audience12:       "",
+        audience13:       "",
+        audience14:       "",
+        audience15:       "",
+        audience16:       "",
         ai1:              "Hallo, ich bin Dr. A.I. Futura, eine virtuelle KI-Expertin der msg.",
         ai2:              "",
         ai3:              "",
@@ -159,7 +205,15 @@ export const StateDefault: StateType = {
         ai5:              "",
         ai6:              "",
         ai7:              "",
-        ai8:              ""
+        ai8:              "",
+        ai9:              "",
+        ai10:             "",
+        ai11:             "",
+        ai12:             "",
+        ai13:             "",
+        ai14:             "",
+        ai15:             "",
+        ai16:             ""
     }
 } satisfies StateType
 

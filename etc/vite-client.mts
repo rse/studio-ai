@@ -4,9 +4,10 @@
 **  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
 */
 
-import * as Vite  from "vite"
-import VuePlugin  from "@vitejs/plugin-vue"
-import YAMLPlugin from "@rollup/plugin-yaml"
+import * as Vite         from "vite"
+import VuePlugin         from "@vitejs/plugin-vue"
+import YAMLPlugin        from "@rollup/plugin-yaml"
+import { nodePolyfills } from "vite-plugin-node-polyfills"
 
 export default Vite.defineConfig(({ command, mode, ssrBuild }) => ({
     base: "",
@@ -14,7 +15,11 @@ export default Vite.defineConfig(({ command, mode, ssrBuild }) => ({
     assetsInclude: [ "index.yaml" ],
     plugins: [
         VuePlugin(),
-        YAMLPlugin()
+        YAMLPlugin(),
+        nodePolyfills({
+            include: [ "events", "stream", "path", "fs" ],
+            globals: { Buffer: true }
+        })
     ],
     css: {
         devSourcemap: mode === "development"
