@@ -5,12 +5,15 @@
 */
 
 /*  import external dependencies  */
-import { EventEmitter }       from "events"
+import { EventEmitter } from "events"
+import { Stream }       from "stream"
+import OpenAI           from "openai"
 
 /*  type of constructor options  */
 export type ChatOptions = {
     apiToken: string,
-    model:    string
+    model:    string,
+    prompt:   string
 }
 
 /*  type of text chunk  */
@@ -28,12 +31,15 @@ export default class Chat extends EventEmitter {
     } as ChatOptions
 
     /*  internal state  */
+    private client: OpenAI | null = null
+    private stream: Stream | null = null
 
     /*  API class constructor  */
     constructor (options: ChatOptions) {
         super()
         this.options.apiToken = options.apiToken
         this.options.model    = options.model
+        this.options.prompt   = options.prompt
     }
 
     /*  minimum logging handling  */
@@ -54,11 +60,47 @@ export default class Chat extends EventEmitter {
 
     /*  open Speech-to-Text engine  */
     async open () {
+        this.client = new OpenAI({
+            apiKey: this.options.apiToken,
+            dangerouslyAllowBrowser: true
+        })
         this.log("INFO", "OpenAI: ready for operation")
+        this.emit("open")
+    }
+
+    async send (message: string) {
+        if (this.client === null)
+            return
+        const stream = this.client.beta.chat.completions.stream({
+            stream: true,
+            model:  this.options.model,
+            messages: [
+                { role: "system", content: this.options.prompt },
+                { role: "user",   content: message }
+            ],
+            seed: null,
+            temperature: 0.90,
+            n: 1,
+            max_completion_tokens: 1000
+        })
+        stream.on("content", (delta, snapshot) => {
+            this.emit("text", {
+                text:  snapshot,
+                final: false
+            } as ChatChunk)
+        })
+        const completion = await stream.finalChatCompletion()
+        const response = completion.choices[0].message.content
+        this.emit("text", {
+            text:  response,
+            final: true
+        } as ChatChunk)
+        return response
     }
 
     /*  close Speech-to-Text engine  */
     async close () {
+        this.emit("close")
     }
 
     /*  one-time destruction  */

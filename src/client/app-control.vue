@@ -352,9 +352,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="right">
+                        <div ref="right" class="right">
                             <div class="chat-history">
-                                <div v-for="entry, i of chat" v-bind:key="i" class="chat-entry"
+                                <div v-for="entry, i of chatLog" v-bind:key="i" class="chat-entry"
                                     v-bind:class="{ [ 'chat-entry-' + entry.persona.toLowerCase() ]: true }">
                                     <div class="chat-entry-persona">{{ entry.persona }}:</div>
                                     <div class="chat-entry-message">
@@ -675,7 +675,9 @@
         .left
             color: var(--color-std-fg-4)
             border-radius: 4px
-            width: 450px
+            width: 360px
+            max-width: 360px
+            min-width: 360px
             margin-right: 10px
             display: flex
             flex-direction: column
@@ -686,17 +688,26 @@
                 flex-direction: row
                 *
                     flex-grow: 1
+            .actions:first-child
+                .button
+                    padding: 0 8px 2px 8px !important
+                    margin-top: 0 !important
         .right
             flex-grow: 1
+            flex-shrink: 1
+            flex-basis: 100%
             padding: 10px
             background-color: var(--color-std-bg-4)
             color: var(--color-std-fg-4)
             border-radius: 4px
+            position: relative
+            overflow: hidden
+            height: calc(100vh - 136px - 40px - 10px - 10px - 40px)
         .button
             background-color: var(--color-std-bg-4)
             color: var(--color-std-fg-4)
             border-radius: 4px
-            padding: 2px 8px 2px 8px
+            padding: 2px 0 2px 0
             min-height: 20px
             text-align: center
             font-size: 12pt
@@ -824,7 +835,7 @@
                 justify-content: center
                 align-items: start
                 width: 100%
-                margin-bottom: 6px
+                margin-bottom: 8px
             .chat-entry-ai
                 color: var(--color-acc-fg-5)
             .chat-entry-audience
@@ -924,6 +935,8 @@ import {
 <script lang="ts">
 let statusTimer: ReturnType<typeof setTimeout> | null = null
 let speech2text: Speech2Text | null = null
+let chat: Chat | null = null
+type ChatLogEntry = { persona: string, message: string, final: boolean }
 export default defineComponent({
     name: "app-control",
     components: {
@@ -954,10 +967,7 @@ export default defineComponent({
         audienceSlot: 0,
         aiMessage: "",
         aiSlot: 0,
-        chat: [
-            { persona: "AI",       message: "Herzlich willkommen zur KI-Townhall der msg systems ag, der besten Firma der Welt in diesem Universum", final: true },
-            { persona: "Audience", message: "Ja, toll!", final: false }
-        ],
+        chatLog: [] as Array<ChatLogEntry>,
         status: {
             kind: "",
             msg:  ""
@@ -1101,6 +1111,19 @@ export default defineComponent({
             this.patchState([ `slots.${key}` ])
         })
 
+        /*  activate chat-history scrolling  */
+        const container = this.$refs.right as HTMLElement
+        this.ps = new PerfectScrollbar(container, {
+            suppressScrollX: true,
+            scrollXMarginOffset: 100
+        })
+        this.$watch("chatLog", () => {
+            this.ps!.update()
+            setTimeout(() => {
+                container.scrollTo({ left: 0, top: container.scrollHeight })
+            }, 50)
+        }, { deep: true })
+
         /*  establish speech-to-text engine  */
         this.log("INFO", "establishing Speech-to-Text engine")
         speech2text = new Speech2Text({
@@ -1124,10 +1147,6 @@ export default defineComponent({
             else
                 this.audienceMessageFinal = false
             this.audienceMessage = audienceBuffer.join(" ")
-            /*
-            if (!this.audienceMessageFinal)
-                this.audienceMessage += "[...]"
-            */
         })
         await speech2text.init()
 
@@ -1175,6 +1194,60 @@ export default defineComponent({
             else {
                 this.log("INFO", "Speech-to-Text: stop recording")
                 speech2text.setActive(false)
+            }
+        })
+
+        /*  establish Chat engine  */
+        this.log("INFO", "establishing Chat engine")
+        chat = new Chat({
+            apiToken: this.state.chat.openaiApiToken,
+            model:    this.state.chat.openaiModel,
+            prompt:   this.state.chat.openaiPrompt
+        })
+        chat.on("log", (level: string, msg: string) => {
+            this.log(level, `Chat: ${msg}`)
+        })
+        chat.on("text", (chunk: ChatChunk) => {
+            const chatLog = this.chatLog as Array<ChatLogEntry>
+            if (this.chatLog.length === 0
+                || chatLog[chatLog.length - 1].persona === "Audience"
+                || chatLog[chatLog.length - 1].final)
+                chatLog.push({ persona: "AI", message: "", final: false })
+            const entry = chatLog[chatLog.length - 1]
+            entry.message = chunk.text
+            entry.final   = chunk.final
+        })
+        await chat.init()
+
+        /*  enable/disable chat engine  */
+        const chatEngineOpen = async () => {
+            this.log("INFO", "Chat: start engine")
+            await chat!.open().catch((err) => {
+                this.engine.chat = 0
+                this.log("ERROR", `Chat engine failed: ${err}`)
+                this.raiseStatus("error", `Chat engine failed: ${err}`, 2000)
+            })
+        }
+        const chatEngineClose = async () => {
+            this.log("INFO", "Chat: stop engine")
+            await chat!.close()
+        }
+        this.$watch("engine.chat", async () => {
+            if (chat === null)
+                return
+            if (this.engine.chat === 1)
+                chatEngineOpen()
+            else if (this.engine.chat === 0)
+                chatEngineClose()
+        })
+        chat.on("open", () => {
+            if (this.engine.chat === 1)
+                this.engine.chat = 2
+        })
+        chat.on("close", () => {
+            if (this.engine.chat === 2) {
+                this.log("INFO", "Chat: unexpected engine stop -- re-starting engine")
+                this.engine.chat = 1
             }
         })
     },
@@ -1300,11 +1373,12 @@ export default defineComponent({
 
         /*  commit Audience text  */
         audienceCommit () {
-            if (this.audienceMessage === "" || !this.engine.chat)
+            if (this.audienceMessage === "" || !this.engine.chat || chat === null)
                 return
-            this.audienceMessage = ""
-            this.audienceSlot = 0
-            // FIXME
+            this.chatLog.push({ persona: "Audience", message: this.audienceMessage, final: true })
+            // this.audienceMessage = ""
+            // this.audienceSlot = 0
+            chat.send(this.audienceMessage)
         },
 
         /*  select Audience slot  */

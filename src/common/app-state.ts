@@ -138,14 +138,14 @@ export const StateSchemaPartial = StateSchema.replace(/:/g, "?:")
 export const StateDefault: StateType = {
     speech2text: {
         microphoneDevice: "Default",
-        deepgramApiToken: "",
+        deepgramApiToken: "@{STUDIOAI_DEEPGRAM_API_TOKEN}",
         deepgramModel:    "nova-2-general",
         deepgramVersion:  "latest",
         deepgramLanguage: "de",
         deepgramKeywords: "msg KI AI CTO"
     },
     chat: {
-        openaiApiToken:   "FIXME",
+        openaiApiToken:   "@{STUDIOAI_OPENAI_API_TOKEN}",
         openaiModel:      "gpt-4o-mini",
         openaiPrompt:     "Jedes Mal, wenn du auf den User Input reagierst, mußt du folgende Persona verkörpern: " +
                           "\n\n" +
@@ -176,7 +176,7 @@ export const StateDefault: StateType = {
                           "kurz und präzise."
     },
     text2speech: {
-        heygenApiToken:   "FIXME",
+        heygenApiToken:   "@{STUDIOAI_HEYGEN_API_TOKEN}",
         heygenAvatarId:   "Kayla-incasualsuit-20220818",
         heygenQuality:    "high",
         heygenVoiceId:    "21d9632a2fc842308ad9b5c5b5014e3a",
