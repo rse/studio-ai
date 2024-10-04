@@ -114,6 +114,7 @@ export default class Speech2Text extends EventEmitter {
             this.log("INFO", "HeyGen: streaming avatar: ready")
             let stream = ev.detail as MediaStream
             if (this.options.ckEnable) {
+                this.log("INFO", "apply chroma-key video transformer")
                 this.chromaKey = new ChromaKey({
                     threshold: this.options.ckThreshold,
                     smoothing: this.options.ckSmoothing
@@ -216,6 +217,7 @@ export default class Speech2Text extends EventEmitter {
     /*  close Text-to-Speech engine  */
     async close () {
         if (this.chromaKey !== null) {
+            this.log("INFO", "destroying chroma-key video transformer")
             this.chromaKey.destroy()
             this.chromaKey = null
         }
