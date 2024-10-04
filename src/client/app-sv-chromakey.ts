@@ -56,6 +56,9 @@ export default class ChromaKey {
         smoothing: 0.10
     } as Required<ChromaKeyOptions>
 
+    /*  internal state  */
+    private active = false
+
     /*  API class constructor  */
     constructor (options = {} as ChromaKeyOptions) {
         if (options.color     !== undefined) this.options.color     = options.color
@@ -100,11 +103,16 @@ export default class ChromaKey {
         const chromaColVec = this.options.color.toYCC().slice(1, 2)
 
         /*  establish media stream processing  */
+        this.active = true
+        const self = this
         const options = this.options
         const vTrackProcessor = new MediaStreamTrackProcessor({ track: vTrack })
         const vTrackGenerator = new MediaStreamTrackGenerator({ kind: "video" })
         const vTransformer = new TransformStream<VideoFrame, VideoFrame>({
             async transform (videoFrame, controller) {
+                if (!self.active)
+                    return
+
                 /*  ensure canvas has the same size as the video frame  */
                 canvas.width  = videoFrame.displayWidth
                 canvas.height = videoFrame.displayHeight
@@ -157,5 +165,10 @@ export default class ChromaKey {
         /*  re-unite transformed video stream and original audio tracks  */
         const stream = new MediaStream([ vTrackGenerator, ...aTracks ])
         return stream
+    }
+
+    /*  destroy the chroma-key  */
+    destroy () {
+        this.active = false
     }
 }

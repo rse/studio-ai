@@ -11,7 +11,7 @@
         <div class="screen">
             <div class="avatar">
                 <div v-show="connected" class="video">
-                    <video v-show="connected" ref="video" playsinline autoplay>
+                    <video v-show="connected" ref="video" playsinline autoplay muted>
                         <track kind="captions"/>
                     </video>
                 </div>

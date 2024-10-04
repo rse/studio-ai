@@ -87,10 +87,6 @@ export default class Speech2Text extends EventEmitter {
 
     /*  one-time initialization  */
     async init () {
-        this.chromaKey = new ChromaKey({
-            threshold: this.options.ckThreshold,
-            smoothing: this.options.ckSmoothing
-        })
     }
 
     /*  open Text-to-Speech engine  */
@@ -117,14 +113,28 @@ export default class Speech2Text extends EventEmitter {
         this.avatar.on(StreamingEvents.STREAM_READY, (ev: CustomEvent) => {
             this.log("INFO", "HeyGen: streaming avatar: ready")
             let stream = ev.detail as MediaStream
-            if (this.options.ckEnable)
-                stream = this.chromaKey!.process(stream)
+            if (this.options.ckEnable) {
+                this.chromaKey = new ChromaKey({
+                    threshold: this.options.ckThreshold,
+                    smoothing: this.options.ckSmoothing
+                })
+                stream = this.chromaKey.process(stream)
+            }
             this.options.video!.srcObject = stream
-            try {
-               this.options.video!.play()
-            }
-            catch (err) {
-            }
+            this.options.video!.addEventListener("play", () => {
+                if (this.options.video!.muted) {
+                    this.log("INFO", "HeyGen: streaming avatar: lazy unmuting video element")
+                    this.options.video!.muted = false
+                }
+            }, { once: true })
+            this.options.video!.play().catch(() => {
+                this.log("INFO", "HeyGen: streaming avatar: playing of video element has to be deferred")
+                document.addEventListener("click", () => {
+                    this.log("INFO", "HeyGen: streaming avatar: deferred unmuting video element")
+                    this.options.video!.muted = false
+                    this.options.video!.play().catch(() => {})
+                }, { once: true })
+            })
             this.connected = true
             this.emit("open")
         })
@@ -205,7 +215,23 @@ export default class Speech2Text extends EventEmitter {
 
     /*  close Text-to-Speech engine  */
     async close () {
+        if (this.chromaKey !== null) {
+            this.chromaKey.destroy()
+            this.chromaKey = null
+        }
+        if (this.options.video !== null) {
+            this.log("INFO", "clearing video element")
+            try {
+                const video = this.options.video
+                video.pause()
+                video.src = ""
+                video.load()
+            }
+            catch (err) {
+            }
+        }
         if (this.avatar !== null) {
+            this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
             this.avatar.stopAvatar()
             this.avatar = null
         }
