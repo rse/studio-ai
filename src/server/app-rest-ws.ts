@@ -14,6 +14,7 @@ import Latching             from "latching"
 import Log                  from "./app-log"
 import REST                 from "./app-rest"
 import { StateTypePartial } from "../common/app-state"
+import { CommandType }      from "../common/app-command"
 
 type wsPeerCtx = {
     id: string
@@ -99,7 +100,16 @@ export default class RESTWS extends Latching {
     notifyState (state: StateTypePartial) {
         const msg = JSON.stringify({ cmd: "STATE", arg: { state } })
         for (const [ id, info ] of this.wsPeers.entries()) {
-            this.log.log(3, `WebSocket: notify SCENE STATE change: peer="${id} (${info.peer})" msg=${msg}`)
+            this.log.log(3, `WebSocket: notify STATE: peer="${id} (${info.peer})" msg=${msg}`)
+            info.ws.send(msg)
+        }
+    }
+
+    /*  notify clients about command  */
+    notifyCommand (command: CommandType) {
+        const msg = JSON.stringify({ cmd: "COMMAND", arg: { command } })
+        for (const [ id, info ] of this.wsPeers.entries()) {
+            this.log.log(3, `WebSocket: notify COMMAN: peer="${id} (${info.peer})" msg=${msg}`)
             info.ws.send(msg)
         }
     }

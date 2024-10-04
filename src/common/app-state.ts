@@ -33,6 +33,10 @@ export type StateType = {
         heygenVoiceId:     string,
         heygenRate:        number,
         heygenEmotion:     string,
+        heygenLanguage:    string,
+        ckEnable:          boolean,
+        ckThreshold:       number,
+        ckSmoothing:       number,
         speakerDevice:     string
     },
     slots: {
@@ -99,6 +103,10 @@ export const StateSchema = `{
         heygenVoiceId:     string,
         heygenRate:        number,
         heygenEmotion:     string,
+        heygenLanguage:    string,
+        ckEnable:          boolean,
+        ckThreshold:       number,
+        ckSmoothing:       number,
         speakerDevice:     string
     },
     slots: {
@@ -189,6 +197,10 @@ export const StateDefault: StateType = {
         heygenVoiceId:     "21d9632a2fc842308ad9b5c5b5014e3a",
         heygenRate:        1.2,
         heygenEmotion:     "Broadcaster",
+        heygenLanguage:    "de",
+        ckEnable:          true,
+        ckThreshold:       0.30,
+        ckSmoothing:       0.10,
         speakerDevice:     "default"
     },
     slots: {

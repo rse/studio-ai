@@ -235,6 +235,58 @@
                         </div>
 
                         <div class="label1">heygen</div>
+                        <div class="label2">(language)</div>
+                        <div class="label3">[iso-code]:</div>
+                        <div class="value">
+                            <div class="fixed">*</div>
+                        </div>
+                        <div class="button" v-on:click="state.text2speech.heygenLanguage = stateDefault.text2speech.heygenLanguage">RESET</div>
+                        <div class="input">
+                            <input class="text" v-model.lazy="state.text2speech.heygenLanguage"/>
+                        </div>
+
+                        <div class="label1">heygen</div>
+                        <div class="label2">(enable)</div>
+                        <div class="label3">[boolean]:</div>
+                        <div class="value">
+                            <div class="fixed">{{ state.text2speech.ckEnable ? "YES" : "NO" }}</div>
+                        </div>
+                        <div class="button" v-on:click="state.text2speech.ckEnable = stateDefault.text2speech.ckEnable">RESET</div>
+                        <div class="input">
+                            <toggle class="toggle" v-model="state.text2speech.ckEnable"></toggle>
+                        </div>
+
+                        <div class="label1">heygen</div>
+                        <div class="label2">(threshold)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckThreshold)"
+                                v-on:change="(ev) => state.text2speech.ckThreshold = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
+                        </div>
+                        <div class="button" v-on:click="state.text2speech.ckThreshold = stateDefault.text2speech.ckThreshold">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.text2speech.ckThreshold"
+                                v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
+                        <div class="label1">heygen</div>
+                        <div class="label2">(smoothing)</div>
+                        <div class="label3">[number]:</div>
+                        <div class="value">
+                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckSmoothing)"
+                                v-on:change="(ev) => state.text2speech.ckSmoothing = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
+                        </div>
+                        <div class="button" v-on:click="state.text2speech.ckSmoothing = stateDefault.text2speech.ckSmoothing">RESET</div>
+                        <div class="input">
+                            <slider class="slider" v-model="state.text2speech.ckSmoothing"
+                                v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                            ></slider>
+                        </div>
+
+                        <div class="label1">heygen</div>
                         <div class="label2">(speaker)</div>
                         <div class="label3">[device]:</div>
                         <div class="value">
@@ -953,6 +1005,7 @@
 // @ts-ignore
 import pkg                 from "../../package.json"
 import { defineComponent } from "vue"
+import { EventEmitter }    from "events"
 import RecWebSocket        from "@opensumi/reconnecting-websocket"
 import Ducky               from "ducky"
 import Slider              from "@vueform/slider"
@@ -971,6 +1024,10 @@ import {
     StatePaths,
     StateUtil
 } from "../common/app-state"
+import {
+    CommandType,
+    CommandSchema
+} from "../common/app-command"
 </script>
 
 <script lang="ts">
@@ -978,16 +1035,17 @@ let statusTimer: ReturnType<typeof setTimeout> | null = null
 let speech2text: Speech2Text | null = null
 let chat: Chat | null = null
 type ChatLogEntry = { persona: string, message: string, final: boolean }
+const commandBus = new EventEmitter()
 export default defineComponent({
     name: "app-control",
     components: {
-        "tabs":    Tabs,
-        "tab":     Tab,
+        "tabs":          Tabs,
+        "tab":           Tab,
         "spinner-grid":  VueSpinnerGrid,
         "spinner-bars":  VueSpinnerBars,
-        "spinner-rings": VueSpinnerRings
-        // "slider": Slider,
-        // "toggle": Toggle
+        "spinner-rings": VueSpinnerRings,
+        "slider":        Slider,
+        "toggle":        Toggle
     },
     props: {
         selectTab:  { type: String, default: "settings" },
@@ -1067,6 +1125,17 @@ export default defineComponent({
                 if (!Ducky.validate(state, StateSchemaPartial, errors))
                     throw new Error(`invalid schema of loaded state: ${errors.join(", ")}`)
                 this.importState(state)
+            }
+            else if (data.cmd === "COMMAND") {
+                const command = data.arg.command as CommandType
+                const errors = [] as Array<string>
+                if (!Ducky.validate(command, CommandSchema, errors)) {
+                    this.log("WARNING", `invalid schema of command: ${errors.join(", ")}`)
+                    return
+                }
+                this.log("INFO", `received command "${command.cmd}" ` +
+                    `(args: ${command.args.length > 0 ? command.args.map((arg) => JSON.stringify(arg)).join(", ") : "none"})`)
+                commandBus.emit(command.cmd, ...command.args)
             }
         })
 
@@ -1260,6 +1329,8 @@ export default defineComponent({
             const entry = chatLog[chatLog.length - 1]
             entry.message = chunk.text
             entry.final   = chunk.final
+            if (entry.final)
+                this.sendCommand("t2s:speak", [ { text: entry.message } ])
         })
         await chat.init()
 
@@ -1293,6 +1364,37 @@ export default defineComponent({
                 this.log("INFO", "Chat: unexpected engine stop -- re-starting engine")
                 this.engine.chat = 1
             }
+        })
+
+        /*  establish Text-to-Speech engine (REMOTE)  */
+        this.log("INFO", "Text-to-Speech: engine starting")
+        const t2sEngineOpen = async () => {
+            this.log("INFO", "Text-to-Speech: start engine")
+            this.engine.text2speech = 1
+            this.sendCommand("t2s:open")
+        }
+        const t2sEngineClose = async () => {
+            this.log("INFO", "Text-to-Speech: stop engine")
+            this.sendCommand("t2s:close")
+        }
+        this.$watch("engine.text2speech", async () => {
+            if (this.engine.text2speech === 1)
+                t2sEngineOpen()
+            else if (this.engine.text2speech === 0)
+                t2sEngineClose()
+        })
+        commandBus.on("t2s:opened", () => {
+            this.log("INFO", "Text-to-Speech: engine started")
+            this.engine.text2speech = 2
+        })
+        commandBus.on("t2s:closed", () => {
+            this.engine.text2speech = 0
+        })
+        commandBus.on("t2s:speak:start", () => {
+            this.playing = true
+        })
+        commandBus.on("t2s:speak:stop", () => {
+            this.playing = false
         })
     },
     methods: {
@@ -1417,7 +1519,7 @@ export default defineComponent({
 
         /*  commit Audience text  */
         audienceCommit () {
-            if (this.audienceMessage === "" || !this.engine.chat || chat === null)
+            if (this.audienceMessage === "" || this.engine.chat !== 2 || chat === null)
                 return
             this.chatLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
             // this.audienceMessage = ""
@@ -1458,11 +1560,11 @@ export default defineComponent({
 
         /*  commit AI text  */
         aiCommit () {
-            if (this.aiMessage === "" || !this.engine.text2speech)
+            if (this.aiMessage === "" || this.engine.text2speech !== 2)
                 return
-            this.aiMessage = ""
-            this.aiSlot = 0
-            console.log("FUCK", this.aiMessage)
+            // this.aiMessage = ""
+            // this.aiSlot = 0
+            this.sendCommand("t2s:speak", [ { text: this.aiMessage } ])
         },
 
         /*  select AI slot  */
@@ -1517,6 +1619,18 @@ export default defineComponent({
                 this.engine[engine] = 0
             else if (this.engine[engine] === 0)
                 this.engine[engine] = 1
+        },
+
+        /*  send command  */
+        async sendCommand (cmd: string, args = [] as any[] ) {
+            this.connection.send = true
+            await axios({
+                method: "POST",
+                url:    `${this.serviceUrl}command`,
+                data:   { cmd, args }
+            }).finally(() => {
+                this.connection.send = false
+            })
         }
     }
 })

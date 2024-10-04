@@ -35,6 +35,7 @@
         "extendable-media-recorder-wav-encoder": "7.0.117",
         "openai":                                "4.67.1",
         "@dotenvx/dotenvx":                      "1.14.2",
+        "@heygen/streaming-avatar":              "2.0.6",
 
         "@hapi/hapi":                            "21.3.10",
         "@hapi/boom":                            "10.0.1",

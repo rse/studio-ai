@@ -8,7 +8,18 @@
 
 <template>
     <div class="app-render">
-        <canvas ref="canvas"></canvas>
+        <div class="screen">
+            <div class="avatar">
+                <div v-show="connected" class="video">
+                    <video v-show="connected" ref="video" playsinline autoplay>
+                        <track kind="captions"/>
+                    </video>
+                </div>
+                <div v-show="!connected" class="icon">
+                    <spinner-grid class="spinner-grid" size="128"/>
+                </div>
+            </div>
+        </div>
         <div v-show="debug !== ''" class="debug">
             {{ debug }}
         </div>
@@ -37,15 +48,47 @@
 
 <style lang="stylus">
 .app-render
+    top:    0
+    left:   0
+    width:  100vw
+    height: 100vh
     position: relative
-    canvas
-        top: 0
-        left: 0
-        width: 100vw
-        height: 100vh
-        touch-action: none
-        border: 0
-        outline: none
+    display: flex
+    flex-direction: row
+    justify-content: center
+    align-items: flex-end
+    .screen
+        .avatar
+            width: 100%
+            height: auto
+            aspect-ratio: 16/9
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: flex-end
+            .video
+                width: 100%
+                height: auto
+                aspect-ratio: 16/9
+                display: flex
+                flex-direction: row
+                justify-content: center
+                align-items: flex-end
+                video
+                    width:  100%
+                    height: 100%
+                    touch-action: none
+                    border: 0
+                    outline: none
+                    object-fit: contain
+            .icon
+                width: 100%
+                height: 100%
+                color: #f0f0f0
+                display: flex
+                flex-direction: row
+                justify-content: center
+                align-items: center
     .debug
         position: absolute
         top: 0
@@ -127,28 +170,59 @@
                 font-weight: bold
             .text2
                 font-size: 3vw
+
+@media screen and (max-aspect-ratio: 16/9)
+    .app-render
+        .screen
+            width: 100vw
+            height: auto
+            aspect-ratio: 16/9
+
+@media screen and (aspect-ratio: 1/1)
+    .app-render
+        .screen
+            width: 100vw
+            height: auto
+            aspect-ratio: 16/9
+
+@media screen and (min-aspect-ratio: 16/9)
+    .app-render
+        .screen
+            width: auto
+            height: 100vh
+            aspect-ratio: 16/9
 </style>
 
 <script setup lang="ts">
 // @ts-ignore
 import pkg                        from "../../package.json"
 import { defineComponent }        from "vue"
+import { EventEmitter }           from "events"
 import RecWebSocket               from "@opensumi/reconnecting-websocket"
 import Ducky                      from "ducky"
 import moment                     from "moment"
 import axios                      from "axios"
+import { VueSpinnerGrid }         from "vue3-spinners"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
     StateDefault, StateUtil
 } from "../common/app-state"
+import {
+    CommandType, CommandSchema
+} from "../common/app-command"
+import Text2Speech from "./app-sv-text2speech"
 </script>
 
 <script lang="ts">
 let debugTimer: ReturnType<typeof setTimeout> | null = null
+let text2speech: Text2Speech | null = null
+const commandBus = new EventEmitter()
 export default defineComponent({
     name: "app-render",
-    components: {},
+    components: {
+        "spinner-grid": VueSpinnerGrid
+    },
     props: {
         options:    { type: Object, default: new Map<string, string | boolean>() },
         serviceUrl: { type: String, default: "" },
@@ -160,7 +234,8 @@ export default defineComponent({
         overlayShow: false,
         overlayText: "",
         fpsOverlayEnable: false,
-        fps: 30
+        fps: 30,
+        connected: false
     }),
     created () {
         this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]})`)
@@ -170,7 +245,6 @@ export default defineComponent({
         this.log("INFO", "establish Babylon game engine")
         this.overlay("establish HeyGen avatar")
         this.overlayShow = true
-        const video = this.$refs.video as HTMLVideoElement
 
         /*  load scene state once  */
         this.log("INFO", "initially configuring Studio AI")
@@ -221,24 +295,91 @@ export default defineComponent({
                 }
                 StateUtil.copy(this.state, state)
             }
+            else if (data.cmd === "COMMAND") {
+                const command = data.arg.command as CommandType
+                const errors = [] as Array<string>
+                if (!Ducky.validate(command, CommandSchema, errors)) {
+                    this.log("WARNING", `invalid schema of command: ${errors.join(", ")}`)
+                    return
+                }
+                this.log("INFO", `received command "${command.cmd}" ` +
+                    `(args: ${command.args.length > 0 ? command.args.map((arg) => JSON.stringify(arg)).join(", ") : "none"})`)
+                commandBus.emit(command.cmd, ...command.args)
+            }
             else
                 this.log("WARNING", `unknown message received: cmd=${data.cmd} ${JSON.stringify(data)}`)
         })
         this.overlayShow = false
+
+        /*  establish Text-to-Speech engine  */
+        this.log("INFO", "establishing Text-to-Speech engine")
+        text2speech = new Text2Speech({
+            apiToken:     this.state.text2speech.heygenApiToken,
+            avatarId:     this.state.text2speech.heygenAvatarId,
+            quality:      this.state.text2speech.heygenQuality,
+            voiceId:      this.state.text2speech.heygenVoiceId,
+            rate:         this.state.text2speech.heygenRate,
+            emotion:      this.state.text2speech.heygenEmotion,
+            language:     this.state.text2speech.heygenLanguage,
+            ckEnable:     this.state.text2speech.ckEnable,
+            ckThreshold:  this.state.text2speech.ckThreshold,
+            ckSmoothing:  this.state.text2speech.ckSmoothing,
+            device:       this.state.text2speech.speakerDevice,
+            video:        this.$refs.video as HTMLVideoElement
+        })
+        await text2speech.init()
+        text2speech.on("log", (level: string, msg: string) => {
+            this.log(level, `Text-to-Speech: ${msg}`)
+        })
+        text2speech.on("open", () => {
+            this.sendCommand("t2s:opened")
+            this.connected = true
+        })
+        text2speech.on("close", () => {
+            this.sendCommand("t2s:closed")
+            this.connected = false
+        })
+        text2speech.on("speak:start", () => {
+            this.sendCommand("t2s:speak:start")
+        })
+        text2speech.on("speak:stop", () => {
+            this.sendCommand("t2s:speak:stop")
+        })
+        commandBus.on("t2s:open", () => {
+            text2speech!.open()
+        })
+        commandBus.on("t2s:close", () => {
+            text2speech!.close()
+        })
+        commandBus.on("t2s:speak", (request: { text: string }) => {
+            text2speech!.speak(request.text)
+        })
     },
     methods: {
         log (level: string, msg: string) {
             const timestamp = moment().format("YYYY-MM-DD hh:mm:ss.SSS")
             console.log(`${timestamp} [${level}]: ${msg}`)
         },
+
         overlay (msg: string) {
             this.overlayText = msg
         },
+
         setDebug (msg: string) {
             this.debug = msg
             if (debugTimer !== null)
                 clearTimeout(debugTimer)
             debugTimer = setTimeout(() => { this.debug = "" }, 4000)
+        },
+
+        /*  send command  */
+        async sendCommand (cmd: string, args = [] as any[] ) {
+            await axios({
+                method: "POST",
+                url:    `${this.serviceUrl}command`,
+                data:   { cmd, args }
+            }).finally(() => {
+            })
         }
     }
 })
