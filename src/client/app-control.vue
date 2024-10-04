@@ -16,287 +16,320 @@
 
         <!--  BODY  -->
         <div class="body">
-            <tabs ref="tabs" v-bind:options="{ useUrlFragment: false }" v-bind:cache-lifetime="0" class="tabs-level-1" v-on:changed="tabChanged">
+            <tabs ref="tabs" v-bind:options="{ useUrlFragment: false }" v-bind:cache-lifetime="0" class="tabs-level-1" v-on:changed="tabChanged0">
                 <!--  ==== SETTINGS ====  -->
                 <tab id="settings" name="Settings">
-                    <div class="control">
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(microphone)</div>
-                        <div class="label3">[device]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.microphoneDevice = stateDefault.speech2text.microphoneDevice">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.microphoneDevice"/>
-                        </div>
+                    <tabs ref="settings" v-bind:options="{ useUrlFragment: false }" v-bind:cache-lifetime="0" class="tabs-level-2" v-on:changed="tabChanged1">
+                        <!--  ==== SETTINGS: S2T ====  -->
+                        <tab id="s2t" name="Speech-to-Text (S2T)">
+                            <div class="desc">
+                                These are the settings for the <b>Speech-to-Text (S2T)</b> engine,
+                                based on the <b>Deepgram</b> AI cloud service.
+                                <br/>
+                                The S2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
+                            </div>
+                            <div class="control">
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(microphone)</div>
+                                <div class="label3">[device]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.microphoneDevice = stateDefault.speech2text.microphoneDevice">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.microphoneDevice"/>
+                                </div>
 
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(API)</div>
-                        <div class="label3">[token]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.deepgramApiToken = stateDefault.speech2text.deepgramApiToken">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.deepgramApiToken"/>
-                        </div>
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(API)</div>
+                                <div class="label3">[token]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.deepgramApiToken = stateDefault.speech2text.deepgramApiToken">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramApiToken"/>
+                                </div>
 
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(model)</div>
-                        <div class="label3">[id]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.deepgramModel = stateDefault.speech2text.deepgramModel">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.deepgramModel"/>
-                        </div>
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(model)</div>
+                                <div class="label3">[id]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.deepgramModel = stateDefault.speech2text.deepgramModel">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramModel"/>
+                                </div>
 
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(version)</div>
-                        <div class="label3">[string]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.deepgramVersion = stateDefault.speech2text.deepgramVersion">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.deepgramVersion"/>
-                        </div>
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(version)</div>
+                                <div class="label3">[string]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.deepgramVersion = stateDefault.speech2text.deepgramVersion">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramVersion"/>
+                                </div>
 
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(language)</div>
-                        <div class="label3">[iso-code]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.deepgramLanguage = stateDefault.speech2text.deepgramLanguage">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.deepgramLanguage"/>
-                        </div>
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(language)</div>
+                                <div class="label3">[iso-code]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.deepgramLanguage = stateDefault.speech2text.deepgramLanguage">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramLanguage"/>
+                                </div>
 
-                        <div class="label1">deepgram</div>
-                        <div class="label2">(keywords)</div>
-                        <div class="label3">[string]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.speech2text.deepgramKeywords = stateDefault.speech2text.deepgramKeywords">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.speech2text.deepgramKeywords"/>
-                        </div>
+                                <div class="label1">deepgram</div>
+                                <div class="label2">(keywords)</div>
+                                <div class="label3">[string]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.speech2text.deepgramKeywords = stateDefault.speech2text.deepgramKeywords">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramKeywords"/>
+                                </div>
+                            </div>
+                        </tab>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(API)</div>
-                        <div class="label3">[token]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiApiToken = stateDefault.chat.openaiApiToken">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.chat.openaiApiToken"/>
-                        </div>
+                        <!--  ==== SETTINGS: T2T ====  -->
+                        <tab id="t2t" name="Text-to-Text (T2T)">
+                            <div class="desc">
+                                These are the settings for the <b>Text-to-Text (T2T)</b> (aka Chat) engine,
+                                based on the <b>OpenAI GPT</b> AI cloud service.
+                                <br/>
+                                The T2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
+                            </div>
+                            <div class="control">
+                                <div class="label1">openai</div>
+                                <div class="label2">(API)</div>
+                                <div class="label3">[token]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiApiToken = stateDefault.chat.openaiApiToken">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.chat.openaiApiToken"/>
+                                </div>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(model)</div>
-                        <div class="label3">[id]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiModel = stateDefault.chat.openaiModel">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.chat.openaiModel"/>
-                        </div>
+                                <div class="label1">openai</div>
+                                <div class="label2">(model)</div>
+                                <div class="label3">[id]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiModel = stateDefault.chat.openaiModel">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.chat.openaiModel"/>
+                                </div>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(prompt)</div>
-                        <div class="label3">[string]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
-                        <div class="input">
-                            <textarea class="prompt" rows="5" v-model.lazy="state.chat.openaiPrompt"></textarea>
-                        </div>
+                                <div class="label1">openai</div>
+                                <div class="label2">(prompt)</div>
+                                <div class="label3">[string]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
+                                <div class="input">
+                                    <textarea class="prompt" rows="15" v-model.lazy="state.chat.openaiPrompt"></textarea>
+                                </div>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(temperature)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiTemperature)"
-                                v-on:change="(ev) => state.chat.openaiTemperature = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 2.0)"/>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiTemperature = stateDefault.chat.openaiTemperature">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.chat.openaiTemperature"
-                                v-bind:min="0.0" v-bind:max="2.0" v-bind:step="0.05"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">openai</div>
+                                <div class="label2">(temperature)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiTemperature)"
+                                        v-on:change="(ev) => state.chat.openaiTemperature = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 2.0)"/>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiTemperature = stateDefault.chat.openaiTemperature">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.chat.openaiTemperature"
+                                        v-bind:min="0.0" v-bind:max="2.0" v-bind:step="0.05"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(seed)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiSeed)"
-                                v-on:change="(ev) => state.chat.openaiSeed = fieldImport((ev.target! as HTMLInputElement).value, 0, 100)"/>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiSeed = stateDefault.chat.openaiSeed">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.chat.openaiSeed"
-                                v-bind:min="0" v-bind:max="100" v-bind:step="1"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">openai</div>
+                                <div class="label2">(seed)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiSeed)"
+                                        v-on:change="(ev) => state.chat.openaiSeed = fieldImport((ev.target! as HTMLInputElement).value, 0, 100)"/>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiSeed = stateDefault.chat.openaiSeed">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.chat.openaiSeed"
+                                        v-bind:min="0" v-bind:max="100" v-bind:step="1"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
 
-                        <div class="label1">openai</div>
-                        <div class="label2">(max-tokens)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiMaxTokens)"
-                                v-on:change="(ev) => state.chat.openaiMaxTokens = fieldImport((ev.target! as HTMLInputElement).value, 10, 1000)"/>
-                        </div>
-                        <div class="button" v-on:click="state.chat.openaiMaxTokens = stateDefault.chat.openaiMaxTokens">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.chat.openaiMaxTokens"
-                                v-bind:min="10" v-bind:max="1000" v-bind:step="10"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">openai</div>
+                                <div class="label2">(max-tokens)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiMaxTokens)"
+                                        v-on:change="(ev) => state.chat.openaiMaxTokens = fieldImport((ev.target! as HTMLInputElement).value, 10, 1000)"/>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiMaxTokens = stateDefault.chat.openaiMaxTokens">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.chat.openaiMaxTokens"
+                                        v-bind:min="10" v-bind:max="1000" v-bind:step="10"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
+                            </div>
+                        </tab>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(API)</div>
-                        <div class="label3">[token]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenApiToken = stateDefault.text2speech.heygenApiToken">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenApiToken"/>
-                        </div>
+                        <!--  ==== SETTINGS: T2S ====  -->
+                        <tab id="t2s" name="Text-to-Speech (T2S)">
+                            <div class="desc">
+                                These are the settings for the <b>Text-to-Speech (T2S)</b> engine,
+                                based on the <b>HeyGen</b> AI cloud service.
+                                <br/>
+                                The T2S engine runs inside the <b>Studio AI</b> <b>render</b> client.
+                            </div>
+                            <div class="control">
+                                <div class="label1">heygen</div>
+                                <div class="label2">(API)</div>
+                                <div class="label3">[token]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenApiToken = stateDefault.text2speech.heygenApiToken">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenApiToken"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(avatar)</div>
-                        <div class="label3">[id]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenAvatarId = stateDefault.text2speech.heygenAvatarId">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenAvatarId"/>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(avatar)</div>
+                                <div class="label3">[id]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenAvatarId = stateDefault.text2speech.heygenAvatarId">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenAvatarId"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(quality)</div>
-                        <div class="label3">[level]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenQuality = stateDefault.text2speech.heygenQuality">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenQuality"/>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(quality)</div>
+                                <div class="label3">[level]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenQuality = stateDefault.text2speech.heygenQuality">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenQuality"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(voice)</div>
-                        <div class="label3">[id]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenVoiceId = stateDefault.text2speech.heygenVoiceId">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenVoiceId"/>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(voice)</div>
+                                <div class="label3">[id]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenVoiceId = stateDefault.text2speech.heygenVoiceId">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenVoiceId"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(rate)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.heygenRate)"
-                                v-on:change="(ev) => state.text2speech.heygenRate = fieldImport((ev.target! as HTMLInputElement).value, 0.50, 1.50)"/>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenRate = stateDefault.text2speech.heygenRate">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.text2speech.heygenRate"
-                                v-bind:min="0.50" v-bind:max="1.50" v-bind:step="0.05"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(rate)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2speech.heygenRate)"
+                                        v-on:change="(ev) => state.text2speech.heygenRate = fieldImport((ev.target! as HTMLInputElement).value, 0.50, 1.50)"/>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenRate = stateDefault.text2speech.heygenRate">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.text2speech.heygenRate"
+                                        v-bind:min="0.50" v-bind:max="1.50" v-bind:step="0.05"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(emotion)</div>
-                        <div class="label3">[type]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenEmotion = stateDefault.text2speech.heygenEmotion">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenEmotion"/>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(emotion)</div>
+                                <div class="label3">[type]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenEmotion = stateDefault.text2speech.heygenEmotion">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenEmotion"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(language)</div>
-                        <div class="label3">[iso-code]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.heygenLanguage = stateDefault.text2speech.heygenLanguage">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.heygenLanguage"/>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(language)</div>
+                                <div class="label3">[iso-code]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.heygenLanguage = stateDefault.text2speech.heygenLanguage">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.heygenLanguage"/>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(enable)</div>
-                        <div class="label3">[boolean]:</div>
-                        <div class="value">
-                            <div class="fixed">{{ state.text2speech.ckEnable ? "YES" : "NO" }}</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.ckEnable = stateDefault.text2speech.ckEnable">RESET</div>
-                        <div class="input">
-                            <toggle class="toggle" v-model="state.text2speech.ckEnable"></toggle>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(enable)</div>
+                                <div class="label3">[boolean]:</div>
+                                <div class="value">
+                                    <div class="fixed">{{ state.text2speech.ckEnable ? "YES" : "NO" }}</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.ckEnable = stateDefault.text2speech.ckEnable">RESET</div>
+                                <div class="input">
+                                    <toggle class="toggle" v-model="state.text2speech.ckEnable"></toggle>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(threshold)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckThreshold)"
-                                v-on:change="(ev) => state.text2speech.ckThreshold = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.ckThreshold = stateDefault.text2speech.ckThreshold">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.text2speech.ckThreshold"
-                                v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(threshold)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckThreshold)"
+                                        v-on:change="(ev) => state.text2speech.ckThreshold = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.ckThreshold = stateDefault.text2speech.ckThreshold">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.text2speech.ckThreshold"
+                                        v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(smoothing)</div>
-                        <div class="label3">[number]:</div>
-                        <div class="value">
-                            <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckSmoothing)"
-                                v-on:change="(ev) => state.text2speech.ckSmoothing = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.ckSmoothing = stateDefault.text2speech.ckSmoothing">RESET</div>
-                        <div class="input">
-                            <slider class="slider" v-model="state.text2speech.ckSmoothing"
-                                v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
-                                show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                            ></slider>
-                        </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(smoothing)</div>
+                                <div class="label3">[number]:</div>
+                                <div class="value">
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2speech.ckSmoothing)"
+                                        v-on:change="(ev) => state.text2speech.ckSmoothing = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 1.0)"/>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.ckSmoothing = stateDefault.text2speech.ckSmoothing">RESET</div>
+                                <div class="input">
+                                    <slider class="slider" v-model="state.text2speech.ckSmoothing"
+                                        v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
+                                    ></slider>
+                                </div>
 
-                        <div class="label1">heygen</div>
-                        <div class="label2">(speaker)</div>
-                        <div class="label3">[device]:</div>
-                        <div class="value">
-                            <div class="fixed">*</div>
-                        </div>
-                        <div class="button" v-on:click="state.text2speech.speakerDevice = stateDefault.text2speech.speakerDevice">RESET</div>
-                        <div class="input">
-                            <input class="text" v-model.lazy="state.text2speech.speakerDevice"/>
-                        </div>
-                    </div>
+                                <div class="label1">heygen</div>
+                                <div class="label2">(speaker)</div>
+                                <div class="label3">[device]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.speakerDevice = stateDefault.text2speech.speakerDevice">RESET</div>
+                                <div class="input">
+                                    <input class="text" v-model.lazy="state.text2speech.speakerDevice"/>
+                                </div>
+                            </div>
+                        </tab>
+                    </tabs>
                 </tab>
 
                 <!--  ==== CONTROL ====  -->
@@ -460,8 +493,13 @@
                     </div>
                 </tab>
 
-                <!--  ==== PREVIEW ====  -->
-                <tab id="preview" name="Preview" class="preview">
+                <!--  ==== RENDER ====  -->
+                <tab id="render" name="Render" class="render">
+                    <div class="desc">
+                        This allows you to access the <b>Studio AI</b> <b>render</b> client.<br/>
+                        It has to be opened in a dedicated browser context, which usually is
+                        either a <b>vMix</b> browser input or an <b>OBS Studio</b> browser source.
+                    </div>
                     <div class="preview-url" v-on:click="previewCopy()">
                         {{ `${serviceUrl}#/render` }}
                     </div>
@@ -668,12 +706,12 @@
                 outline: none
                 border-radius: 4px
                 border: 0
-                background-color: var(--color-acc-bg-1)
-                color: var(--color-acc-fg-1)
+                background-color: var(--color-std-bg-3)
+                color: var(--color-std-fg-3)
                 padding: 2px 8px 2px 8px
                 text-align: center
         .button
-            background-color: var(--color-std-bg-4)
+            background-color: var(--color-std-bg-2)
             color: var(--color-std-fg-5)
             border-radius: 4px
             padding: 2px 8px 2px 8px
@@ -714,7 +752,7 @@
             &.prompt
                 font-size: 10pt
                 font-weight: normal
-    .preview
+    .render
         .preview-control
             margin-top: 20px
             display: flex
@@ -964,7 +1002,7 @@
         width: 400px
     .slider
         width: 400px
-        --slider-bg: var(--color-std-bg-4)
+        --slider-bg: var(--color-std-bg-2)
         --slider-handle-bg: var(--color-std-fg-5)
         --slider-connect-bg: var(--color-acc-bg-5)
         --slider-height: 20px
@@ -1048,14 +1086,16 @@ export default defineComponent({
         "toggle":        Toggle
     },
     props: {
-        selectTab:  { type: String, default: "settings" },
+        selectTab0: { type: String, default: "control" },
+        selectTab1: { type: String, default: "" },
         serviceUrl: { type: String, default: "" },
         wsUrl:      { type: String, default: "" }
     },
     data: () => ({
         formatSliderValue: (v: number) => v.toFixed(2),
         ps: null as PerfectScrollbar | null,
-        tab: "",
+        tab0: "",
+        tab1: "",
         state:        StateDefault,
         stateDefault: StateDefault,
         watchState: true,
@@ -1084,8 +1124,10 @@ export default defineComponent({
         }
     }),
     async mounted () {
-        /*  force particular tab to be selected  */
-        (this.$refs.tabs as any).selectTab(`#${this.selectTab}`)
+        /*  force particular level-1 (and optionally level-2) tab to be selected  */
+        (this.$refs.tabs as any).selectTab(`#${this.selectTab0}`)
+        if (this.$refs[this.selectTab0] !== undefined)
+            (this.$refs[this.selectTab0] as any).selectTab(`#${this.selectTab1}`)
 
         /*  establish server connection  */
         this.log("INFO", "establishing WebSocket connection")
@@ -1429,9 +1471,25 @@ export default defineComponent({
         },
 
         /*  update URL on tab changes  */
-        tabChanged (tab: any) {
-            this.tab = tab.tab.computedId
-            window.location.hash = `#/control/${this.tab}`
+        tabChanged0 (tab: any) {
+            const id = tab.tab.computedId
+            this.tab0 = id
+            if (this.$refs[id] !== undefined)
+                this.tab1 = (this.$refs[id] as any).activeTabHash.replace(/^#/, "")
+            else
+                this.tab1 = ""
+            this.updateURL()
+        },
+        tabChanged1 (tab: any) {
+            const id = tab.tab.computedId
+            this.tab1 = id
+            this.updateURL()
+        },
+        updateURL () {
+            if (this.tab1 !== "")
+                window.location.hash = `#/control/${this.tab0}/${this.tab1}`
+            else
+                window.location.hash = `#/control/${this.tab0}`
         },
 
         /*  import a field  */

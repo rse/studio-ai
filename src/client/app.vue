@@ -12,7 +12,8 @@
         <app-control
             ref="control"
             v-if="mode === 'control'"
-            v-bind:select-tab="tab"
+            v-bind:select-tab-0="tab0"
+            v-bind:select-tab-1="tab1"
             v-bind:ws-url="wsURL"
             v-bind:service-url="serviceURL"
         ></app-control>
@@ -44,7 +45,8 @@ export default defineComponent({
     },
     data: () => ({
         mode:       "control",
-        tab:        "settings",
+        tab0:       "control",
+        tab1:       "",
         options:    new Map<string, string | boolean>(),
         serviceURL: "",
         wsURL:      ""
@@ -67,12 +69,13 @@ export default defineComponent({
                 }
             }
         }
-        else if ((m = hash.match(/^#\/control(?:\/(.+?))?$/)) !== null) {
+        else if ((m = hash.match(/^#\/control(?:\/(.+?)(?:\/(.+?))?)?$/)) !== null) {
             this.mode = "control"
-            this.tab  = m[1] ?? "settings"
+            this.tab0 = m[1] ?? "control"
+            this.tab1 = m[2] ?? ""
         }
         else {
-            url.hash("#/control/settings")
+            url.hash("#/control/control")
             window.location.replace(url.toString())
         }
 
