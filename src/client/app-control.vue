@@ -129,17 +129,6 @@
                                 </div>
 
                                 <div class="label1">openai</div>
-                                <div class="label2">(prompt)</div>
-                                <div class="label3">[string]:</div>
-                                <div class="value">
-                                    <div class="fixed">*</div>
-                                </div>
-                                <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
-                                <div class="input">
-                                    <textarea class="prompt" rows="15" v-model.lazy="state.chat.openaiPrompt"></textarea>
-                                </div>
-
-                                <div class="label1">openai</div>
                                 <div class="label2">(temperature)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
@@ -182,6 +171,17 @@
                                         v-bind:min="10" v-bind:max="1000" v-bind:step="10"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
+                                </div>
+
+                                <div class="label1">openai</div>
+                                <div class="label2">(prompt)</div>
+                                <div class="label3">[string]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
+                                <div class="input">
+                                    <textarea class="prompt" rows="15" v-model.lazy="state.chat.openaiPrompt"></textarea>
                                 </div>
                             </div>
                         </tab>
