@@ -522,12 +522,13 @@
                             <div class="actions">
                                 <div class="button ai-listen disabled"
                                     v-bind:class="{ playing: playing }"
-                                    v-on:click="playing = !playing">
+                                    v-on:click="aiPlay">
                                     <span v-show="!playing" class="icon"><i class="fas fa-play"></i></span>
                                     <span v-show="playing" class="icon">
                                         <spinner-bars class="spinner-bars" size="16"/>
                                     </span>
-                                    PLAY
+                                    <span v-show="!playing">PLAY</span>
+                                    <span v-show="playing">STOP</span>
                                 </div>
                                 <div class="button ai-speak"
                                     v-bind:class="{ disabled: aiMessage === '' || engine.text2speech !== 2 }"
@@ -1723,6 +1724,13 @@ export default defineComponent({
             this.sendCommand("t2s:speak", [ { text: this.aiMessage } ])
             this.aiMessage = ""
             this.aiSlot = 0
+        },
+
+        /*  play/stop AI speaking  */
+        aiPlay () {
+            if (!this.playing)
+                return
+            this.sendCommand("t2s:interrupt")
         },
 
         /*  select AI slot  */

@@ -273,6 +273,9 @@ export default defineComponent({
         commandBus.on("t2s:speak", (request: { text: string }) => {
             text2speech!.speak(request.text)
         })
+        commandBus.on("t2s:interrupt", () => {
+            text2speech!.interrupt()
+        })
     },
     methods: {
         /*  minimum logging facility  */

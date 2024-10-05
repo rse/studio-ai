@@ -241,8 +241,28 @@ export default class Speech2Text extends EventEmitter {
             throw new Error("connected still not ready")
 
         /*  optionally interrupt still active speaking  */
+        if (this.talking)
+            this.interrupt()
+
+        /*  start new speaking  */
+        this.log("INFO", `HeyGen: streaming avatar: speak "${text}"`)
+        await this.avatar.speak({
+            text,
+            task_type: TaskType.REPEAT
+        })
+    }
+
+    /*  interrupt task  */
+    async interrupt () {
+        /*  sanity check situation  */
+        if (this.avatar === null)
+            throw new Error("connection still not established")
+        if (!this.connected)
+            throw new Error("connected still not ready")
+
+        /*  interrupt speaking task  */
         if (this.talking) {
-            this.log("INFO", "HeyGen: streaming avatar: interrupting still active speaking")
+            this.log("INFO", "HeyGen: streaming avatar: interrupting active speaking task")
             await this.avatar.interrupt()
             await new Promise<void>((resolve) => {
                 const poll = () => {
@@ -254,13 +274,6 @@ export default class Speech2Text extends EventEmitter {
                 setTimeout(poll, 10)
             })
         }
-
-        /*  start new speaking  */
-        this.log("INFO", `HeyGen: streaming avatar: speak "${text}"`)
-        await this.avatar.speak({
-            text,
-            task_type: TaskType.REPEAT
-        })
     }
 
     /*  close Text-to-Speech engine  */
