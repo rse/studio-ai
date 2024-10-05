@@ -29,7 +29,7 @@
                                 The S2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
                             </div>
                             <div class="control">
-                                <div class="label1">deepgram</div>
+                                <div class="label1">input</div>
                                 <div class="label2">(microphone)</div>
                                 <div class="label3">[device]:</div>
                                 <div class="value">
@@ -337,8 +337,8 @@
                                     />
                                 </div>
 
-                                <div class="label1">heygen</div>
-                                <div class="label2">(chromakey)</div>
+                                <div class="label1">chroma-key</div>
+                                <div class="label2">(enable)</div>
                                 <div class="label3">[boolean]:</div>
                                 <div class="value">
                                     <div class="fixed">{{ state.text2speech.ckEnable ? "YES" : "NO" }}</div>
@@ -348,7 +348,7 @@
                                     <toggle class="toggle" v-model="state.text2speech.ckEnable"></toggle>
                                 </div>
 
-                                <div class="label1">heygen</div>
+                                <div class="label1">chroma-key</div>
                                 <div class="label2">(threshold)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
@@ -363,7 +363,7 @@
                                     ></slider>
                                 </div>
 
-                                <div class="label1">heygen</div>
+                                <div class="label1">chroma-key</div>
                                 <div class="label2">(smoothing)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
@@ -378,7 +378,7 @@
                                     ></slider>
                                 </div>
 
-                                <div class="label1">heygen</div>
+                                <div class="label1">output</div>
                                 <div class="label2">(speaker)</div>
                                 <div class="label3">[device]:</div>
                                 <div class="value">
