@@ -554,7 +554,7 @@
                 <!--  ==== RENDER ====  -->
                 <tab id="render" name="Render" class="render">
                     <div class="desc">
-                        This allows you to access the <b>Studio AI</b> <b>render</b> client.<br/>
+                        This allows you to access the <b>Studio AI</b> <b>render</b> client, the interactive avatar.<br/>
                         It has to be opened in a dedicated browser context, which usually is
                         either a <b>vMix</b> browser input or an <b>OBS Studio</b> browser source.
                     </div>
