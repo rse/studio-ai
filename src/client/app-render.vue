@@ -20,29 +20,6 @@
                 </div>
             </div>
         </div>
-        <div v-show="debug !== ''" class="debug">
-            {{ debug }}
-        </div>
-        <div v-show="overlayShow" class="overlay">
-            <div class="box">
-                <img class="logo" src="../../res/app-icon.svg" alt=""/>
-                <div class="name"><span class="name1">Studio</span> <span class="name2">AI</span></div>
-                <div class="vers">{{ pkg.version }} ({{ pkg["x-date"] }})</div>
-            </div>
-            <div class="spin">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-            </div>
-            <div class="text">{{ overlayText }}</div>
-        </div>
-        <div v-show="fpsOverlayEnable && fps === 0" class="mask">
-            <div class="box">
-                <div class="icon">
-                    <i class="fas fa-circle-pause"></i>
-                </div>
-                <div class="text1">RENDERING PAUSED</div>
-                <div class="text2">(not in preview or program)</div>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -89,58 +66,6 @@
                 flex-direction: row
                 justify-content: center
                 align-items: center
-    .debug
-        position: absolute
-        top: 0
-        left: 0
-        width: 100%
-        text-align: center
-        background-color: #cc333380
-        color: #fff
-        font-size: 3vw
-        word-wrap: break-word
-    .overlay
-        position: absolute
-        top: 0
-        left: 0
-        width: 100%
-        height: 100%
-        background-color: var(--color-std-bg-1)
-        color: var(--color-std-fg-3)
-        display: flex
-        flex-direction: column
-        align-items: center
-        justify-content: center
-        .box
-            display: flex
-            flex-direction: column
-            align-items: center
-            justify-content: center
-            border-radius: 2.5vw
-            background-color: var(--color-std-bg-3)
-            padding: 1.5vw
-            margin-bottom: 2vw
-            .logo
-                width: 15vw
-                margin-bottom: 1vw
-            .name
-                font-size: 2vw
-                font-weight: bold
-                .name1
-                    color: var(--color-std-fg-3)
-                .name2
-                    color: var(--color-std-fg-5)
-            .vers
-                font-size: 1.5vw
-                font-weight: 200
-                color: var(--color-std-fg-1)
-        .spin
-            font-size: 5vw
-            color: var(--color-acc-fg-3)
-            margin-bottom: 1vw
-        .text
-            font-size: 2vw
-            color: var(--color-acc-fg-3)
     .mask
         position: absolute
         top: 0
@@ -215,7 +140,6 @@ import Text2Speech from "./app-sv-text2speech"
 </script>
 
 <script lang="ts">
-let debugTimer: ReturnType<typeof setTimeout> | null = null
 let text2speech: Text2Speech | null = null
 const commandBus = new EventEmitter()
 export default defineComponent({
@@ -229,26 +153,15 @@ export default defineComponent({
         wsUrl:      { type: String, default: "" }
     },
     data: () => ({
-        debug: "",
         state: StateDefault,
-        overlayShow: false,
-        overlayText: "",
-        fpsOverlayEnable: false,
-        fps: 30,
         connected: false
     }),
     created () {
         this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]})`)
     },
     async mounted () {
-        /*  establish renderer  */
-        this.log("INFO", "establish Babylon game engine")
-        this.overlay("establish HeyGen avatar")
-        this.overlayShow = true
-
-        /*  load scene state once  */
+        /*  load state once  */
         this.log("INFO", "initially configuring Studio AI")
-        this.overlay("initially configuring Studio AI")
         const state = await axios({
             method: "GET",
             url:    `${this.serviceUrl}state`
@@ -262,7 +175,6 @@ export default defineComponent({
 
         /*  connect to server for state updates  */
         this.log("INFO", "establish WebSocket server connection")
-        this.overlay("establish WebSocket server connection")
         const ws = new RecWebSocket(this.wsUrl + "/render", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
@@ -309,7 +221,6 @@ export default defineComponent({
             else
                 this.log("WARNING", `unknown message received: cmd=${data.cmd} ${JSON.stringify(data)}`)
         })
-        this.overlayShow = false
 
         /*  establish Text-to-Speech engine  */
         this.log("INFO", "establishing Text-to-Speech engine")
@@ -328,6 +239,8 @@ export default defineComponent({
             video:        this.$refs.video as HTMLVideoElement
         })
         await text2speech.init()
+
+        /*  react on Text-to-Speech engine events  */
         text2speech.on("log", (level: string, msg: string) => {
             this.log(level, `Text-to-Speech: ${msg}`)
         })
@@ -349,6 +262,8 @@ export default defineComponent({
         text2speech.on("speak:stop", () => {
             this.sendCommand("t2s:speak:stop")
         })
+
+        /*  react on command events  */
         commandBus.on("t2s:open", () => {
             text2speech!.open()
         })
@@ -360,20 +275,10 @@ export default defineComponent({
         })
     },
     methods: {
+        /*  minimum logging facility  */
         log (level: string, msg: string) {
             const timestamp = moment().format("YYYY-MM-DD hh:mm:ss.SSS")
             console.log(`${timestamp} [${level}]: ${msg}`)
-        },
-
-        overlay (msg: string) {
-            this.overlayText = msg
-        },
-
-        setDebug (msg: string) {
-            this.debug = msg
-            if (debugTimer !== null)
-                clearTimeout(debugTimer)
-            debugTimer = setTimeout(() => { this.debug = "" }, 4000)
         },
 
         /*  send command  */
@@ -382,7 +287,6 @@ export default defineComponent({
                 method: "POST",
                 url:    `${this.serviceUrl}command`,
                 data:   { cmd, args }
-            }).finally(() => {
             })
         }
     }
