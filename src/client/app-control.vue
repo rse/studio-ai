@@ -1044,6 +1044,7 @@
 import pkg                 from "../../package.json"
 import { defineComponent } from "vue"
 import { EventEmitter }    from "events"
+import clone               from "clone"
 import RecWebSocket        from "@opensumi/reconnecting-websocket"
 import Ducky               from "ducky"
 import Slider              from "@vueform/slider"
@@ -1097,7 +1098,7 @@ export default defineComponent({
         tab0: "",
         tab1: "",
         state:        StateDefault,
-        stateDefault: StateDefault,
+        stateDefault: clone(StateDefault),
         watchState: true,
         recording: false,
         playing: false,
