@@ -88,6 +88,18 @@ export default class Speech2Text extends EventEmitter {
 
     /*  one-time initialization  */
     async init () {
+        /*  optionally prepare for particular audio output device  */
+        if (this.options.device !== "Default") {
+            /*  ensure video devices can be enumerated by requesting a
+                dummy media stream so permissions are granted once  */
+            this.log("INFO", "requesting video device access")
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: false
+            }).catch(() => null)
+            if (stream !== null)
+                stream.getTracks().forEach((track) => track.stop())
+        }
     }
 
     /*  open Text-to-Speech engine  */
@@ -113,7 +125,11 @@ export default class Speech2Text extends EventEmitter {
         /*  react on connection events  */
         this.avatar.on(StreamingEvents.STREAM_READY, async (ev: CustomEvent) => {
             this.log("INFO", "HeyGen: streaming avatar: ready")
+
+            /*  determine media stream  */
             let stream = ev.detail as MediaStream
+
+            /*  optionally apply chroma-key to media stream  */
             if (this.options.ckEnable) {
                 this.log("INFO", "apply chroma-key video transformer")
                 this.chromaKey = new ChromaKey({
@@ -122,13 +138,35 @@ export default class Speech2Text extends EventEmitter {
                 })
                 stream = this.chromaKey.process(stream)
             }
+
+            /*  optionally use a particular output device  */
+            if (this.options.device !== "Default") {
+                /*  determine speaker device  */
+                this.log("INFO", "WebAudio: determine speaker device")
+                const devices = await navigator.mediaDevices.enumerateDevices().catch(() => [])
+                const device = devices.find((device) =>
+                    device.kind === "audiooutput"
+                    && device.label.substring(0, this.options.device.length) === this.options.device
+                )
+                if (device === undefined)
+                    this.error(`WebAudio: failed to determine speaker device "${this.options.device}": no such device`)
+
+                /*  apply speaker device onto video element  */
+                this.options.video!.setSinkId(device.deviceId)
+            }
+
+            /*  apply media stream onto video element  */
             this.options.video!.srcObject = stream
+
+            /*  lazy unmute video element  */
             this.options.video!.addEventListener("play", () => {
                 if (this.options.video!.muted) {
                     this.log("INFO", "HeyGen: streaming avatar: lazy unmuting video element")
                     this.options.video!.muted = false
                 }
             }, { once: true })
+
+            /*  try to play the content  */
             await this.options.video!.play().catch(() => {
                 this.log("INFO", "HeyGen: streaming avatar: playing of video element has to be deferred")
                 document.addEventListener("click", () => {
@@ -137,6 +175,7 @@ export default class Speech2Text extends EventEmitter {
                     this.options.video!.play().catch(() => {})
                 }, { once: true })
             })
+
             this.connected = true
             this.emit("open")
         })
