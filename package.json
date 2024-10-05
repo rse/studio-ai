@@ -120,6 +120,7 @@
     },
     "upd": [
         "!eslint",
+        "!@vue/eslint-config-typescript",
         "!htmllint",
         "!chalk"
     ],
