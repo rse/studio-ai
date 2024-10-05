@@ -53,7 +53,7 @@ Usage (Production)
 - Provide API keys of required cloud services:<br/>
   `echo "STUDIOAI_DEEPGRAM_API_TOKEN=\"<token1>\"" >.env`<br/>
   `echo "STUDIOAI_OPENAI_API_TOKEN=\"<token2>\"" >>.env`<br/>
-  `echo "STUDIOAI_HEYGEN_API_TOKEN=\"<tolen3>\"" >>.env`
+  `echo "STUDIOAI_HEYGEN_API_TOKEN=\"<token3>\"" >>.env`
 
 - Install all dependencies:<br/>
   `npm install --production`
@@ -85,7 +85,7 @@ Usage (Development)
 - Provide API keys of required cloud services:<br/>
   `echo "STUDIOAI_DEEPGRAM_API_TOKEN=\"<token1>\"" >.env`<br/>
   `echo "STUDIOAI_OPENAI_API_TOKEN=\"<token2>\"" >>.env`<br/>
-  `echo "STUDIOAI_HEYGEN_API_TOKEN=\"<tolen3>\"" >>.env`
+  `echo "STUDIOAI_HEYGEN_API_TOKEN=\"<token3>\"" >>.env`
 
 - Install all dependencies:<br/>
   `npm install`
