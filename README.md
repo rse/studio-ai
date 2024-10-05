@@ -45,7 +45,7 @@ Usage (Production)
   https://127.0.0.1:12345/
 
 - Use the client component (renderer mode) in OBS Studio or vMix browser sources:<br/>
-  https://127.0.0.1:12345/#/render/
+  https://127.0.0.1:12345/#/render
 
 Usage (Development)
 -------------------
@@ -69,7 +69,30 @@ Usage (Development)
   https://127.0.0.1:12345/
 
 - Open the client component (renderer mode) in Google Chrome:<br/>
-  https://127.0.0.1:12345/#/render/
+  https://127.0.0.1:12345/#/render
+
+History
+-------
+
+The **Studio AI** application was inspired by a prototype application
+from msg systems ag, which employees of its divisions XAI and GB P
+initially crafted for controlling an AI avatar on the panel discussion at the
+conference [Nordl@nder Digital](https://www.nordlaender-digital.de/) in September 2025.
+This prototype application was based on an earlier version of the
+[HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
+for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAvatarSDK).
+
+In Oktober 2025 Dr. Ralf S. Engelschall, CTO msg group, first integrated this
+prototype application into his msg Filmstudio. Unfortunately, this showed to be
+too problematic. As a result, this **Studio AI** application was developed by him
+from scratch in order to solve the following issues in the original priority order:
+(1) avatar rendering in dedicated client for integration into OBS Studio browser source (instead of a window capturing approach),
+(2) improved chroma-keying of the avatar for seamless optical integration,
+(3) Deepgram instead of OpenAI Whisper for reduced latency and improved quality in speech-to-text,
+(4) full AI service parameter configuration via control UI,
+(5) pre-defined slots for messages of Studio and AI messages,
+(6) audio volume meter for speech-to-text, and
+(7) data flow can be controlled manually, semi-automatically or fully automatically.
 
 See Also
 --------
