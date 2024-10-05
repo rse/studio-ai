@@ -442,7 +442,7 @@
                             <div class="studio-text">
                                 <textarea v-show="!recording" v-model="studioMessage"
                                     v-bind:disabled="recording"
-                                    v-on:keydown.enter.prevent="studioCommit()">
+                                    v-on:keydown.enter.prevent="studioInject()">
                                 </textarea>
                                 <div v-show="recording" class="studio-text-during-recording">
                                     {{ studioMessage }}
@@ -475,6 +475,7 @@
                                 <div class="button studio-listen"
                                     v-bind:class="{ recording: recording, disabled: engine.speech2text !== 2 }"
                                     v-on:click="toggleRecording()">
+                                    <div v-show="engine.speech2text !== 2" class="studio-meter-closed"></div>
                                     <canvas v-show="engine.speech2text === 2" ref="studioMeter" class="studio-meter"></canvas>
                                     <span v-show="!recording" class="icon"><i class="fas fa-circle"></i></span>
                                     <span v-show="recording" class="icon">
@@ -482,21 +483,21 @@
                                     </span>
                                     RECORD
                                 </div>
-                                <div class="button studio-commit"
+                                <div class="button"
                                     v-bind:class="{ disabled: studioMessage === '' || engine.text2text !== 2 }"
-                                    v-on:click="studioCommit()">
+                                    v-on:click="studioInject()">
                                     <toggle v-on:click.stop="void(0)"
-                                        class="toggle toggle-autocommit" v-model="studioAutoCommit">
+                                        class="toggle toggle-autoinject" v-model="studioAutoInject">
                                     </toggle>
                                     <i class="icon fas fa-circle-chevron-right"></i>
-                                    COMMIT
+                                    INJECT
                                 </div>
                             </div>
                             <div class="label">AI:</div>
                             <div class="ai-text">
                                 <textarea v-model="aiMessage"
                                     class="ai-text"
-                                    v-on:keydown.enter.prevent="aiCommit()">
+                                    v-on:keydown.enter.prevent="aiPlay()">
                                 </textarea>
                             </div>
                             <div class="actions">
@@ -520,9 +521,12 @@
                                 <div class="button slot" v-bind:class="{ active: aiSlot === 16, empty: state.slots.ai16 === '' }" v-on:click="aiSlotSelect(16)">16</div>
                             </div>
                             <div class="actions">
-                                <div class="button ai-listen disabled"
-                                    v-bind:class="{ playing: playing }"
-                                    v-on:click="aiPlay">
+                                <div class="button ai-play"
+                                    v-bind:class="{ disabled: aiMessage == '' || engine.text2speech !== 2, playing: playing }"
+                                    v-on:click="aiPlay()">
+                                    <toggle v-on:click.stop="void(0)"
+                                        class="toggle toggle-autoplay" v-model="aiAutoPlay">
+                                    </toggle>
                                     <span v-show="!playing" class="icon"><i class="fas fa-play"></i></span>
                                     <span v-show="playing" class="icon">
                                         <spinner-bars class="spinner-bars" size="16"/>
@@ -530,11 +534,14 @@
                                     <span v-show="!playing">PLAY</span>
                                     <span v-show="playing">STOP</span>
                                 </div>
-                                <div class="button ai-speak"
-                                    v-bind:class="{ disabled: aiMessage === '' || engine.text2speech !== 2 }"
-                                    v-on:click="aiCommit()">
-                                    <i class="icon fas fa-circle-chevron-right"></i>
-                                    COMMIT
+                                <div class="button ai-extract"
+                                    v-bind:class="{ disabled: engine.text2text !== 2 || !aiExtractable() }"
+                                    v-on:click="aiExtract()">
+                                    <toggle v-on:click.stop="void(0)"
+                                        class="toggle toggle-autoextract" v-model="aiAutoExtract">
+                                    </toggle>
+                                    <i class="icon fas fa-circle-chevron-left"></i>
+                                    EXTRACT
                                 </div>
                             </div>
                         </div>
@@ -938,7 +945,9 @@
                 &:hover
                     background-color: var(--color-sig-bg-5)
                     color: var(--color-sig-fg-5)
-            .toggle-autocommit
+            .toggle-autoinject,
+            .toggle-autoextract,
+            .toggle-autoplay
                 display: inline-block
                 position: relative
                 top: -3px
@@ -1063,6 +1072,15 @@
             height: 16px
             margin-right: 10px
             background-color: #222
+            border-radius: 4px
+        .studio-meter-closed
+            display: inline-block
+            position: relative
+            top: 3px
+            width:  50px
+            height: 16px
+            margin-right: 10px
+            background-color: var(--color-std-bg-2)
             border-radius: 4px
     .input
         width: 420px
@@ -1203,10 +1221,12 @@ export default defineComponent({
         playing: false,
         studioMessage: "",
         studioMessageFinal: true,
-        studioAutoCommit: false,
+        studioAutoInject: false,
         studioSlot: 0,
         aiMessage: "",
         aiSlot: 0,
+        aiAutoExtract: false,
+        aiAutoPlay: false,
         text2textLog: [] as Array<Text2TextLogEntry>,
         status: {
             kind: "",
@@ -1400,13 +1420,13 @@ export default defineComponent({
             else
                 this.studioMessageFinal = false
             this.studioMessage = studioBuffer.join(" ")
-            if (this.studioMessageFinal && !this.recording && this.studioAutoCommit)
-                this.studioCommit()
+            if (this.studioMessageFinal && !this.recording && this.studioAutoInject)
+                this.studioInject()
         })
         await speech2text.init()
 
         /*  enable/disable speech-to-text engine  */
-        const engineOpen = async () => {
+        const s2tEngineOpen = async () => {
             this.log("INFO", "Speech-to-Text: start engine")
             await speech2text!.open().catch((err) => {
                 this.engine.speech2text = 0
@@ -1415,7 +1435,7 @@ export default defineComponent({
             })
             speech2text!.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
         }
-        const engineClose = async () => {
+        const s2tEngineClose = async () => {
             this.log("INFO", "Speech-to-Text: stop engine")
             speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
             await speech2text!.close()
@@ -1424,9 +1444,9 @@ export default defineComponent({
             if (speech2text === null)
                 return
             if (this.engine.speech2text === 1)
-                engineOpen()
+                s2tEngineOpen()
             else if (this.engine.speech2text === 0)
-                engineClose()
+                s2tEngineClose()
         })
         speech2text.on("open", () => {
             if (this.engine.speech2text === 1)
@@ -1474,13 +1494,17 @@ export default defineComponent({
             const entry = text2textLog[text2textLog.length - 1]
             entry.message = chunk.text
             entry.final   = chunk.final
-            if (entry.final)
-                this.sendCommand("t2s:speak", [ { text: entry.message } ])
+            if (entry.final) {
+                if (this.aiAutoExtract)
+                    this.aiExtract(true)
+                if (this.aiAutoPlay)
+                    this.aiPlay(true)
+            }
         })
         await text2text.init()
 
         /*  enable/disable text-to-text engine  */
-        const text2textEngineOpen = async () => {
+        const t2tEngineOpen = async () => {
             this.log("INFO", "Text-to-Text: start engine")
             await text2text!.open().catch((err) => {
                 this.engine.text2text = 0
@@ -1488,7 +1512,7 @@ export default defineComponent({
                 this.raiseStatus("error", `Text-to-Text engine failed: ${err}`, 2000)
             })
         }
-        const text2textEngineClose = async () => {
+        const t2tEngineClose = async () => {
             this.log("INFO", "Text-to-Text: stop engine")
             await text2text!.close()
         }
@@ -1496,9 +1520,9 @@ export default defineComponent({
             if (text2text === null)
                 return
             if (this.engine.text2text === 1)
-                text2textEngineOpen()
+                t2tEngineOpen()
             else if (this.engine.text2text === 0)
-                text2textEngineClose()
+                t2tEngineClose()
         })
         text2text.on("open", () => {
             if (this.engine.text2text === 1)
@@ -1540,6 +1564,7 @@ export default defineComponent({
         })
         commandBus.on("t2s:speak:stop", () => {
             this.playing = false
+            this.aiMessage = ""
         })
     },
     methods: {
@@ -1678,8 +1703,8 @@ export default defineComponent({
             })
         },
 
-        /*  commit studio text  */
-        async studioCommit () {
+        /*  inject studio text into text-to-text engine  */
+        async studioInject () {
             if (this.studioMessage === "" || this.engine.text2text !== 2 || text2text === null)
                 return
             this.text2textLog.push({ persona: "Studio", message: this.studioMessage, final: true })
@@ -1719,20 +1744,37 @@ export default defineComponent({
             }
         },
 
-        /*  commit AI text  */
-        aiCommit () {
-            if (this.aiMessage === "" || this.engine.text2speech !== 2)
-                return
-            this.sendCommand("t2s:speak", [ { text: this.aiMessage } ])
-            this.aiMessage = ""
-            this.aiSlot = 0
+        /*  determine whether we can extract AI text from text-to-text engine  */
+        aiExtractable () {
+            if (this.engine.text2text === 2 && this.text2textLog.length > 0) {
+                const entry = this.text2textLog[this.text2textLog.length - 1]
+                if (entry.persona === "AI")
+                    return true
+            }
+            return false
+        },
+
+        /*  extract AI text from text-to-text engine  */
+        aiExtract (auto = false) {
+            if (this.engine.text2text === 2 && this.text2textLog.length > 0) {
+                const entry = this.text2textLog[this.text2textLog.length - 1]
+                if (entry.persona === "AI")
+                    this.aiMessage = entry.message
+            }
         },
 
         /*  play/stop AI speaking  */
-        aiPlay () {
-            if (!this.playing)
+        aiPlay (auto = false) {
+            if (this.engine.text2speech !== 2)
                 return
-            this.sendCommand("t2s:interrupt")
+            if (this.playing) {
+                this.sendCommand("t2s:interrupt")
+                if (!auto)
+                    return
+            }
+            if (this.aiMessage === "")
+                return
+            this.sendCommand("t2s:speak", [ { text: this.aiMessage } ])
         },
 
         /*  select AI slot  */
