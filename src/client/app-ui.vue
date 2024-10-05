@@ -9,39 +9,39 @@
 <template>
     <div class="app">
         <!--  Control UI  -->
-        <app-control
+        <control
             ref="control"
             v-if="mode === 'control'"
             v-bind:select-tab-0="tab0"
             v-bind:select-tab-1="tab1"
             v-bind:ws-url="wsURL"
             v-bind:service-url="serviceURL"
-        ></app-control>
+        ></control>
 
         <!--  Render UI  -->
-        <app-render
+        <render
             ref="render"
             v-if="mode === 'render'"
             v-bind:options="options"
             v-bind:ws-url="wsURL"
             v-bind:service-url="serviceURL"
-        ></app-render>
+        ></render>
     </div>
 </template>
 
 <script setup lang="ts">
 import { defineComponent } from "vue"
 import URI                 from "urijs"
-import AppControl          from "./app-control.vue"
-import AppRender           from "./app-render.vue"
+import Control             from "./app-ui-control.vue"
+import Render              from "./app-ui-render.vue"
 </script>
 
 <script lang="ts">
 export default defineComponent({
     name: "app",
     components: {
-        "app-control": AppControl,
-        "app-render":  AppRender
+        "control": Control,
+        "render":  Render
     },
     data: () => ({
         mode:       "control",

@@ -1216,11 +1216,11 @@ import {
     StateDefault,
     StatePaths,
     StateUtil
-} from "../common/app-state"
+} from "../common/app-common-state"
 import {
     CommandType,
     CommandSchema
-} from "../common/app-command"
+} from "../common/app-common-command"
 import svgShapeFlow from "../../res/app-shape-flow.svg?raw"
 </script>
 

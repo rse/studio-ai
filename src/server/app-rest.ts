@@ -13,9 +13,9 @@ import HAPIHeader     from "hapi-plugin-header"
 import HAPITraffic    from "hapi-plugin-traffic"
 import HAPIDucky      from "hapi-plugin-ducky"
 
-import Pkg            from "./app-pkg"
-import Argv           from "./app-argv"
-import Log            from "./app-log"
+import Pkg            from "./app-util-pkg"
+import Argv           from "./app-util-argv"
+import Log            from "./app-util-log"
 
 export default class REST {
     public server: Server | null = null

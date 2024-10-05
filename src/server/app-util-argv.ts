@@ -6,7 +6,7 @@
 
 import path  from "node:path"
 import yargs from "yargs"
-import Pkg   from "./app-pkg"
+import Pkg   from "./app-util-pkg"
 
 export default class Argv {
     public help       = false

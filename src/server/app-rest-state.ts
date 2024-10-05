@@ -11,7 +11,7 @@ import ducky               from "ducky"
 import clone               from "clone"
 import * as HAPI           from "@hapi/hapi"
 
-import Argv                from "./app-argv"
+import Argv                from "./app-util-argv"
 import DB, { Transaction } from "./app-db"
 import REST                from "./app-rest"
 import RESTWS              from "./app-rest-ws"
@@ -20,7 +20,7 @@ import {
     StateSchema, StateSchemaPartial,
     StateDefault,
     StateUtil
-} from "../common/app-state"
+} from "../common/app-common-state"
 
 export default class RESTState {
     public stateFile = ""

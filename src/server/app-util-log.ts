@@ -8,8 +8,8 @@ import fs     from "node:fs"
 import chalk  from "chalk"
 import moment from "moment"
 
-import Pkg    from "./app-pkg"
-import Argv   from "./app-argv"
+import Pkg    from "./app-util-pkg"
+import Argv   from "./app-util-argv"
 
 const levels = [
     { name: "ERROR",   style: chalk.red.bold },

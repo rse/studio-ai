@@ -18,8 +18,8 @@ import               "@vueform/multiselect/themes/default.css"
 import               "perfect-scrollbar/css/perfect-scrollbar.css"
 
 /*  internal dependencies  */
-import App      from "./app.vue"
-import               "./app.styl"
+import App      from "./app-ui.vue"
+import               "./app-ui.styl"
 
 document.addEventListener("DOMContentLoaded", (ev: Event) => {
     (async () => {

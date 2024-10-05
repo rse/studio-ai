@@ -132,10 +132,10 @@ import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
     StateDefault, StateUtil
-} from "../common/app-state"
+} from "../common/app-common-state"
 import {
     CommandType, CommandSchema
-} from "../common/app-command"
+} from "../common/app-common-command"
 import Text2Speech from "./app-sv-text2speech"
 </script>
 

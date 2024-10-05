@@ -8,7 +8,7 @@ import * as HAPI       from "@hapi/hapi"
 
 import REST            from "./app-rest"
 import RESTWS          from "./app-rest-ws"
-import { CommandType, CommandSchema } from "../common/app-command"
+import { CommandType, CommandSchema } from "../common/app-common-command"
 
 export default class RESTCommand {
     constructor (

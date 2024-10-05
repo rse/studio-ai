@@ -9,9 +9,9 @@ import dotenvx        from "@dotenvx/dotenvx"
 import * as awilix    from "awilix"
 
 /*  load internal requirements  */
-import Pkg            from "./app-pkg"
-import Argv           from "./app-argv"
-import Log            from "./app-log"
+import Pkg            from "./app-util-pkg"
+import Argv           from "./app-util-argv"
+import Log            from "./app-util-log"
 import REST           from "./app-rest"
 import RESTState      from "./app-rest-state"
 import RESTCommand    from "./app-rest-command"

@@ -11,10 +11,10 @@ import Boom                 from "@hapi/boom"
 import WebSocket            from "ws"
 import Latching             from "latching"
 
-import Log                  from "./app-log"
+import Log                  from "./app-util-log"
 import REST                 from "./app-rest"
-import { StateTypePartial } from "../common/app-state"
-import { CommandType }      from "../common/app-command"
+import { StateTypePartial } from "../common/app-common-state"
+import { CommandType }      from "../common/app-common-command"
 
 type wsPeerCtx = {
     id: string
