@@ -237,7 +237,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(avatar)</div>
+                                <div class="label2">(avatar id)</div>
                                 <div class="label3">[id]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
@@ -248,7 +248,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(quality)</div>
+                                <div class="label2">(avatar quality)</div>
                                 <div class="label3">[level]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
@@ -268,7 +268,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(voice)</div>
+                                <div class="label2">(voice id)</div>
                                 <div class="label3">[id]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
@@ -279,7 +279,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(rate)</div>
+                                <div class="label2">(voice rate)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
                                     <input tabindex="8" v-bind:value="fieldExport(state.text2speech.heygenRate)"
@@ -294,7 +294,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(emotion)</div>
+                                <div class="label2">(voice emotion)</div>
                                 <div class="label3">[type]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
@@ -316,7 +316,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(language)</div>
+                                <div class="label2">(voice language)</div>
                                 <div class="label3">[iso-code]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
