@@ -1151,7 +1151,7 @@ import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
-import Chat, { ChatChunk } from "./app-sv-chat"
+import Chat, { ChatChunk } from "./app-sv-text2text"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
