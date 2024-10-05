@@ -2,5 +2,5 @@
 package-lock.json
 node_modules
 dst
-var/canvas-ai-state.yaml
-var/canvas-ai-state*.OLD.*
+var/studio-ai-state.yaml
+var/studio-ai-state*.OLD.*
