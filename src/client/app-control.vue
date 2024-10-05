@@ -59,7 +59,19 @@
                                 </div>
                                 <div class="button" v-on:click="state.speech2text.deepgramModel = stateDefault.speech2text.deepgramModel">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.speech2text.deepgramModel"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.speech2text.deepgramModel"
+                                        v-bind:options="[
+                                            { label: 'Nova-2 ($0.0043/min)',         value: 'nova-2-general' },
+                                            { label: 'Nova-1 ($0.0043/min)',         value: 'nova' },
+                                            { label: 'Whisper-Tiny ($0.0033/min)',   value: 'whisper-tiny' },
+                                            { label: 'Whisper-Small ($0.0038/min)',  value: 'whisper-small' },
+                                            { label: 'Whisper ($0.0042/min)',        value: 'whisper' },
+                                            { label: 'Whisper-Large ($0.0048/min)',  value: 'whisper-large' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">deepgram</div>
@@ -81,7 +93,15 @@
                                 </div>
                                 <div class="button" v-on:click="state.speech2text.deepgramLanguage = stateDefault.speech2text.deepgramLanguage">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.speech2text.deepgramLanguage"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.speech2text.deepgramLanguage"
+                                        v-bind:options="[
+                                            { label: 'EN (English)', value: 'en' },
+                                            { label: 'DE (German)',  value: 'de' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">deepgram</div>
@@ -125,7 +145,20 @@
                                 </div>
                                 <div class="button" v-on:click="state.chat.openaiModel = stateDefault.chat.openaiModel">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.chat.openaiModel"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.chat.openaiModel"
+                                        v-bind:options="[
+                                            { label: 'GPT-3.5-turbo ($3.00/1Mit, $6.00/1Mot)', value: 'gpt-3.5-turbo' },
+                                            { label: 'GPT-4 ($30.00/1Mit, $60.00/1Mot)',       value: 'gpt-4' },
+                                            { label: 'GPT-4-turbo ($10.00/1Mit, $30.00/1Mot)', value: 'gpt-4-turbo' },
+                                            { label: 'GPT-4o-mini ($0.15/1Mit, $0.60/1Mot)',   value: 'gpt-4o-mini' },
+                                            { label: 'GPT-4o ($2.50/1Mit, $10.00/1Mot)',       value: 'gpt-4o' },
+                                            { label: 'O1-Mini ($3.00/1Mit, $12.00/1Mot)',      value: 'o1-mini' },
+                                            { label: 'O1-Preview ($15.00/1Mit, $60.00/1Mot)',  value: 'o1-preview' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">openai</div>
@@ -225,7 +258,16 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2speech.heygenQuality = stateDefault.text2speech.heygenQuality">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenQuality"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.text2speech.heygenQuality"
+                                        v-bind:options="[
+                                            { label: 'Low',    value: 'low' },
+                                            { label: 'Medium', value: 'medium' },
+                                            { label: 'High',   value: 'high' },
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">heygen</div>
@@ -262,7 +304,18 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2speech.heygenEmotion = stateDefault.text2speech.heygenEmotion">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenEmotion"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.text2speech.heygenEmotion"
+                                        v-bind:options="[
+                                            { label: 'Broadcaster', value: 'broadcaster' },
+                                            { label: 'Excited',     value: 'excited' },
+                                            { label: 'Friendly',    value: 'friendly' },
+                                            { label: 'Serious',     value: 'serious' },
+                                            { label: 'Soothing',    value: 'soothing' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">heygen</div>
@@ -273,7 +326,15 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2speech.heygenLanguage = stateDefault.text2speech.heygenLanguage">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenLanguage"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.text2speech.heygenLanguage"
+                                        v-bind:options="[
+                                            { label: 'EN (English)', value: 'en' },
+                                            { label: 'DE (German)',  value: 'de' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">heygen</div>
@@ -688,7 +749,6 @@
             input
                 width: 60px
                 font-size: 12pt
-                font-weight: bold
                 outline: none
                 border-radius: 4px
                 border: 0
@@ -714,7 +774,7 @@
             background-color: var(--color-std-bg-2)
             color: var(--color-std-fg-5)
             border-radius: 4px
-            padding: 2px 8px 2px 8px
+            padding: 4px 8px 4px 8px
             min-height: 20px
             text-align: center
             font-size: 10pt
@@ -730,7 +790,6 @@
             border-radius: 4px
             padding: 6px 12px 6px 12px
             outline: none
-            font-weight: bold
             font-size: 12pt
             width: calc(400px - 2 * 12px)
             &:focus
@@ -746,7 +805,6 @@
             border-radius: 4px
             padding: 6px 12px 6px 12px
             outline: none
-            font-weight: bold
             font-size: 12pt
             width: calc(400px - 2 * 12px)
             &.prompt
@@ -1024,6 +1082,36 @@
         --toggle-bg-off: var(--color-std-bg-2)
         --toggle-ring-width: 0
         --toggle-handle-enabled: var(--color-std-fg-5)
+    .multiselect
+        color: var(--color-acc-fg-5)
+        --ms-font-size: 12pt
+        --ms-line-height: 1.2
+        --ms-py: 5px
+        --ms-px: 10px
+        --ms-bg: var(--color-acc-bg-3)
+        --ms-border-color: var(--color-acc-bg-3)
+        --ms-border-width: 1px
+        --ms-border-color-active: var(--color-acc-bg-3)
+        --ms-border-width-active: 1px
+        --ms-dropdown-radius: 4px
+        --ms-dropdown-bg: var(--color-acc-bg-1)
+        --ms-dropdown-border-color: var(--color-acc-bg-1)
+        --ms-dropdown-border-width: 0
+        --ms-option-bg-selected: var(--color-acc-bg-3)
+        --ms-option-color-selected: var(--color-acc-fg-3)
+        --ms-option-bg-pointed: var(--color-acc-bg-4)
+        --ms-option-color-pointed: var(--color-acc-fg-4)
+        --ms-option-bg-selected-pointed: var(--color-acc-bg-5)
+        --ms-option-color-selected-pointed: var(--color-acc-fg-5)
+        --ms-option-py: 5px
+        --ms-option-px: 10px
+        --ms-option-font-size: 12pt
+        --ms-option-line-height: 1.2
+        --ms-ring-width: 1px
+        --ms-ring-color: var(--color-acc-bg-3)
+        --ms-caret-color: var(--color-acc-fg-3)
+        .multiselect-search
+            color: var(--color-acc-fg-5)
     .radios
         display: flex
         flex-direction: row
@@ -1049,6 +1137,7 @@ import RecWebSocket        from "@opensumi/reconnecting-websocket"
 import Ducky               from "ducky"
 import Slider              from "@vueform/slider"
 import Toggle              from "@vueform/toggle"
+import Multiselect         from "@vueform/multiselect"
 import axios               from "axios"
 import moment              from "moment"
 import PerfectScrollbar    from "perfect-scrollbar"
@@ -1084,7 +1173,8 @@ export default defineComponent({
         "spinner-bars":  VueSpinnerBars,
         "spinner-rings": VueSpinnerRings,
         "slider":        Slider,
-        "toggle":        Toggle
+        "toggle":        Toggle,
+        "multiselect":   Multiselect
     },
     props: {
         selectTab0: { type: String, default: "control" },

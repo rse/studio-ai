@@ -14,6 +14,7 @@ import               "@fortawesome/fontawesome-free/js/all.min.js"
 import               "@fortawesome/fontawesome-free/css/all.min.css"
 import               "@vueform/slider/themes/default.css"
 import               "@vueform/toggle/themes/default.css"
+import               "@vueform/multiselect/themes/default.css"
 import               "perfect-scrollbar/css/perfect-scrollbar.css"
 
 /*  internal dependencies  */

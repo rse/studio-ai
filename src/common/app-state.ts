@@ -196,7 +196,7 @@ export const StateDefault: StateType = {
         heygenQuality:     "high",
         heygenVoiceId:     "21d9632a2fc842308ad9b5c5b5014e3a",
         heygenRate:        1.2,
-        heygenEmotion:     "Broadcaster",
+        heygenEmotion:     "broadcaster",
         heygenLanguage:    "de",
         ckEnable:          true,
         ckThreshold:       0.30,
