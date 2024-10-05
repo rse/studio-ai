@@ -808,6 +808,7 @@
             outline: none
             font-size: 12pt
             width: calc(420px - 2 * 12px)
+            resize: none
             &.prompt
                 font-size: 11pt
                 font-weight: normal
