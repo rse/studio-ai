@@ -485,6 +485,9 @@
                                 <div class="button audience-commit"
                                     v-bind:class="{ disabled: audienceMessage === '' || engine.chat !== 2 }"
                                     v-on:click="audienceCommit()">
+                                    <toggle v-on:click.stop="void(0)"
+                                        class="toggle toggle-autocommit" v-model="audienceAutoCommit">
+                                    </toggle>
                                     <i class="icon fas fa-circle-chevron-right"></i>
                                     COMMIT
                                 </div>
@@ -933,6 +936,11 @@
                 &:hover
                     background-color: var(--color-sig-bg-5)
                     color: var(--color-sig-fg-5)
+            .toggle-autocommit
+                display: inline-block
+                position: relative
+                top: -3px
+                margin-right: 10px
         .label
             background-color: var(--color-acc-bg-2)
             color: var(--color-acc-fg-5)
@@ -1192,6 +1200,7 @@ export default defineComponent({
         playing: false,
         audienceMessage: "",
         audienceMessageFinal: true,
+        audienceAutoCommit: false,
         audienceSlot: 0,
         aiMessage: "",
         aiSlot: 0,
@@ -1388,6 +1397,8 @@ export default defineComponent({
             else
                 this.audienceMessageFinal = false
             this.audienceMessage = audienceBuffer.join(" ")
+            if (this.audienceMessageFinal && !this.recording && this.audienceAutoCommit)
+                this.audienceCommit()
         })
         await speech2text.init()
 
@@ -1665,11 +1676,11 @@ export default defineComponent({
         },
 
         /*  commit Audience text  */
-        audienceCommit () {
+        async audienceCommit () {
             if (this.audienceMessage === "" || this.engine.chat !== 2 || chat === null)
                 return
             this.chatLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
-            chat.send(this.audienceMessage)
+            await chat.send(this.audienceMessage)
             this.audienceMessage = ""
             this.audienceSlot = 0
         },
