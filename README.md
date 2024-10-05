@@ -102,14 +102,15 @@ prototype application into his msg Filmstudio. Unfortunately, the implementation
 too problematic. As a result, he took the ideas of the prototype application and then
 this **Studio AI** application was developed by him
 from scratch in order to solve the following issues (in the original priority order):
-(1) avatar rendering in a dedicated client for easier integration into the msg Filmstudio
-production process (no window capturing necessary),
-(2) improved chroma-keying of the avatar for more seamless optical integration into the scene,
-(3) Deepgram instead of OpenAI Whisper for reduced latency and improved quality in the speech-to-text engine,
-(4) more AI cloud service parameter configuration via control UI,
-(5) slots for also calling pre-defined messages for Studio and AI participants,
-(6) audio volume meter for better monitoring of speech-to-text engine state, and
-(7) the entire data flow now can be controlled manually, semi-automatically or fully automatically.
+
+- avatar rendering in a dedicated client for easier integration into the msg Filmstudio
+  production process (no window capturing necessary),
+- improved chroma-keying of the avatar for more seamless optical integration into the scene,
+- Deepgram instead of OpenAI Whisper for reduced latency and improved quality in the speech-to-text engine,
+- more AI cloud service parameter configuration via control UI,
+- slots for also calling pre-defined messages for Studio and AI participants,
+- audio volume meter for better monitoring of speech-to-text engine state, and
+- the entire data flow now can be controlled manually, semi-automatically or fully automatically.
 
 See Also
 --------
