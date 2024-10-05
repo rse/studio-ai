@@ -15,16 +15,23 @@ rendered avatar. The avatar receives its inputs through a Speech-to-Text
 pipeline, performs its processings with a Text-to-Text pipleline, and
 sends its outputs through a Text-to-Speech/Video pipeline.
 
-The application, written in [TypeScript](https://www.typescriptlang.org/),
+![screenshot](doc/screenshot.png)
+
+Architecture
+------------
+
+**Studio AI** is written in [TypeScript](https://www.typescriptlang.org/),
 consists of a central [Node.js](https://nodejs.org)-based server component and
 a HTML5 Single-Page Application (SPA) as the client component.
-The client component it turn runs in two distinct modes: a
-[Vue.js](https://vuejs.org/) based control mode and a avatar rendering mode.
+The client component, in turn, runs in two distinct modes: a
+control mode and an avatar rendering mode. The clients are connected
+via WebSocket connections.
+
 The Speech-to-Text pipeline is based on [Deepgram](https://deepgram.com),
 the Text-to-Text pipeline is based on [OpenAI ChatGPT](https://chatgpt.com),
 and the Text-to-Speech/Video pipeline is based on [HeyGen](https://heygen.com).
 
-![screenshot](doc/screenshot.png)
+![architecture](doc/architecture.png)
 
 Usage (Production)
 ------------------
