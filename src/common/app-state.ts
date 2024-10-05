@@ -201,7 +201,7 @@ export const StateDefault: StateType = {
         ckEnable:          true,
         ckThreshold:       0.30,
         ckSmoothing:       0.10,
-        speakerDevice:     "default"
+        speakerDevice:     "Default"
     },
     slots: {
         audience1:         "Hallo Dr. Futura. Bitte stelle dich uns kurz vor!",
