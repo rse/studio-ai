@@ -439,54 +439,54 @@
                                 </div>
                             </div>
                             <div class="label" v-bind:class="{ 'during-recording': recording }">Studio:</div>
-                            <div class="audience-text">
-                                <textarea v-show="!recording" v-model="audienceMessage"
+                            <div class="studio-text">
+                                <textarea v-show="!recording" v-model="studioMessage"
                                     v-bind:disabled="recording"
-                                    v-on:keydown.enter.prevent="audienceCommit()">
+                                    v-on:keydown.enter.prevent="studioCommit()">
                                 </textarea>
-                                <div v-show="recording" class="audience-text-during-recording">
-                                    {{ audienceMessage }}
-                                    <span v-show="!audienceMessageFinal" class="icon">
+                                <div v-show="recording" class="studio-text-during-recording">
+                                    {{ studioMessage }}
+                                    <span v-show="!studioMessageFinal" class="icon">
                                         <spinner-grid class="spinner-grid" size="12"/>
                                     </span>
                                 </div>
                             </div>
                             <div class="actions">
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 1, empty: state.slots.audience1 === '' }" v-on:click="audienceSlotSelect(1)">1</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 2, empty: state.slots.audience2 === '' }" v-on:click="audienceSlotSelect(2)">2</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 3, empty: state.slots.audience3 === '' }" v-on:click="audienceSlotSelect(3)">3</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 4, empty: state.slots.audience4 === '' }" v-on:click="audienceSlotSelect(4)">4</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 5, empty: state.slots.audience5 === '' }" v-on:click="audienceSlotSelect(5)">5</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 6, empty: state.slots.audience6 === '' }" v-on:click="audienceSlotSelect(6)">6</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 7, empty: state.slots.audience7 === '' }" v-on:click="audienceSlotSelect(7)">7</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 8, empty: state.slots.audience8 === '' }" v-on:click="audienceSlotSelect(8)">8</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 1, empty: state.slots.studio1 === '' }" v-on:click="studioSlotSelect(1)">1</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 2, empty: state.slots.studio2 === '' }" v-on:click="studioSlotSelect(2)">2</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 3, empty: state.slots.studio3 === '' }" v-on:click="studioSlotSelect(3)">3</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 4, empty: state.slots.studio4 === '' }" v-on:click="studioSlotSelect(4)">4</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 5, empty: state.slots.studio5 === '' }" v-on:click="studioSlotSelect(5)">5</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 6, empty: state.slots.studio6 === '' }" v-on:click="studioSlotSelect(6)">6</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 7, empty: state.slots.studio7 === '' }" v-on:click="studioSlotSelect(7)">7</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 8, empty: state.slots.studio8 === '' }" v-on:click="studioSlotSelect(8)">8</div>
                             </div>
                             <div class="actions">
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 9,  empty: state.slots.audience9  === '' }" v-on:click="audienceSlotSelect(9)">9</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 10, empty: state.slots.audience10 === '' }" v-on:click="audienceSlotSelect(10)">10</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 11, empty: state.slots.audience11 === '' }" v-on:click="audienceSlotSelect(11)">11</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 12, empty: state.slots.audience12 === '' }" v-on:click="audienceSlotSelect(12)">12</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 13, empty: state.slots.audience13 === '' }" v-on:click="audienceSlotSelect(13)">13</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 14, empty: state.slots.audience14 === '' }" v-on:click="audienceSlotSelect(14)">14</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 15, empty: state.slots.audience15 === '' }" v-on:click="audienceSlotSelect(15)">15</div>
-                                <div class="button slot" v-bind:class="{ active: audienceSlot === 16, empty: state.slots.audience16 === '' }" v-on:click="audienceSlotSelect(16)">16</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 9,  empty: state.slots.studio9  === '' }" v-on:click="studioSlotSelect(9)">9</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 10, empty: state.slots.studio10 === '' }" v-on:click="studioSlotSelect(10)">10</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 11, empty: state.slots.studio11 === '' }" v-on:click="studioSlotSelect(11)">11</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 12, empty: state.slots.studio12 === '' }" v-on:click="studioSlotSelect(12)">12</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 13, empty: state.slots.studio13 === '' }" v-on:click="studioSlotSelect(13)">13</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 14, empty: state.slots.studio14 === '' }" v-on:click="studioSlotSelect(14)">14</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 15, empty: state.slots.studio15 === '' }" v-on:click="studioSlotSelect(15)">15</div>
+                                <div class="button slot" v-bind:class="{ active: studioSlot === 16, empty: state.slots.studio16 === '' }" v-on:click="studioSlotSelect(16)">16</div>
                             </div>
                             <div class="actions">
-                                <div class="button audience-listen"
+                                <div class="button studio-listen"
                                     v-bind:class="{ recording: recording, disabled: engine.speech2text !== 2 }"
                                     v-on:click="toggleRecording()">
-                                    <canvas v-show="engine.speech2text === 2" ref="audienceMeter" class="audience-meter"></canvas>
+                                    <canvas v-show="engine.speech2text === 2" ref="studioMeter" class="studio-meter"></canvas>
                                     <span v-show="!recording" class="icon"><i class="fas fa-circle"></i></span>
                                     <span v-show="recording" class="icon">
                                         <spinner-rings class="spinner-rings" size="30"/>
                                     </span>
                                     RECORD
                                 </div>
-                                <div class="button audience-commit"
-                                    v-bind:class="{ disabled: audienceMessage === '' || engine.text2text !== 2 }"
-                                    v-on:click="audienceCommit()">
+                                <div class="button studio-commit"
+                                    v-bind:class="{ disabled: studioMessage === '' || engine.text2text !== 2 }"
+                                    v-on:click="studioCommit()">
                                     <toggle v-on:click.stop="void(0)"
-                                        class="toggle toggle-autocommit" v-model="audienceAutoCommit">
+                                        class="toggle toggle-autocommit" v-model="studioAutoCommit">
                                     </toggle>
                                     <i class="icon fas fa-circle-chevron-right"></i>
                                     COMMIT
@@ -956,7 +956,7 @@
         .label.during-recording
             background-color: var(--color-sig-bg-2)
             color: var(--color-sig-fg-5)
-        .audience-text
+        .studio-text
             flex-grow: 1
             flex-shrink: 1
             flex-basis: 50%
@@ -979,7 +979,7 @@
                 &:disabled
                     background-color: var(--color-acc-bg-1)
                     color: var(--color-acc-fg-3)
-            .audience-text-during-recording
+            .studio-text-during-recording
                 overflow: scroll
                 background-color: var(--color-sig-bg-3)
                 color: var(--color-sig-fg-5)
@@ -1054,7 +1054,7 @@
                 position: relative
                 left: -2px
                 top: -1px
-        .audience-meter
+        .studio-meter
             position: relative
             top: 3px
             width:  50px
@@ -1199,10 +1199,10 @@ export default defineComponent({
         watchState: true,
         recording: false,
         playing: false,
-        audienceMessage: "",
-        audienceMessageFinal: true,
-        audienceAutoCommit: false,
-        audienceSlot: 0,
+        studioMessage: "",
+        studioMessageFinal: true,
+        studioAutoCommit: false,
+        studioSlot: 0,
         aiMessage: "",
         aiSlot: 0,
         text2textLog: [] as Array<Text2TextLogEntry>,
@@ -1303,33 +1303,33 @@ export default defineComponent({
         }
 
         /*  persist message slots  */
-        this.$watch("audienceMessage", () => {
-            if (this.audienceSlot === 0)
+        this.$watch("studioMessage", () => {
+            if (this.studioSlot === 0)
                 return
             let key:
-                "audience1"  | "audience2"  | "audience3"  | "audience4"  |
-                "audience5"  | "audience6"  | "audience7"  | "audience8"  |
-                "audience9"  | "audience10" | "audience11" | "audience12" |
-                "audience13" | "audience14" | "audience15" | "audience16"
-            if      (this.audienceSlot === 1)  key = "audience1"
-            else if (this.audienceSlot === 2)  key = "audience2"
-            else if (this.audienceSlot === 3)  key = "audience3"
-            else if (this.audienceSlot === 4)  key = "audience4"
-            else if (this.audienceSlot === 5)  key = "audience5"
-            else if (this.audienceSlot === 6)  key = "audience6"
-            else if (this.audienceSlot === 7)  key = "audience7"
-            else if (this.audienceSlot === 8)  key = "audience8"
-            else if (this.audienceSlot === 9)  key = "audience9"
-            else if (this.audienceSlot === 10) key = "audience10"
-            else if (this.audienceSlot === 11) key = "audience11"
-            else if (this.audienceSlot === 12) key = "audience12"
-            else if (this.audienceSlot === 13) key = "audience13"
-            else if (this.audienceSlot === 14) key = "audience14"
-            else if (this.audienceSlot === 15) key = "audience15"
-            else if (this.audienceSlot === 16) key = "audience16"
+                "studio1"  | "studio2"  | "studio3"  | "studio4"  |
+                "studio5"  | "studio6"  | "studio7"  | "studio8"  |
+                "studio9"  | "studio10" | "studio11" | "studio12" |
+                "studio13" | "studio14" | "studio15" | "studio16"
+            if      (this.studioSlot === 1)  key = "studio1"
+            else if (this.studioSlot === 2)  key = "studio2"
+            else if (this.studioSlot === 3)  key = "studio3"
+            else if (this.studioSlot === 4)  key = "studio4"
+            else if (this.studioSlot === 5)  key = "studio5"
+            else if (this.studioSlot === 6)  key = "studio6"
+            else if (this.studioSlot === 7)  key = "studio7"
+            else if (this.studioSlot === 8)  key = "studio8"
+            else if (this.studioSlot === 9)  key = "studio9"
+            else if (this.studioSlot === 10) key = "studio10"
+            else if (this.studioSlot === 11) key = "studio11"
+            else if (this.studioSlot === 12) key = "studio12"
+            else if (this.studioSlot === 13) key = "studio13"
+            else if (this.studioSlot === 14) key = "studio14"
+            else if (this.studioSlot === 15) key = "studio15"
+            else if (this.studioSlot === 16) key = "studio16"
             else
                 throw new Error("invalid index")
-            this.state.slots[key] = this.audienceMessage
+            this.state.slots[key] = this.studioMessage
             this.patchState([ `slots.${key}` ])
         })
         this.$watch("aiMessage", () => {
@@ -1388,18 +1388,18 @@ export default defineComponent({
         speech2text.on("log", (level: string, msg: string) => {
             this.log(level, `Speech-to-Text: ${msg}`)
         })
-        let audienceBuffer = [ "" ]
+        let studioBuffer = [ "" ]
         speech2text.on("text", (chunk: Speech2TextChunk) => {
-            audienceBuffer[audienceBuffer.length - 1] = chunk.text
+            studioBuffer[studioBuffer.length - 1] = chunk.text
             if (chunk.final) {
-                audienceBuffer.push("")
-                this.audienceMessageFinal = true
+                studioBuffer.push("")
+                this.studioMessageFinal = true
             }
             else
-                this.audienceMessageFinal = false
-            this.audienceMessage = audienceBuffer.join(" ")
-            if (this.audienceMessageFinal && !this.recording && this.audienceAutoCommit)
-                this.audienceCommit()
+                this.studioMessageFinal = false
+            this.studioMessage = studioBuffer.join(" ")
+            if (this.studioMessageFinal && !this.recording && this.studioAutoCommit)
+                this.studioCommit()
         })
         await speech2text.init()
 
@@ -1411,11 +1411,11 @@ export default defineComponent({
                 this.log("ERROR", `Speech-to-Text engine failed: ${err}`)
                 this.raiseStatus("error", `Speech-to-Text engine failed: ${err}`, 2000)
             })
-            speech2text!.audioMeterApply(this.$refs.audienceMeter as HTMLCanvasElement)
+            speech2text!.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
         }
         const engineClose = async () => {
             this.log("INFO", "Speech-to-Text: stop engine")
-            speech2text!.audioMeterUnapply(this.$refs.audienceMeter as HTMLCanvasElement)
+            speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
             await speech2text!.close()
         }
         this.$watch("engine.speech2text", async () => {
@@ -1442,7 +1442,7 @@ export default defineComponent({
             if (this.recording) {
                 this.log("INFO", "Speech-to-Text: start recording")
                 speech2text.setActive(true)
-                audienceBuffer = [ "" ]
+                studioBuffer = [ "" ]
             }
             else {
                 this.log("INFO", "Speech-to-Text: stop recording")
@@ -1676,44 +1676,44 @@ export default defineComponent({
             })
         },
 
-        /*  commit Audience text  */
-        async audienceCommit () {
-            if (this.audienceMessage === "" || this.engine.text2text !== 2 || text2text === null)
+        /*  commit studio text  */
+        async studioCommit () {
+            if (this.studioMessage === "" || this.engine.text2text !== 2 || text2text === null)
                 return
-            this.text2textLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
-            await text2text.send(this.audienceMessage)
-            this.audienceMessage = ""
-            this.audienceSlot = 0
+            this.text2textLog.push({ persona: "Studio", message: this.studioMessage, final: true })
+            await text2text.send(this.studioMessage)
+            this.studioMessage = ""
+            this.studioSlot = 0
         },
 
-        /*  select Audience slot  */
-        audienceSlotSelect (n: number) {
-            if (this.audienceSlot === n) {
-                this.audienceSlot = 0
-                this.audienceMessage = ""
+        /*  select studio slot  */
+        studioSlotSelect (n: number) {
+            if (this.studioSlot === n) {
+                this.studioSlot = 0
+                this.studioMessage = ""
             }
             else {
-                this.audienceSlot = n
+                this.studioSlot = n
                 let val
-                if      (n === 1)  val = this.state.slots.audience1
-                else if (n === 2)  val = this.state.slots.audience2
-                else if (n === 3)  val = this.state.slots.audience3
-                else if (n === 4)  val = this.state.slots.audience4
-                else if (n === 5)  val = this.state.slots.audience5
-                else if (n === 6)  val = this.state.slots.audience6
-                else if (n === 7)  val = this.state.slots.audience7
-                else if (n === 8)  val = this.state.slots.audience8
-                else if (n === 9)  val = this.state.slots.audience9
-                else if (n === 10) val = this.state.slots.audience10
-                else if (n === 11) val = this.state.slots.audience11
-                else if (n === 12) val = this.state.slots.audience12
-                else if (n === 13) val = this.state.slots.audience13
-                else if (n === 14) val = this.state.slots.audience14
-                else if (n === 15) val = this.state.slots.audience15
-                else if (n === 16) val = this.state.slots.audience16
+                if      (n === 1)  val = this.state.slots.studio1
+                else if (n === 2)  val = this.state.slots.studio2
+                else if (n === 3)  val = this.state.slots.studio3
+                else if (n === 4)  val = this.state.slots.studio4
+                else if (n === 5)  val = this.state.slots.studio5
+                else if (n === 6)  val = this.state.slots.studio6
+                else if (n === 7)  val = this.state.slots.studio7
+                else if (n === 8)  val = this.state.slots.studio8
+                else if (n === 9)  val = this.state.slots.studio9
+                else if (n === 10) val = this.state.slots.studio10
+                else if (n === 11) val = this.state.slots.studio11
+                else if (n === 12) val = this.state.slots.studio12
+                else if (n === 13) val = this.state.slots.studio13
+                else if (n === 14) val = this.state.slots.studio14
+                else if (n === 15) val = this.state.slots.studio15
+                else if (n === 16) val = this.state.slots.studio16
                 else
                     throw new Error("invalid index")
-                this.audienceMessage = val
+                this.studioMessage = val
             }
         },
 
@@ -1771,7 +1771,7 @@ export default defineComponent({
             if (!this.recording) {
                 /*  start recording  */
                 this.recording = true
-                this.audienceMessage = ""
+                this.studioMessage = ""
             }
             else {
                 /*  stop recording  */
