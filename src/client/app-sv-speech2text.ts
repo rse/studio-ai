@@ -196,7 +196,7 @@ export default class Speech2Text extends EventEmitter {
             profanity_filter: false,
             utterances:       false
         } as Deepgram.LiveSchema
-        if (this.options.keywords !== "")
+        if (this.options.keywords !== "" && this.options.model.match(/^nova-2/))
             options.keywords = this.options.keywords
                 .split(/(?:\s+|\s*,\s*)/)
                 .map((kw) => `${kw}:1`)

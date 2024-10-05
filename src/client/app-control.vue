@@ -64,12 +64,7 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.speech2text.deepgramModel"
                                         v-bind:options="[
-                                            { label: 'Nova-2 ($0.0043/min)',         value: 'nova-2-general' },
-                                            { label: 'Nova-1 ($0.0043/min)',         value: 'nova' },
-                                            { label: 'Whisper-Tiny ($0.0033/min)',   value: 'whisper-tiny' },
-                                            { label: 'Whisper-Small ($0.0038/min)',  value: 'whisper-small' },
-                                            { label: 'Whisper ($0.0042/min)',        value: 'whisper' },
-                                            { label: 'Whisper-Large ($0.0048/min)',  value: 'whisper-large' }
+                                            { label: 'Nova-2 ($0.0043/min)', value: 'nova-2-general' }
                                         ]"
                                     />
                                 </div>
@@ -99,7 +94,9 @@
                                         v-model.lazy="state.speech2text.deepgramLanguage"
                                         v-bind:options="[
                                             { label: 'EN (English)', value: 'en' },
-                                            { label: 'DE (German)',  value: 'de' }
+                                            { label: 'DE (German)',  value: 'de' },
+                                            { label: 'FR (French)',  value: 'fr' },
+                                            { label: 'IT (Italian)', value: 'it' }
                                         ]"
                                     />
                                 </div>
