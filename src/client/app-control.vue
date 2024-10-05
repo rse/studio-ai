@@ -1029,6 +1029,7 @@
                 margin-bottom: 4px
                 width: calc(100% - 20px)
                 border-radius: 4px
+                user-select: text
             .text2text-entry-ai
                 background-color: var(--color-std-bg-2)
                 color: var(--color-acc-fg-4)
