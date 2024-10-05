@@ -53,6 +53,7 @@ export default class Speech2Text extends EventEmitter {
     private avatar:  StreamingAvatar | null = null
     private sessionId: string = ""
     private connected = false
+    private closing   = false
     private talking   = false
     private chromaKey: ChromaKey | null = null
 
@@ -139,11 +140,20 @@ export default class Speech2Text extends EventEmitter {
             this.connected = true
             this.emit("open")
         })
-        this.avatar.on(StreamingEvents.STREAM_DISCONNECTED, (ev: CustomEvent) => {
-            this.log("INFO", "HeyGen: streaming avatar: disconnected")
-            this.connected = false
-            this.emit("close")
-            this.close()
+        this.avatar.on(StreamingEvents.STREAM_DISCONNECTED, async (ev: CustomEvent) => {
+            if (!this.closing) {
+                this.log("INFO", "HeyGen: streaming avatar: disconnected (unexpected without close) -- reconnecting")
+                this.connected = false
+                this.emit("reconnect")
+                await this.close()
+                this.open()
+            }
+            else {
+                this.log("INFO", "HeyGen: streaming avatar: disconnected (expected during close)")
+                this.connected = false
+                this.emit("close")
+                this.close()
+            }
         })
 
         /*  react on talking events  */
@@ -216,6 +226,7 @@ export default class Speech2Text extends EventEmitter {
 
     /*  close Text-to-Speech engine  */
     async close () {
+        this.closing = true
         if (this.chromaKey !== null) {
             this.log("INFO", "destroying chroma-key video transformer")
             this.chromaKey.destroy()
@@ -234,9 +245,10 @@ export default class Speech2Text extends EventEmitter {
         }
         if (this.avatar !== null) {
             this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
-            this.avatar.stopAvatar()
+            await this.avatar.stopAvatar()
             this.avatar = null
         }
+        this.closing = false
     }
 
     /*  one-time destruction  */

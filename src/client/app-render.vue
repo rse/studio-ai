@@ -335,6 +335,10 @@ export default defineComponent({
             this.sendCommand("t2s:opened")
             this.connected = true
         })
+        text2speech.on("reconnect", () => {
+            this.sendCommand("t2s:reconnecting")
+            this.connected = false
+        })
         text2speech.on("close", () => {
             this.sendCommand("t2s:closed")
             this.connected = false
