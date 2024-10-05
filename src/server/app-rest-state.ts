@@ -32,7 +32,7 @@ export default class RESTState {
     ) {}
     async init () {
         /*  determine state file  */
-        this.stateFile = path.join(this.argv.stateDir, "canvas-ai-state.yaml")
+        this.stateFile = path.join(this.argv.stateDir, "studio-ai-state.yaml")
 
         /*  dynamically adjust configuration  */
         const adjustConfig = (prefix: string, obj: any, reverse = false) => {

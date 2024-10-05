@@ -10,7 +10,7 @@ import { Stream }       from "stream"
 import OpenAI           from "openai"
 
 /*  type of constructor options  */
-export type ChatOptions = {
+export type Text2TextOptions = {
     apiToken:     string,
     model:        string,
     prompt:       string,
@@ -20,18 +20,18 @@ export type ChatOptions = {
 }
 
 /*  type of text chunk  */
-export type ChatChunk = {
+export type Text2TextChunk = {
     text:     string,
     final:    boolean
 }
 
-/*  Chat API class  */
-export default class Chat extends EventEmitter {
+/*  Text-to-Text API class  */
+export default class Text2Text extends EventEmitter {
     /*  default option values  */
     private options = {
         apiToken: "",
         model:    "gpt-4o-mini"
-    } as ChatOptions
+    } as Text2TextOptions
 
     /*  internal state  */
     private client: OpenAI | null = null
@@ -39,7 +39,7 @@ export default class Chat extends EventEmitter {
     private dialog = [] as Array<OpenAI.ChatCompletionMessageParam>
 
     /*  API class constructor  */
-    constructor (options: ChatOptions) {
+    constructor (options: Text2TextOptions) {
         super()
         this.options.apiToken     = options.apiToken
         this.options.model        = options.model
@@ -65,7 +65,7 @@ export default class Chat extends EventEmitter {
     async init () {
     }
 
-    /*  open Speech-to-Text engine  */
+    /*  open Text-to-Text engine  */
     async open () {
         this.client = new OpenAI({
             apiKey: this.options.apiToken,
@@ -95,19 +95,19 @@ export default class Chat extends EventEmitter {
             this.emit("text", {
                 text:  snapshot,
                 final: false
-            } as ChatChunk)
+            } as Text2TextChunk)
         })
         const completion = await stream.finalChatCompletion()
         const response = completion.choices[0].message.content!
         this.emit("text", {
             text:  response,
             final: true
-        } as ChatChunk)
+        } as Text2TextChunk)
         this.dialog.push({ role: "assistant", content: response })
         return response
     }
 
-    /*  close Speech-to-Text engine  */
+    /*  close Text-to-Text engine  */
     async close () {
         this.emit("close")
     }

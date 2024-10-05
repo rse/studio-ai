@@ -117,7 +117,7 @@
                         <!--  ==== SETTINGS: T2T ====  -->
                         <tab id="t2t" name="Text-to-Text (T2T)">
                             <div class="desc">
-                                These are the settings for the <b>Text-to-Text (T2T)</b> (aka Chat) engine,
+                                These are the settings for the <b>Text-to-Text (T2T)</b> engine,
                                 based on the <b>OpenAI GPT</b> AI cloud service.
                                 <br/>
                                 The T2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
@@ -129,9 +129,9 @@
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiApiToken = stateDefault.chat.openaiApiToken">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiApiToken = stateDefault.text2text.openaiApiToken">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.chat.openaiApiToken"/>
+                                    <input class="text" v-model.lazy="state.text2text.openaiApiToken"/>
                                 </div>
 
                                 <div class="label1">openai</div>
@@ -140,12 +140,12 @@
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiModel = stateDefault.chat.openaiModel">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiModel = stateDefault.text2text.openaiModel">RESET</div>
                                 <div class="input">
                                     <Multiselect class="multiselect"
                                         v-bind:searchable="true"    v-bind:required="true"
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
-                                        v-model.lazy="state.chat.openaiModel"
+                                        v-model.lazy="state.text2text.openaiModel"
                                         v-bind:options="[
                                             { label: 'GPT-3.5-turbo ($3.00/1Mit, $6.00/1Mot)', value: 'gpt-3.5-turbo' },
                                             { label: 'GPT-4 ($30.00/1Mit, $60.00/1Mot)',       value: 'gpt-4' },
@@ -162,12 +162,12 @@
                                 <div class="label2">(temperature)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
-                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiTemperature)"
-                                        v-on:change="(ev) => state.chat.openaiTemperature = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 2.0)"/>
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2text.openaiTemperature)"
+                                        v-on:change="(ev) => state.text2text.openaiTemperature = fieldImport((ev.target! as HTMLInputElement).value, 0.0, 2.0)"/>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiTemperature = stateDefault.chat.openaiTemperature">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiTemperature = stateDefault.text2text.openaiTemperature">RESET</div>
                                 <div class="input">
-                                    <slider class="slider" v-model="state.chat.openaiTemperature"
+                                    <slider class="slider" v-model="state.text2text.openaiTemperature"
                                         v-bind:min="0.0" v-bind:max="2.0" v-bind:step="0.05"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
@@ -177,12 +177,12 @@
                                 <div class="label2">(seed)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
-                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiSeed)"
-                                        v-on:change="(ev) => state.chat.openaiSeed = fieldImport((ev.target! as HTMLInputElement).value, 0, 100)"/>
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2text.openaiSeed)"
+                                        v-on:change="(ev) => state.text2text.openaiSeed = fieldImport((ev.target! as HTMLInputElement).value, 0, 100)"/>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiSeed = stateDefault.chat.openaiSeed">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiSeed = stateDefault.text2text.openaiSeed">RESET</div>
                                 <div class="input">
-                                    <slider class="slider" v-model="state.chat.openaiSeed"
+                                    <slider class="slider" v-model="state.text2text.openaiSeed"
                                         v-bind:min="0" v-bind:max="100" v-bind:step="1"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
@@ -192,12 +192,12 @@
                                 <div class="label2">(max-tokens)</div>
                                 <div class="label3">[number]:</div>
                                 <div class="value">
-                                    <input tabindex="8" v-bind:value="fieldExport(state.chat.openaiMaxTokens)"
-                                        v-on:change="(ev) => state.chat.openaiMaxTokens = fieldImport((ev.target! as HTMLInputElement).value, 10, 1000)"/>
+                                    <input tabindex="8" v-bind:value="fieldExport(state.text2text.openaiMaxTokens)"
+                                        v-on:change="(ev) => state.text2text.openaiMaxTokens = fieldImport((ev.target! as HTMLInputElement).value, 10, 1000)"/>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiMaxTokens = stateDefault.chat.openaiMaxTokens">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiMaxTokens = stateDefault.text2text.openaiMaxTokens">RESET</div>
                                 <div class="input">
-                                    <slider class="slider" v-model="state.chat.openaiMaxTokens"
+                                    <slider class="slider" v-model="state.text2text.openaiMaxTokens"
                                         v-bind:min="10" v-bind:max="1000" v-bind:step="10"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
@@ -209,9 +209,9 @@
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.chat.openaiPrompt = stateDefault.chat.openaiPrompt">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiPrompt = stateDefault.text2text.openaiPrompt">RESET</div>
                                 <div class="input">
-                                    <textarea class="prompt" rows="15" v-model.lazy="state.chat.openaiPrompt"></textarea>
+                                    <textarea class="prompt" rows="15" v-model.lazy="state.text2text.openaiPrompt"></textarea>
                                 </div>
                             </div>
                         </tab>
@@ -409,16 +409,16 @@
                                     </span>
                                     S2T
                                 </div>
-                                <div class="button chat"
-                                    v-bind:class="{ active: engine.chat > 0 }"
-                                    v-on:click="engineToggle('chat')">
-                                    <span v-show="engine.chat === 0" class="icon">
+                                <div class="button text2text"
+                                    v-bind:class="{ active: engine.text2text > 0 }"
+                                    v-on:click="engineToggle('text2text')">
+                                    <span v-show="engine.text2text === 0" class="icon">
                                         <i class="fas fa-square"></i>
                                     </span>
-                                    <span v-show="engine.chat === 1" class="icon">
+                                    <span v-show="engine.text2text === 1" class="icon">
                                         <i class="fas fa-gear fa-spin"></i>
                                     </span>
-                                    <span v-show="engine.chat === 2" class="icon">
+                                    <span v-show="engine.text2text === 2" class="icon">
                                         <spinner-grid class="spinner-grid" size="16"/>
                                     </span>
                                     T2T
@@ -483,7 +483,7 @@
                                     RECORD
                                 </div>
                                 <div class="button audience-commit"
-                                    v-bind:class="{ disabled: audienceMessage === '' || engine.chat !== 2 }"
+                                    v-bind:class="{ disabled: audienceMessage === '' || engine.text2text !== 2 }"
                                     v-on:click="audienceCommit()">
                                     <toggle v-on:click.stop="void(0)"
                                         class="toggle toggle-autocommit" v-model="audienceAutoCommit">
@@ -539,13 +539,13 @@
                             </div>
                         </div>
                         <div ref="right" class="right">
-                            <div class="chat-history">
-                                <div v-for="entry, i of chatLog" v-bind:key="i" class="chat-entry"
-                                    v-bind:class="{ [ 'chat-entry-' + entry.persona.toLowerCase() ]: true }">
-                                    <div class="chat-entry-persona">{{ entry.persona }}:</div>
-                                    <div class="chat-entry-message">
+                            <div class="text2text-history">
+                                <div v-for="entry, i of text2textLog" v-bind:key="i" class="text2text-entry"
+                                    v-bind:class="{ [ 'text2text-entry-' + entry.persona.toLowerCase() ]: true }">
+                                    <div class="text2text-entry-persona">{{ entry.persona }}:</div>
+                                    <div class="text2text-entry-message">
                                         {{ entry.message }}
-                                        <span v-show="!entry.final" class="chat-entry-message-dots">
+                                        <span v-show="!entry.final" class="text2text-entry-message-dots">
                                             &nbsp; <spinner-grid class="spinner-grid" size="14"/>
                                         </span>
                                     </div>
@@ -1016,8 +1016,8 @@
                 &:disabled
                     background-color: var(--color-acc-bg-1)
                     color: var(--color-acc-fg-3)
-        .chat-history
-            .chat-entry
+        .text2text-history
+            .text2text-entry
                 display: flex
                 flex-direction: row
                 justify-content: center
@@ -1029,18 +1029,18 @@
                 margin-bottom: 4px
                 width: calc(100% - 20px)
                 border-radius: 4px
-            .chat-entry-ai
+            .text2text-entry-ai
                 background-color: var(--color-std-bg-2)
                 color: var(--color-acc-fg-4)
-            .chat-entry-studio
+            .text2text-entry-studio
                 background-color: var(--color-std-bg-3)
                 color: var(--color-std-fg-5)
-            .chat-entry-persona
+            .text2text-entry-persona
                 width:     70px
                 max-width: 70px
                 min-width: 70px
                 font-weight: bold
-            .chat-entry-message
+            .text2text-entry-message
                 flex-grow: 1
         .icon
             display: inline-block
@@ -1151,7 +1151,7 @@ import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
-import Chat, { ChatChunk } from "./app-sv-text2text"
+import Text2Text,   { Text2TextChunk }   from "./app-sv-text2text"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
@@ -1168,8 +1168,8 @@ import {
 <script lang="ts">
 let statusTimer: ReturnType<typeof setTimeout> | null = null
 let speech2text: Speech2Text | null = null
-let chat: Chat | null = null
-type ChatLogEntry = { persona: string, message: string, final: boolean }
+let text2text: Text2Text | null = null
+type Text2TextLogEntry = { persona: string, message: string, final: boolean }
 const commandBus = new EventEmitter()
 export default defineComponent({
     name: "app-control",
@@ -1205,7 +1205,7 @@ export default defineComponent({
         audienceSlot: 0,
         aiMessage: "",
         aiSlot: 0,
-        chatLog: [] as Array<ChatLogEntry>,
+        text2textLog: [] as Array<Text2TextLogEntry>,
         status: {
             kind: "",
             msg:  ""
@@ -1218,7 +1218,7 @@ export default defineComponent({
         pkg,
         engine: {
             speech2text: 0,
-            chat:        0,
+            text2text:   0,
             text2speech: 0
         }
     }),
@@ -1362,13 +1362,13 @@ export default defineComponent({
             this.patchState([ `slots.${key}` ])
         })
 
-        /*  activate chat-history scrolling  */
+        /*  activate text-to-text-history scrolling  */
         const container = this.$refs.right as HTMLElement
         this.ps = new PerfectScrollbar(container, {
             suppressScrollX: true,
             scrollXMarginOffset: 100
         })
-        this.$watch("chatLog", () => {
+        this.$watch("text2textLog", () => {
             this.ps!.update()
             setTimeout(() => {
                 container.scrollTo({ left: 0, top: container.scrollHeight })
@@ -1450,62 +1450,62 @@ export default defineComponent({
             }
         })
 
-        /*  establish Chat engine  */
-        this.log("INFO", "establishing Chat engine")
-        chat = new Chat({
-            apiToken:     this.state.chat.openaiApiToken,
-            model:        this.state.chat.openaiModel,
-            prompt:       this.state.chat.openaiPrompt,
-            temperature:  this.state.chat.openaiTemperature,
-            seed:         this.state.chat.openaiSeed,
-            maxTokens:    this.state.chat.openaiMaxTokens
+        /*  establish text-to-text engine  */
+        this.log("INFO", "establishing Text-to-Text engine")
+        text2text = new Text2Text({
+            apiToken:     this.state.text2text.openaiApiToken,
+            model:        this.state.text2text.openaiModel,
+            prompt:       this.state.text2text.openaiPrompt,
+            temperature:  this.state.text2text.openaiTemperature,
+            seed:         this.state.text2text.openaiSeed,
+            maxTokens:    this.state.text2text.openaiMaxTokens
         })
-        chat.on("log", (level: string, msg: string) => {
-            this.log(level, `Chat: ${msg}`)
+        text2text.on("log", (level: string, msg: string) => {
+            this.log(level, `Text-to-Text: ${msg}`)
         })
-        chat.on("text", (chunk: ChatChunk) => {
-            const chatLog = this.chatLog as Array<ChatLogEntry>
-            if (this.chatLog.length === 0
-                || chatLog[chatLog.length - 1].persona === "Studio"
-                || chatLog[chatLog.length - 1].final)
-                chatLog.push({ persona: "AI", message: "", final: false })
-            const entry = chatLog[chatLog.length - 1]
+        text2text.on("text", (chunk: Text2TextChunk) => {
+            const text2textLog = this.text2textLog as Array<Text2TextLogEntry>
+            if (this.text2textLog.length === 0
+                || text2textLog[text2textLog.length - 1].persona === "Studio"
+                || text2textLog[text2textLog.length - 1].final)
+                text2textLog.push({ persona: "AI", message: "", final: false })
+            const entry = text2textLog[text2textLog.length - 1]
             entry.message = chunk.text
             entry.final   = chunk.final
             if (entry.final)
                 this.sendCommand("t2s:speak", [ { text: entry.message } ])
         })
-        await chat.init()
+        await text2text.init()
 
-        /*  enable/disable chat engine  */
-        const chatEngineOpen = async () => {
-            this.log("INFO", "Chat: start engine")
-            await chat!.open().catch((err) => {
-                this.engine.chat = 0
-                this.log("ERROR", `Chat engine failed: ${err}`)
-                this.raiseStatus("error", `Chat engine failed: ${err}`, 2000)
+        /*  enable/disable text-to-text engine  */
+        const text2textEngineOpen = async () => {
+            this.log("INFO", "Text-to-Text: start engine")
+            await text2text!.open().catch((err) => {
+                this.engine.text2text = 0
+                this.log("ERROR", `Text-to-Text engine failed: ${err}`)
+                this.raiseStatus("error", `Text-to-Text engine failed: ${err}`, 2000)
             })
         }
-        const chatEngineClose = async () => {
-            this.log("INFO", "Chat: stop engine")
-            await chat!.close()
+        const text2textEngineClose = async () => {
+            this.log("INFO", "Text-to-Text: stop engine")
+            await text2text!.close()
         }
-        this.$watch("engine.chat", async () => {
-            if (chat === null)
+        this.$watch("engine.text2text", async () => {
+            if (text2text === null)
                 return
-            if (this.engine.chat === 1)
-                chatEngineOpen()
-            else if (this.engine.chat === 0)
-                chatEngineClose()
+            if (this.engine.text2text === 1)
+                text2textEngineOpen()
+            else if (this.engine.text2text === 0)
+                text2textEngineClose()
         })
-        chat.on("open", () => {
-            if (this.engine.chat === 1)
-                this.engine.chat = 2
+        text2text.on("open", () => {
+            if (this.engine.text2text === 1)
+                this.engine.text2text = 2
         })
-        chat.on("close", () => {
-            if (this.engine.chat === 2) {
-                this.log("INFO", "Chat: unexpected engine stop -- re-starting engine")
-                this.engine.chat = 1
+        text2text.on("close", () => {
+            if (this.engine.text2text === 2) {
+                this.log("INFO", "Text-to-Text: unexpected engine stop -- re-starting engine")
+                this.engine.text2text = 1
             }
         })
 
@@ -1678,10 +1678,10 @@ export default defineComponent({
 
         /*  commit Audience text  */
         async audienceCommit () {
-            if (this.audienceMessage === "" || this.engine.chat !== 2 || chat === null)
+            if (this.audienceMessage === "" || this.engine.text2text !== 2 || text2text === null)
                 return
-            this.chatLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
-            await chat.send(this.audienceMessage)
+            this.text2textLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
+            await text2text.send(this.audienceMessage)
             this.audienceMessage = ""
             this.audienceSlot = 0
         },
@@ -1780,7 +1780,7 @@ export default defineComponent({
         },
 
         /*  toggle engine  */
-        engineToggle (engine: "speech2text" | "chat" | "text2speech") {
+        engineToggle (engine: "speech2text" | "text2text" | "text2speech") {
             if (this.engine[engine] === 2)
                 this.engine[engine] = 0
             else if (this.engine[engine] === 0)

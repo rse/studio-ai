@@ -18,7 +18,7 @@ export type StateType = {
         deepgramLanguage:  string,
         deepgramKeywords:  string
     },
-    chat: {
+    text2text: {
         openaiApiToken:    string,
         openaiModel:       string,
         openaiPrompt:      string,
@@ -88,7 +88,7 @@ export const StateSchema = `{
         deepgramLanguage:  string,
         deepgramKeywords:  string
     },
-    chat: {
+    text2text: {
         openaiApiToken:    string,
         openaiModel:       string,
         openaiPrompt:      string,
@@ -158,7 +158,7 @@ export const StateDefault: StateType = {
         deepgramLanguage:  "de",
         deepgramKeywords:  "msg KI AI CTO"
     },
-    chat: {
+    text2text: {
         openaiApiToken:    "@{STUDIOAI_OPENAI_API_TOKEN}",
         openaiModel:       "gpt-4o-mini",
         openaiPrompt:      "Jedes Mal, wenn du auf den User Input reagierst, mußt du folgende Persona verkörpern: " +
