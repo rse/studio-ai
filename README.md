@@ -9,10 +9,10 @@ Studio AI
 About
 -----
 
-**Studio AI** is a client/server applications for an interactive
+**Studio AI** is a client/server application for an interactive
 studio Artificial Intelligence (AI), represented by a dynamically
 rendered avatar. The avatar receives its inputs through a Speech-to-Text
-pipeline, performs its processings with a Text-to-Text pipleline, and
+pipeline, performs its processings with a Text-to-Text pipeline, and
 sends its outputs through a Text-to-Speech/Video pipeline.
 
 ![screenshot](doc/screenshot.png)
@@ -91,7 +91,10 @@ This prototype application was based on an earlier version of the
 [HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
 for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAvatarSDK).
 
-In Oktober 2025 Dr. Ralf S. Engelschall, CTO msg group, first integrated this
+git ci -m "small typo fixes" -a
+git push
+
+
 prototype application into his msg Filmstudio. Unfortunately, this showed to be
 too problematic. As a result, this **Studio AI** application was developed by him
 from scratch in order to solve the following issues in the original priority order:
