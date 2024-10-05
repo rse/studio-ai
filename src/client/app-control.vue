@@ -1566,6 +1566,7 @@ export default defineComponent({
         })
         commandBus.on("t2s:speak:stop", () => {
             this.speaking = false
+            this.aiSlot = 0
             this.aiMessage = ""
         })
     },
