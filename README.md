@@ -90,8 +90,9 @@ History
 -------
 
 The **Studio AI** application was inspired by a prototype application
-from [msg systems ag](https://www.msg.group), which employees of its XAI and GB P divisions
-initially crafted for controlling an AI avatar on the panel discussion at the
+from [msg systems ag](https://www.msg.group), which employees of its
+public sector division and AI cross-division initially crafted for
+controlling an AI avatar on the panel discussion at the
 conference [Nordl@nder Digital](https://www.nordlaender-digital.de/) in September 2025.
 This prototype application was based on an earlier version of the
 [HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
