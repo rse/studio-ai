@@ -750,7 +750,7 @@
             font-size: 12pt
             width: calc(400px - 2 * 12px)
             &.prompt
-                font-size: 10pt
+                font-size: 11pt
                 font-weight: normal
     .render
         .preview-control
