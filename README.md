@@ -91,10 +91,7 @@ This prototype application was based on an earlier version of the
 [HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
 for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAvatarSDK).
 
-git ci -m "small typo fixes" -a
-git push
-
-
+In October 2025 Dr. Ralf S. Engelschall, CTO msg group, first integrated this
 prototype application into his msg Filmstudio. Unfortunately, this showed to be
 too problematic. As a result, this **Studio AI** application was developed by him
 from scratch in order to solve the following issues in the original priority order:
