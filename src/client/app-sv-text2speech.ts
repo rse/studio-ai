@@ -111,7 +111,7 @@ export default class Speech2Text extends EventEmitter {
         this.avatar = new StreamingAvatar({ token })
 
         /*  react on connection events  */
-        this.avatar.on(StreamingEvents.STREAM_READY, (ev: CustomEvent) => {
+        this.avatar.on(StreamingEvents.STREAM_READY, async (ev: CustomEvent) => {
             this.log("INFO", "HeyGen: streaming avatar: ready")
             let stream = ev.detail as MediaStream
             if (this.options.ckEnable) {
@@ -129,7 +129,7 @@ export default class Speech2Text extends EventEmitter {
                     this.options.video!.muted = false
                 }
             }, { once: true })
-            this.options.video!.play().catch(() => {
+            await this.options.video!.play().catch(() => {
                 this.log("INFO", "HeyGen: streaming avatar: playing of video element has to be deferred")
                 document.addEventListener("click", () => {
                     this.log("INFO", "HeyGen: streaming avatar: deferred unmuting video element")
