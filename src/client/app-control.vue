@@ -779,7 +779,7 @@
                 padding: 2px 8px 2px 8px
                 text-align: center
         .button
-            background-color: var(--color-std-bg-2)
+            background-color: var(--color-std-bg-5)
             color: var(--color-std-fg-5)
             border-radius: 4px
             padding: 4px 8px 4px 8px
@@ -834,7 +834,7 @@
                 align-items: center
                 gap: 10px 10px
             .button
-                background-color: var(--color-std-bg-3)
+                background-color: var(--color-std-bg-5)
                 color: var(--color-std-fg-3)
                 border-radius: 4px
                 padding: 2px 8px 2px 8px
@@ -895,7 +895,7 @@
             overflow: hidden
             height: calc(100vh - 136px - 40px)
         .button
-            background-color: var(--color-std-bg-4)
+            background-color: var(--color-std-bg-5)
             color: var(--color-std-fg-4)
             border-radius: 4px
             padding: 2px 0 2px 0
@@ -915,18 +915,18 @@
                 background-color: var(--color-acc-bg-4)
                 color: var(--color-acc-fg-5)
             &.disabled
-                background-color: var(--color-std-bg-3)
+                background-color: var(--color-std-bg-1)
                 color: var(--color-std-fg-2)
             &.disabled:hover
-                background-color: var(--color-std-bg-3)
+                background-color: var(--color-std-bg-1)
                 color: var(--color-std-fg-2)
                 cursor: default
             &.empty
-                background-color: var(--color-std-bg-1)
+                background-color: var(--color-std-bg-3)
                 color: var(--color-std-fg-1)
             &.empty:hover
-                background-color: var(--color-std-bg-1)
-                color: var(--color-std-fg-1)
+                background-color: var(--color-acc-bg-4)
+                color: var(--color-acc-fg-1)
             &.active
                 background-color: var(--color-sig-bg-3)
                 color: var(--color-sig-fg-2)
