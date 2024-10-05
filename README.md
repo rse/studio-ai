@@ -24,6 +24,8 @@ The Speech-to-Text pipeline is based on [Deepgram](https://deepgram.com),
 the Text-to-Text pipeline is based on [OpenAI ChatGPT](https://chatgpt.com),
 and the Text-to-Speech/Video pipeline is based on [HeyGen](https://heygen.com).
 
+![screenshot](doc/screenshot.png)
+
 Usage (Production)
 ------------------
 
