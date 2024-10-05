@@ -945,6 +945,8 @@
                 &:hover
                     background-color: var(--color-sig-bg-5)
                     color: var(--color-sig-fg-5)
+                .toggle-on
+                    background-color: var(--color-sig-bg-1) !important
             .toggle-autoinject,
             .toggle-autoextract,
             .toggle-autospeak
