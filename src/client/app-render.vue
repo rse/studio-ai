@@ -223,58 +223,73 @@ export default defineComponent({
         })
 
         /*  establish Text-to-Speech engine  */
-        this.log("INFO", "establishing Text-to-Speech engine")
-        text2speech = new Text2Speech({
-            apiToken:     this.state.text2speech.heygenApiToken,
-            avatarId:     this.state.text2speech.heygenAvatarId,
-            quality:      this.state.text2speech.heygenQuality,
-            voiceId:      this.state.text2speech.heygenVoiceId,
-            rate:         this.state.text2speech.heygenRate,
-            emotion:      this.state.text2speech.heygenEmotion,
-            language:     this.state.text2speech.heygenLanguage,
-            ckEnable:     this.state.text2speech.ckEnable,
-            ckThreshold:  this.state.text2speech.ckThreshold,
-            ckSmoothing:  this.state.text2speech.ckSmoothing,
-            device:       this.state.text2speech.speakerDevice,
-            video:        this.$refs.video as HTMLVideoElement
-        })
-        await text2speech.init()
+        const establishText2Speech = async (recreating: boolean) => {
+            this.log("INFO", `Text-to-Speech: ${recreating ? "re" : ""}establishing Text-to-Speech engine`)
+            const reOpen = this.connected
+            if (recreating) {
+                await text2speech?.close()
+                await text2speech?.destroy()
+            }
+            text2speech = new Text2Speech({
+                apiToken:     this.state.text2speech.heygenApiToken,
+                avatar:       this.state.text2speech.heygenAvatar,
+                quality:      this.state.text2speech.heygenQuality,
+                rate:         this.state.text2speech.heygenRate,
+                emotion:      this.state.text2speech.heygenEmotion,
+                language:     this.state.text2speech.heygenLanguage,
+                ckEnable:     this.state.text2speech.ckEnable,
+                ckThreshold:  this.state.text2speech.ckThreshold,
+                ckSmoothing:  this.state.text2speech.ckSmoothing,
+                device:       this.state.text2speech.speakerDevice,
+                video:        this.$refs.video as HTMLVideoElement
+            })
+            await text2speech.init()
 
-        /*  react on Text-to-Speech engine events  */
-        text2speech.on("log", (level: string, msg: string) => {
-            this.log(level, `Text-to-Speech: ${msg}`)
-        })
-        text2speech.on("open", () => {
-            this.sendCommand("t2s:opened")
-            this.connected = true
-        })
-        text2speech.on("reconnect", () => {
-            this.sendCommand("t2s:reconnecting")
-            this.connected = false
-        })
-        text2speech.on("close", () => {
-            this.sendCommand("t2s:closed")
-            this.connected = false
-        })
-        text2speech.on("speak:start", () => {
-            this.sendCommand("t2s:speak:start")
-        })
-        text2speech.on("speak:stop", () => {
-            this.sendCommand("t2s:speak:stop")
-        })
+            /*  react on Text-to-Speech engine events  */
+            text2speech.on("log", (level: string, msg: string) => {
+                this.log(level, `Text-to-Speech: ${msg}`)
+            })
+            text2speech.on("open", () => {
+                this.sendCommand("t2s:opened")
+                this.connected = true
+            })
+            text2speech.on("reconnect", () => {
+                this.sendCommand("t2s:reconnecting")
+                this.connected = false
+            })
+            text2speech.on("close", () => {
+                this.sendCommand("t2s:closed")
+                this.connected = false
+            })
+            text2speech.on("speak:start", () => {
+                this.sendCommand("t2s:speak:start")
+            })
+            text2speech.on("speak:stop", () => {
+                this.sendCommand("t2s:speak:stop")
+            })
+
+            /*  optionally re-open connection on re-creation  */
+            if (reOpen)
+                text2speech.open()
+        }
+        await establishText2Speech(false)
+        this.$watch("state.text2speech", () => {
+            this.log("INFO", "Text-to-Speech: reconfiguration detected")
+            establishText2Speech(true)
+        }, { deep: true })
 
         /*  react on command events  */
         commandBus.on("t2s:open", () => {
-            text2speech!.open()
+            text2speech?.open()
         })
         commandBus.on("t2s:close", () => {
-            text2speech!.close()
+            text2speech?.close()
         })
         commandBus.on("t2s:speak", (request: { text: string }) => {
-            text2speech!.speak(request.text)
+            text2speech?.speak(request.text)
         })
         commandBus.on("t2s:interrupt", () => {
-            text2speech!.interrupt()
+            text2speech?.interrupt()
         })
     },
     methods: {

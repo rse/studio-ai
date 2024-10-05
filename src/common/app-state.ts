@@ -28,9 +28,8 @@ export type StateType = {
     },
     text2speech: {
         heygenApiToken:    string,
-        heygenAvatarId:    string,
+        heygenAvatar:      string,
         heygenQuality:     string,
-        heygenVoiceId:     string,
         heygenRate:        number,
         heygenEmotion:     string,
         heygenLanguage:    string,
@@ -98,9 +97,8 @@ export const StateSchema = `{
     },
     text2speech: {
         heygenApiToken:    string,
-        heygenAvatarId:    string,
+        heygenAvatar:      string,
         heygenQuality:     string,
-        heygenVoiceId:     string,
         heygenRate:        number,
         heygenEmotion:     string,
         heygenLanguage:    string,
@@ -192,9 +190,8 @@ export const StateDefault: StateType = {
     },
     text2speech: {
         heygenApiToken:    "@{STUDIOAI_HEYGEN_API_TOKEN}",
-        heygenAvatarId:    "Kayla-incasualsuit-20220818",
+        heygenAvatar:      "kayla",
         heygenQuality:     "high",
-        heygenVoiceId:     "21d9632a2fc842308ad9b5c5b5014e3a",
         heygenRate:        1.25,
         heygenEmotion:     "broadcaster",
         heygenLanguage:    "de",

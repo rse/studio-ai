@@ -242,9 +242,20 @@
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.text2speech.heygenAvatarId = stateDefault.text2speech.heygenAvatarId">RESET</div>
+                                <div class="button" v-on:click="state.text2speech.heygenAvatar = stateDefault.text2speech.heygenAvatar">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenAvatarId"/>
+                                    <Multiselect class="multiselect"
+                                        v-bind:searchable="true"    v-bind:required="true"
+                                        v-bind:can-deselect="false" v-bind:can-clear="false"
+                                        v-model.lazy="state.text2speech.heygenAvatar"
+                                        v-bind:options="[
+                                            { label: 'Kayla (a:1/v:1)',  value: 'kayla' },
+                                            { label: 'Edward (a:3/v:2)', value: 'edward' },
+                                            { label: 'Tyler (a:1/v:3)',  value: 'tyler' },
+                                            { label: 'Anna (a:1/v:3)',   value: 'anna' },
+                                            { label: 'Susan (a:2/v:3)',  value: 'susan' }
+                                        ]"
+                                    />
                                 </div>
 
                                 <div class="label1">heygen</div>
@@ -265,17 +276,6 @@
                                             { label: 'High',   value: 'high' },
                                         ]"
                                     />
-                                </div>
-
-                                <div class="label1">heygen</div>
-                                <div class="label2">(voice id)</div>
-                                <div class="label3">[id]:</div>
-                                <div class="value">
-                                    <div class="fixed">*</div>
-                                </div>
-                                <div class="button" v-on:click="state.text2speech.heygenVoiceId = stateDefault.text2speech.heygenVoiceId">RESET</div>
-                                <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenVoiceId"/>
                                 </div>
 
                                 <div class="label1">heygen</div>

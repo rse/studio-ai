@@ -11,16 +11,16 @@ import StreamingAvatar, {
     AvatarQuality,
     StreamingEvents,
     VoiceEmotion,
-    TaskType
+    TaskType,
+    StartAvatarRequest
 } from "@heygen/streaming-avatar"
 import ChromaKey from "./app-sv-chromakey"
 
 /*  type of constructor options  */
 export type Text2SpeechOptions = {
     apiToken:    string,
-    avatarId:    string,
+    avatar:      string,
     quality:     string,
-    voiceId:     string,
     rate:        number,
     emotion:     string,
     language:    string,
@@ -31,14 +31,28 @@ export type Text2SpeechOptions = {
     video:       HTMLVideoElement | null
 }
 
+/*  list of avatars working with HeyGen Instant Avatar Streaming API  */
+export type Text2SpeechAvatarType = {
+    id:       string,
+    name:     string,
+    avatarId: string,
+    voiceId:  string
+}
+export const Text2SpeechAvatars = [
+    { id: "kayla",  name: "Kayla",  avatarId: "Kayla-incasualsuit-20220818", voiceId: "21d9632a2fc842308ad9b5c5b5014e3a" },
+    { id: "edward", name: "Edward", avatarId: "Eric_public_pro2_20230608",   voiceId: "" },
+    { id: "tyler",  name: "Tyler",  avatarId: "Tyler-incasualsuit-20220721", voiceId: "" },
+    { id: "anna",   name: "Anna",   avatarId: "Anna_public_3_20240108",      voiceId: "" },
+    { id: "susan",  name: "Susan",  avatarId: "Susan_public_2_20240328",     voiceId: "" }
+] as Array<Text2SpeechAvatarType>
+
 /*  Text-to-Speech API class  */
-export default class Speech2Text extends EventEmitter {
+export default class Text2Speech extends EventEmitter {
     /*  default option values  */
     private options = {
         apiToken:    "",
-        avatarId:    "",
+        avatar:      "",
         quality:     "",
-        voiceId:     "",
         rate:        1.0,
         emotion:     "",
         language:    "",
@@ -61,9 +75,8 @@ export default class Speech2Text extends EventEmitter {
     constructor (options: Text2SpeechOptions) {
         super()
         this.options.apiToken     = options.apiToken
-        this.options.avatarId     = options.avatarId
+        this.options.avatar       = options.avatar
         this.options.quality      = options.quality
-        this.options.voiceId      = options.voiceId
         this.options.rate         = options.rate
         this.options.emotion      = options.emotion
         this.options.language     = options.language
@@ -219,16 +232,21 @@ export default class Speech2Text extends EventEmitter {
         else if (this.options.emotion === "friendly")    emotion = VoiceEmotion.FRIENDLY
         else if (this.options.emotion === "serious")     emotion = VoiceEmotion.SERIOUS
         else if (this.options.emotion === "soothing")    emotion = VoiceEmotion.SOOTHING
-        const info = await this.avatar.createStartAvatar({
-            avatarName:  this.options.avatarId,
+        const avatar = Text2SpeechAvatars.find((entry) => entry.id === this.options.avatar)
+        if (avatar === undefined)
+            throw new Error("invalid avatar")
+        const options = {
+            avatarName:  avatar.avatarId,
             quality,
             voice: {
-                voiceId: this.options.voiceId,
                 rate:    this.options.rate,
                 emotion
             },
             language:    this.options.language
-        })
+        } as StartAvatarRequest
+        if (avatar.voiceId !== "")
+            options.voice!.voiceId = avatar.voiceId
+        const info = await this.avatar.createStartAvatar(options)
         this.sessionId = info.session_id ?? ""
     }
 
@@ -305,6 +323,6 @@ export default class Speech2Text extends EventEmitter {
 
     /*  one-time destruction  */
     async destroy () {
-        /*  no-op  */
+        await this.close()
     }
 }
