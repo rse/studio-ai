@@ -8,14 +8,16 @@ import * as Vite         from "vite"
 import VuePlugin         from "@vitejs/plugin-vue"
 import YAMLPlugin        from "@rollup/plugin-yaml"
 import { nodePolyfills } from "vite-plugin-node-polyfills"
+import SvgLoader         from "vite-svg-loader"
 
-export default Vite.defineConfig(({ command, mode, ssrBuild }) => ({
+export default Vite.defineConfig(({ command, mode }) => ({
     base: "",
     root: "src/client",
     assetsInclude: [ "index.yaml" ],
     plugins: [
         VuePlugin(),
         YAMLPlugin(),
+        SvgLoader(),
         nodePolyfills({
             include: [ "events", "stream", "path", "fs" ],
             globals: { Buffer: true }

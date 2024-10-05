@@ -545,6 +545,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="middle">
+                            <div class="upper">
+                                <div class="flow-right" v-html="svgShapeFlow"></div>
+                            </div>
+                            <div class="lower">
+                                <div class="flow-left"  v-html="svgShapeFlow"></div>
+                            </div>
+                        </div>
                         <div ref="right" class="right">
                             <div class="text2text-history">
                                 <div v-for="entry, i of text2textLog" v-bind:key="i" class="text2text-entry"
@@ -869,7 +877,6 @@
             width: 400px
             max-width: 400px
             min-width: 400px
-            margin-right: 10px
             display: flex
             flex-direction: column
             justify-content: flex-first
@@ -883,6 +890,35 @@
                 .button
                     padding: 0 8px 2px 8px !important
                     margin-top: 0 !important
+        .middle
+            width: 30px
+            min-width: 30px
+            max-width: 30px
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+            .upper
+                flex-grow: 1
+                height: 48%
+                width: 100%
+                .flow-right
+                    position: relative
+                    top: 80px
+                    fill: var(--color-acc-bg-3)
+                    margin-right: 5px
+            .lower
+                flex-grow: 1
+                height: 52%
+                width: 100%
+                .flow-left
+                    position: relative
+                    top: 80px
+                    right: -1px
+                    fill: var(--color-std-bg-4)
+                    transform: rotate(180deg)
+                    transform-origin: middle center
+                    margin-left: 5px
         .right
             flex-grow: 1
             flex-shrink: 1
@@ -1185,6 +1221,7 @@ import {
     CommandType,
     CommandSchema
 } from "../common/app-command"
+import svgShapeFlow from "../../res/app-shape-flow.svg?raw"
 </script>
 
 <script lang="ts">
