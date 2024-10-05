@@ -338,7 +338,7 @@
                                 </div>
 
                                 <div class="label1">heygen</div>
-                                <div class="label2">(enable)</div>
+                                <div class="label2">(chromakey)</div>
                                 <div class="label3">[boolean]:</div>
                                 <div class="value">
                                     <div class="fixed">{{ state.text2speech.ckEnable ? "YES" : "NO" }}</div>
@@ -738,7 +738,7 @@
             white-space: nowrap
         .label1
             color: var(--color-acc-fg-5)
-            width: 100px
+            width: 80px
         .label2
             width: 110px
         .label3
@@ -791,7 +791,7 @@
             padding: 6px 12px 6px 12px
             outline: none
             font-size: 12pt
-            width: calc(400px - 2 * 12px)
+            width: calc(420px - 2 * 12px)
             &:focus
                 background-color: var(--color-acc-bg-4)
                 color: var(--color-acc-fg-5)
@@ -806,7 +806,7 @@
             padding: 6px 12px 6px 12px
             outline: none
             font-size: 12pt
-            width: calc(400px - 2 * 12px)
+            width: calc(420px - 2 * 12px)
             &.prompt
                 font-size: 11pt
                 font-weight: normal
@@ -1057,9 +1057,9 @@
             background-color: #222
             border-radius: 4px
     .input
-        width: 400px
+        width: 420px
     .slider
-        width: 400px
+        width: 420px
         --slider-bg: var(--color-std-bg-2)
         --slider-handle-bg: var(--color-std-fg-5)
         --slider-connect-bg: var(--color-acc-bg-5)
@@ -1083,6 +1083,7 @@
         --toggle-ring-width: 0
         --toggle-handle-enabled: var(--color-std-fg-5)
     .multiselect
+        width: 420px
         color: var(--color-acc-fg-5)
         --ms-font-size: 12pt
         --ms-line-height: 1.2
