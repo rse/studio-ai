@@ -799,9 +799,9 @@
         .left
             color: var(--color-std-fg-4)
             border-radius: 4px
-            width: 360px
-            max-width: 360px
-            min-width: 360px
+            width: 400px
+            max-width: 400px
+            min-width: 400px
             margin-right: 10px
             display: flex
             flex-direction: column
