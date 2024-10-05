@@ -497,7 +497,7 @@
                             <div class="ai-text">
                                 <textarea v-model="aiMessage"
                                     class="ai-text"
-                                    v-on:keydown.enter.prevent="aiPlay()">
+                                    v-on:keydown.enter.prevent="aiSpeak()">
                                 </textarea>
                             </div>
                             <div class="actions">
@@ -521,18 +521,18 @@
                                 <div class="button slot" v-bind:class="{ active: aiSlot === 16, empty: state.slots.ai16 === '' }" v-on:click="aiSlotSelect(16)">16</div>
                             </div>
                             <div class="actions">
-                                <div class="button ai-play"
-                                    v-bind:class="{ disabled: aiMessage == '' || engine.text2speech !== 2, playing: playing }"
-                                    v-on:click="aiPlay()">
+                                <div class="button ai-speak"
+                                    v-bind:class="{ disabled: aiMessage == '' || engine.text2speech !== 2, speaking: speaking }"
+                                    v-on:click="aiSpeak()">
                                     <toggle v-on:click.stop="void(0)"
-                                        class="toggle toggle-autoplay" v-model="aiAutoPlay">
+                                        class="toggle toggle-autospeak" v-model="aiAutoSpeak">
                                     </toggle>
-                                    <span v-show="!playing" class="icon"><i class="fas fa-play"></i></span>
-                                    <span v-show="playing" class="icon">
+                                    <span v-show="!speaking" class="icon"><i class="fas fa-play"></i></span>
+                                    <span v-show="speaking" class="icon">
                                         <spinner-bars class="spinner-bars" size="16"/>
                                     </span>
-                                    <span v-show="!playing">PLAY</span>
-                                    <span v-show="playing">STOP</span>
+                                    <span v-show="!speaking">SPEAK</span>
+                                    <span v-show="speaking">STOP</span>
                                 </div>
                                 <div class="button ai-extract"
                                     v-bind:class="{ disabled: engine.text2text !== 2 || !aiExtractable() }"
@@ -939,7 +939,7 @@
                 &:hover
                     background-color: var(--color-sig-bg-5)
                     color: var(--color-sig-fg-5)
-            &.playing
+            &.speaking
                 background-color: var(--color-sig-bg-3)
                 color: var(--color-sig-fg-3)
                 &:hover
@@ -947,7 +947,7 @@
                     color: var(--color-sig-fg-5)
             .toggle-autoinject,
             .toggle-autoextract,
-            .toggle-autoplay
+            .toggle-autospeak
                 display: inline-block
                 position: relative
                 top: -3px
@@ -1218,7 +1218,7 @@ export default defineComponent({
         stateDefault: clone(StateDefault),
         watchState: true,
         recording: false,
-        playing: false,
+        speaking: false,
         studioMessage: "",
         studioMessageFinal: true,
         studioAutoInject: false,
@@ -1226,7 +1226,7 @@ export default defineComponent({
         aiMessage: "",
         aiSlot: 0,
         aiAutoExtract: false,
-        aiAutoPlay: false,
+        aiAutoSpeak: false,
         text2textLog: [] as Array<Text2TextLogEntry>,
         status: {
             kind: "",
@@ -1497,8 +1497,8 @@ export default defineComponent({
             if (entry.final) {
                 if (this.aiAutoExtract)
                     this.aiExtract(true)
-                if (this.aiAutoPlay)
-                    this.aiPlay(true)
+                if (this.aiAutoSpeak)
+                    this.aiSpeak(true)
             }
         })
         await text2text.init()
@@ -1560,10 +1560,10 @@ export default defineComponent({
             this.engine.text2speech = 0
         })
         commandBus.on("t2s:speak:start", () => {
-            this.playing = true
+            this.speaking = true
         })
         commandBus.on("t2s:speak:stop", () => {
-            this.playing = false
+            this.speaking = false
             this.aiMessage = ""
         })
     },
@@ -1763,11 +1763,11 @@ export default defineComponent({
             }
         },
 
-        /*  play/stop AI speaking  */
-        aiPlay (auto = false) {
+        /*  start/stop AI speaking  */
+        aiSpeak (auto = false) {
             if (this.engine.text2speech !== 2)
                 return
-            if (this.playing) {
+            if (this.speaking) {
                 this.sendCommand("t2s:interrupt")
                 if (!auto)
                     return
