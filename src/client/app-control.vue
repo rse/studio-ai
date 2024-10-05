@@ -1580,8 +1580,8 @@ export default defineComponent({
             if (this.audienceMessage === "" || this.engine.chat !== 2 || chat === null)
                 return
             this.chatLog.push({ persona: "Studio", message: this.audienceMessage, final: true })
-            // this.audienceMessage = ""
-            // this.audienceSlot = 0
+            this.audienceMessage = ""
+            this.audienceSlot = 0
             chat.send(this.audienceMessage)
         },
 
@@ -1620,8 +1620,8 @@ export default defineComponent({
         aiCommit () {
             if (this.aiMessage === "" || this.engine.text2speech !== 2)
                 return
-            // this.aiMessage = ""
-            // this.aiSlot = 0
+            this.aiMessage = ""
+            this.aiSlot = 0
             this.sendCommand("t2s:speak", [ { text: this.aiMessage } ])
         },
 
