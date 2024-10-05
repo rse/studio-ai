@@ -1712,8 +1712,8 @@ export default defineComponent({
                 return
             this.text2textLog.push({ persona: "Studio", message: this.studioMessage, final: true })
             await text2text.send(this.studioMessage)
-            this.studioMessage = ""
             this.studioSlot = 0
+            this.studioMessage = ""
         },
 
         /*  select studio slot  */
