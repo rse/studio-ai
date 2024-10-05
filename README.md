@@ -35,7 +35,8 @@ with each other through their bi-directional WebSocket connections to the server
 The Speech-to-Text engine is based on the [Deepgram](https://deepgram.com) cloud service,
 the Text-to-Text engine is based on the [OpenAI ChatGPT](https://chatgpt.com) cloud service,
 and the Text-to-Speech engine is based on the [HeyGen Interactive Avatar](https://heygen.com) cloud service.
-As a consequence, to be able to use **Studio AI** you need API keys of those three cloud services.
+
+> **NOTICE: As a consequence, to be able to use **Studio AI** you need API keys of those three cloud services.**
 
 ![architecture](doc/architecture.png)
 
