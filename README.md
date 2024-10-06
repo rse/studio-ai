@@ -1,5 +1,5 @@
 
-<img src="https://raw.githubusercontent.com/rse/studio-ai/master/res/app-icon.svg" width="200" align="right" alt=""/>
+<img src="https://raw.githubusercontent.com/rse/studio-ai/master/res/app-icon.svg" width="200" style="float: right" alt=""/>
 
 Studio AI
 =========
