@@ -7,6 +7,7 @@ ChangeLog
 
 - IMPROVEMENT: improve default configuration
 - IMPROVEMENT: updated architecture diagram
+- UPDATE: upgrade dependencies
 
 1.0.3 (2024-10-06)
 ------------------
