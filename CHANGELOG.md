@@ -6,6 +6,7 @@ ChangeLog
 ------------------
 
 - IMPROVEMENT: switch input fields with API tokens to type "password" to not expose them visually
+- CLEANUP: annotate HeyGen avatars in a more comprehensible way
 
 1.0.2 (2024-10-06)
 ------------------

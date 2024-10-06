@@ -249,11 +249,11 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.text2speech.heygenAvatar"
                                         v-bind:options="[
-                                            { label: 'Kayla (a:1/v:1)',  value: 'kayla' },
-                                            { label: 'Edward (a:3/v:2)', value: 'edward' },
-                                            { label: 'Tyler (a:1/v:3)',  value: 'tyler' },
-                                            { label: 'Anna (a:1/v:3)',   value: 'anna' },
-                                            { label: 'Susan (a:2/v:3)',  value: 'susan' }
+                                            { label: 'Kayla (very good)', value: 'kayla' },
+                                            { label: 'Tyler (good)',      value: 'tyler' },
+                                            { label: 'Anna (good)',       value: 'anna' },
+                                            { label: 'Edward (decent)',   value: 'edward' },
+                                            { label: 'Susan (decent)',    value: 'susan' }
                                         ]"
                                     />
                                 </div>
