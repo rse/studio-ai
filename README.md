@@ -20,6 +20,12 @@ is an AI avatar the people on the studio stage can interact with in
 nearly real-time. This is intended for including an AI participant in a
 discussion or Q&A round.
 
+The Speech-to-Text engine is based on the [Deepgram](https://deepgram.com) cloud service,
+the Text-to-Text engine is based on the [OpenAI ChatGPT](https://chatgpt.com) cloud service,
+and the Text-to-Speech engine is based on the [HeyGen Interactive Avatar](https://heygen.com) cloud service.
+
+> **NOTICE: As a consequence, to be able to use **Studio AI** you need API keys of those three cloud services.**
+
 ![collage](doc/collage.png)
 
 Screenshots
@@ -45,12 +51,6 @@ a HTML5 Single-Page Application (SPA) as the client component.
 The client component, in turn, runs in two distinct modes: an interactive
 control mode and an autonomous avatar rendering mode. The clients are communicating
 with each other through their bi-directional WebSocket connections to the server.
-
-The Speech-to-Text engine is based on the [Deepgram](https://deepgram.com) cloud service,
-the Text-to-Text engine is based on the [OpenAI ChatGPT](https://chatgpt.com) cloud service,
-and the Text-to-Speech engine is based on the [HeyGen Interactive Avatar](https://heygen.com) cloud service.
-
-> **NOTICE: As a consequence, to be able to use **Studio AI** you need API keys of those three cloud services.**
 
 ![architecture](doc/architecture.png)
 
