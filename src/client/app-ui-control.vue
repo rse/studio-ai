@@ -865,6 +865,7 @@
             width: auto
             height: auto
     .control-pane
+        outline: none
         width:  100%
         height: 100%
         display: flex
