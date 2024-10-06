@@ -33,7 +33,7 @@ scripts:
     build-server-dev-watch: vite --config etc/vite-server.mts build --logLevel info --mode development --watch
 
     #   start server run-time
-    server-delay:           delay 8.0
+    server-delay:           delay 2.0
     server-dev: >
                             cross-env NODE_OPTIONS="--enable-source-maps"
                             nodemon --exec "npm start server" --watch dst/server --ext js --delay 1.0
