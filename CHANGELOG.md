@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+1.0.4 (2024-10-06)
+------------------
+
+- IMPROVEMENT: improve default configuration
+- IMPROVEMENT: updated architecture diagram
+
 1.0.3 (2024-10-06)
 ------------------
 
