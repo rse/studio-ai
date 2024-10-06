@@ -5,6 +5,7 @@ ChangeLog
 1.0.5 (2024-10-06)
 ------------------
 
+- IMPROVEMENT: mark the last answer of the AI optically more prominent
 - BUGFIX: fix auto-inject feature
 - BUGFIX: reduce HeyGen voice rate to not cut words
 - CLEANUP: at least English and German language is supported
