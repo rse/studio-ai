@@ -547,7 +547,7 @@
                         </div>
                         <div class="middle">
                             <div class="upper">
-                                <div class="flow-right" v-html="svgShapeFlow"></div>
+                                <div class="flow-right" v-bind:class="{ active: recording }" v-html="svgShapeFlow"></div>
                             </div>
                             <div class="lower">
                                 <div class="flow-left"  v-html="svgShapeFlow"></div>
@@ -907,6 +907,8 @@
                     top: 80px
                     fill: var(--color-acc-bg-3)
                     margin-right: 5px
+                    &.active
+                        fill: var(--color-sig-bg-3)
             .lower
                 flex-grow: 1
                 height: 52%

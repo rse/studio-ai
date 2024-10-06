@@ -7,6 +7,7 @@ ChangeLog
 
 - IMPROVEMENT: switch input fields with API tokens to type "password" to not expose them visually
 - CLEANUP: annotate HeyGen avatars in a more comprehensible way
+- BUGFIX: fix coloring of flow-right arrow under recording state
 
 1.0.2 (2024-10-06)
 ------------------
