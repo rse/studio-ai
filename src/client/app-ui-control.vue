@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="button" v-on:click="state.speech2text.deepgramApiToken = stateDefault.speech2text.deepgramApiToken">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.speech2text.deepgramApiToken"/>
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramApiToken" type="password"/>
                                 </div>
 
                                 <div class="label1">deepgram</div>
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2text.openaiApiToken = stateDefault.text2text.openaiApiToken">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2text.openaiApiToken"/>
+                                    <input class="text" v-model.lazy="state.text2text.openaiApiToken" type="password"/>
                                 </div>
 
                                 <div class="label1">openai</div>
@@ -233,7 +233,7 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2speech.heygenApiToken = stateDefault.text2speech.heygenApiToken">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.text2speech.heygenApiToken"/>
+                                    <input class="text" v-model.lazy="state.text2speech.heygenApiToken" type="password"/>
                                 </div>
 
                                 <div class="label1">heygen</div>

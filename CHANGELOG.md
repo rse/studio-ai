@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.0.3 (2024-10-06)
+------------------
+
+- IMPROVEMENT: switch input fields with API tokens to type "password" to not expose them visually
+
 1.0.2 (2024-10-06)
 ------------------
 
