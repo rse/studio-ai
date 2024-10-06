@@ -6,6 +6,7 @@ ChangeLog
 ------------------
 
 - BUGFIX: fix auto-inject feature
+- BUGFIX: reduce HeyGen voice rate to not cut words
 
 1.0.4 (2024-10-06)
 ------------------
