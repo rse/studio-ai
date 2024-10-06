@@ -134,7 +134,8 @@ import {
     StateDefault, StateUtil
 } from "../common/app-common-state"
 import {
-    CommandType, CommandSchema
+    CommandType,
+    CommandSchema
 } from "../common/app-common-command"
 import Text2Speech from "./app-sv-text2speech"
 </script>

@@ -22,7 +22,7 @@ export default class Argv {
     async init () {
         /*  command-line option parsing  */
         // @ts-ignore
-        const args = yargs
+        const args = yargs()
             /* eslint indent: off */
             .usage(
                 "Usage: $0 [-h] [-V] " +

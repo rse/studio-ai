@@ -7,6 +7,7 @@
 /*  external dependencies  */
 import objectPath    from "object-path"
 import { minimatch } from "minimatch"
+import defaults      from "./app-common-state.yaml"
 
 /*  complete state type (all fields required)  */
 export type StateType = {
@@ -147,94 +148,7 @@ export const StateSchema = `{
 export const StateSchemaPartial = StateSchema.replace(/:/g, "?:")
 
 /*  complete state default (all fields with default values)  */
-export const StateDefault: StateType = {
-    speech2text: {
-        microphoneDevice:  "Default",
-        deepgramApiToken:  "@{STUDIOAI_DEEPGRAM_API_TOKEN}",
-        deepgramModel:     "nova-2-general",
-        deepgramVersion:   "latest",
-        deepgramLanguage:  "de",
-        deepgramKeywords:  "msg KI AI CTO"
-    },
-    text2text: {
-        openaiApiToken:    "@{STUDIOAI_OPENAI_API_TOKEN}",
-        openaiModel:       "gpt-4o-mini",
-        openaiPrompt:      "Jedes Mal, wenn du auf den User Input reagierst, mußt du folgende Persona verkörpern: " +
-                           "Du bist Dr. A.I. Futura, eine virtuelle KI der msg und nimmst " +
-                           "an einem Digital Townhall Event der msg teil, welche im msg Filmstudio in Ismaning bei München " +
-                           "von msg Research produziert wird. Die msg ist ein IT-Unternehmen mit über 10.000 " +
-                           "Mitarbeitenden. Auf der Bühne im Studio stehen menschliche Experten und sprechen mit dir. " +
-                           "Du bist virtuell zugeschaltet und reagierst direkt auf Fragen der Experten. " +
-                           "\n\n" +
-                           "Du basierst technisch auf den folgenden Cloud-Services: Deepgram für Speech-to-Text, OpenAI GPT für Chat " +
-                           "und HeyGen für Text-to-Speech und das Rendering deines Avatars. " +
-                           "Diese Cloud-Services sind direkt in das msg Filmstudio über die Anwendung Studio AI integriert worden. " +
-                           "\n\n" +
-                           "In dem heutigen Event geht es um die folgenden Themen: " +
-                           "AI Coding Assistence, Github Copilot, Document Chat, KI Arbeitsanweisung, KI Projekte, etc. " +
-                           "Die Experten in der Townhall sind Dr. Frank Schlottmann, Vorstand der msg, " +
-                           "und Dr. Ralf S. Engelschall, CTO der msg. Die Moderation hat Fabienne Rahe. " +
-                           "\n\n" +
-                           "Du bist aufgeschlossen für KI-Lösungen, verstehst jedoch auch Sorgen " +
-                           "und Bedürfnisse der Mitarbeitenden. Antworte realistisch und sensibel " +
-                           "und stets in einem sehr freundlichen Ton. Du darfst gerne kontroverse " +
-                           "Aussagen tätigen, markiere diese jedoch als zur Diskussion stehend. " +
-                           "\n\n" +
-                           "Du bist mit einer Text-to-Speech-Schnittstelle verbunden und deine Antworten werden vorgelesen. " +
-                           "Antworte deshalb immer in ganzen Sätzen, ohne Abkürzungen, ohne Aufzählungen und ohne Sonderzeichen. " +
-                           "Antworte mit weniger als 50 Wörtern und fasse dich sehr kurz und präzise. " +
-                           "Schreibe \"msg\" immer als \"msg\", \"AI\" immer als \"A.I.\" und \"KI\" immer als \"K.I.\".",
-        openaiTemperature: 0.95,
-        openaiSeed:        0,
-        openaiMaxTokens:   500
-    },
-    text2speech: {
-        heygenApiToken:    "@{STUDIOAI_HEYGEN_API_TOKEN}",
-        heygenAvatar:      "kayla",
-        heygenQuality:     "high",
-        heygenRate:        1.25,
-        heygenEmotion:     "broadcaster",
-        heygenLanguage:    "de",
-        ckEnable:          true,
-        ckThreshold:       0.30,
-        ckSmoothing:       0.10,
-        speakerDevice:     "Default"
-    },
-    slots: {
-        studio1:           "Hallo Dr. Futura. Bitte stelle dich uns kurz vor!",
-        studio2:           "Bitte erzähle uns einen Witz über eine KI im Zusammenhang mit Software Engineering!",
-        studio3:           "",
-        studio4:           "",
-        studio5:           "",
-        studio6:           "",
-        studio7:           "",
-        studio8:           "",
-        studio9:           "",
-        studio10:          "",
-        studio11:          "",
-        studio12:          "",
-        studio13:          "",
-        studio14:          "",
-        studio15:          "",
-        studio16:          "",
-        ai1:               "Hallo, ich bin Dr. A.I. Futura, eine virtuelle KI-Expertin der msg.",
-        ai2:               "",
-        ai3:               "",
-        ai4:               "",
-        ai5:               "",
-        ai6:               "",
-        ai7:               "",
-        ai8:               "",
-        ai9:               "",
-        ai10:              "",
-        ai11:              "",
-        ai12:              "",
-        ai13:              "",
-        ai14:              "",
-        ai15:              "",
-        ai16:              ""
-    }
-} satisfies StateType
+export const StateDefault = defaults satisfies StateType
 
 /*  complete paths of all state fields  */
 export const StatePaths = [] as string[]
