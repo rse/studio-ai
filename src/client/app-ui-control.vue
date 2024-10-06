@@ -1091,6 +1091,8 @@
                 font-weight: bold
             .text2text-entry-message
                 flex-grow: 1
+            .text2text-entry.text2text-entry-ai:last-child
+                color: var(--color-sig-fg-3)
         .icon
             display: inline-block
             padding-right: 8px
