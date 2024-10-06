@@ -132,11 +132,10 @@ for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAva
 
 In October 2025 [Dr. Ralf S. Engelschall](https://engelschall.com),
 CTO of msg group, initially integrated this prototype application into
-his msg Filmstudio. Unfortunately, the implementation did not allow
-a seamless studio integration. As a result, he took the ideas of the
-prototype application and then this **Studio AI** application was
-developed by him from scratch in order allow a more robust integration
-into a studio production process.
+his msg Filmstudio. Unfortunately, the implementation did not allow a
+seamless studio integration. As a result, he just took the ideas of the
+prototype application and then developed **Studio AI** from scratch in
+order allow a more robust integration into a studio production process.
 
 See Also
 --------
