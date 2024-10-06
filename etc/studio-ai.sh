@@ -1,4 +1,4 @@
 #!/bin/sh
 node \
-   dst/server/index.js \
+   dst/server/index.mjs \
    -a 0.0.0.0 -p 12345
