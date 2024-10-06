@@ -20,7 +20,16 @@ is an AI avatar the people on the studio stage can interact with in
 nearly real-time. This is intended for including an AI participant in a
 discussion or Q&A round.
 
-![screenshot](doc/screenshot.png)
+![collage](doc/collage.png)
+
+Screenshots
+-----------
+
+![screenshot-1](doc/screenshot-1.png)
+![screenshot-2](doc/screenshot-2.png)
+![screenshot-3](doc/screenshot-3.png)
+![screenshot-4](doc/screenshot-4.png)
+![screenshot-5](doc/screenshot-5.png)
 
 Architecture
 ------------
