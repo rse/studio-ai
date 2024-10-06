@@ -1464,8 +1464,6 @@ export default defineComponent({
             else
                 this.studioMessageFinal = false
             this.studioMessage = studioBuffer.join(" ")
-            if (this.studioMessageFinal && !this.recording && this.studioAutoInject)
-                this.studioInject()
         })
         await speech2text.init()
 
@@ -1513,6 +1511,16 @@ export default defineComponent({
             else {
                 this.log("INFO", "Speech-to-Text: stop recording")
                 speech2text.setActive(false)
+                if (this.studioAutoInject) {
+                    let timer = null
+                    const poll = () => {
+                        if (this.studioMessage !== "" && this.studioMessageFinal)
+                            this.studioInject()
+                        else
+                            timer = setTimeout(poll, 10)
+                    }
+                    timer = setTimeout(poll, 0)
+                }
             }
         })
 
