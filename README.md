@@ -23,7 +23,7 @@ discussion or Q&A round.
 The Speech-to-Text engine is based on the [Deepgram](https://deepgram.com) cloud service,
 the Text-to-Text engine is based on the [OpenAI ChatGPT](https://chatgpt.com) cloud service,
 and the Text-to-Speech engine is based on the [HeyGen Interactive Avatar](https://heygen.com) cloud service.
-Currently **Studio AI** works at least for English, German, Italian and French.
+Currently **Studio AI** works at least for English and German languages.
 
 > **NOTICE: As a consequence, to be able to use **Studio AI** you need API keys of those three cloud services.**
 

@@ -94,9 +94,7 @@
                                         v-model.lazy="state.speech2text.deepgramLanguage"
                                         v-bind:options="[
                                             { label: 'EN (English)', value: 'en' },
-                                            { label: 'DE (German)',  value: 'de' },
-                                            { label: 'FR (French)',  value: 'fr' },
-                                            { label: 'IT (Italian)', value: 'it' }
+                                            { label: 'DE (German)',  value: 'de' }
                                         ]"
                                     />
                                 </div>
