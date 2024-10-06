@@ -7,6 +7,7 @@ ChangeLog
 
 - BUGFIX: fix auto-inject feature
 - BUGFIX: reduce HeyGen voice rate to not cut words
+- CLEANUP: at least English and German language is supported
 
 1.0.4 (2024-10-06)
 ------------------
