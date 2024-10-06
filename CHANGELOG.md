@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+1.0.1 (2024-10-06)
+------------------
+
+- IMPROVEMENT: build server also via Vite (to support YAML file loading, etc)
+- IMPROVEMENT: move default state config values into separate YAML file
+
 1.0.1 (2024-10-05)
 ------------------
 
