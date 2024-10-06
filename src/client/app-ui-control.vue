@@ -1028,7 +1028,6 @@
                     background-color: var(--color-acc-bg-1)
                     color: var(--color-acc-fg-3)
             .studio-text-during-recording
-                overflow: scroll
                 background-color: var(--color-sig-bg-3)
                 color: var(--color-sig-fg-5)
                 border: 0
