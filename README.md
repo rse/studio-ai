@@ -55,6 +55,12 @@ with each other through their bi-directional WebSocket connections to the server
 
 ![architecture](doc/architecture.png)
 
+The core of the application can be found in the following software components:
+
+- [speech2text](src/client/app-sv-speech2text.ts)
+- [text2text](src/client/app-sv-text2text.ts)
+- [text2speech](src/client/app-sv-text2speech.ts)
+
 Usage (Production)
 ------------------
 
