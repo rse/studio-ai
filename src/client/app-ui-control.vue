@@ -1011,7 +1011,6 @@
             flex-basis: 50%
             overflow: hidden
             textarea
-                overflow: scroll
                 background-color: var(--color-acc-bg-3)
                 color: var(--color-acc-fg-5)
                 border: 0
@@ -1048,7 +1047,6 @@
             flex-basis: 50%
             overflow: hidden
             textarea
-                overflow: scroll
                 background-color: var(--color-acc-bg-3)
                 color: var(--color-acc-fg-5)
                 border: 0
