@@ -30,7 +30,7 @@ export default class Log {
             throw new Error("invalid maximum verbose level")
         if (this.argv.logFile !== "-")
             this.stream = fs.createWriteStream(this.argv.logFile, { flags: "a", encoding: "utf8" })
-        this.log(2, `starting ${this.pkg.name} ${this.pkg.version} (${this.pkg.date}) <${this.pkg.homepage}>`)
+        this.log(2, `starting ${this.pkg.name} ${this.pkg.version} (${this.pkg.date}) <${this.pkg.homepage}> server`)
     }
     log (level: number, msg: string) {
         if (level <= this.argv.logLevel) {

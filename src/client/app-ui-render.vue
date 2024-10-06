@@ -158,7 +158,7 @@ export default defineComponent({
         connected: false
     }),
     created () {
-        this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]})`)
+        this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]}) <${pkg.homepage}> client (RENDER mode)`)
     },
     async mounted () {
         /*  load state once  */

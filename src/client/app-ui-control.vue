@@ -1283,6 +1283,9 @@ export default defineComponent({
             text2speech: 0
         }
     }),
+    created () {
+        this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]}) <${pkg.homepage}> client (CONTROL mode)`)
+    },
     async mounted () {
         /*  force particular level-1 (and optionally level-2) tab to be selected  */
         (this.$refs.tabs as any).selectTab(`#${this.selectTab0}`)
