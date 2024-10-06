@@ -130,19 +130,13 @@ This prototype application was based on an earlier version of the
 [HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
 for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAvatarSDK).
 
-In October 2025 [Dr. Ralf S. Engelschall](https://engelschall.com), CTO of msg group, integrated this
-prototype application into his msg Filmstudio. Unfortunately, the implementation was
-too problematic. As a result, he took the ideas of the prototype application and then
-this **Studio AI** application was developed by him
-from scratch in order to solve the following issues (in the original priority order):
-Avatar rendering in a dedicated client for easier integration into the msg Filmstudio
-production process (no window capturing necessary);
-Improved chroma-keying of the avatar for more seamless optical integration into the scene;
-Use of Deepgram instead of OpenAI Whisper for reduced latency and improved quality in the speech-to-text engine;
-More AI cloud service parameter can be configured via the control UI;
-Available slots for calling pre-defined messages for Studio and AI participants;
-Audio volume meter allows better monitoring of speech-to-text engine state; and
-Entire data flow now can be controlled manually, semi-automatically or fully automatically.
+In October 2025 [Dr. Ralf S. Engelschall](https://engelschall.com),
+CTO of msg group, initially integrated this prototype application into
+his msg Filmstudio. Unfortunately, the implementation did not allow
+a seamless studio integration. As a result, he took the ideas of the
+prototype application and then this **Studio AI** application was
+developed by him from scratch in order allow a more robust integration
+into a studio production process.
 
 See Also
 --------
