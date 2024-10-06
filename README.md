@@ -33,7 +33,7 @@ Screenshots
 
 The following are four screenshots for impressions on **Studio AI**.
 The first three screenshots show the settings dialogs of the CONTROL mode.
-The forth screenshot show the control dialog of the CONTROL mode.
+The forth screenshot show the control dialog of the CONTROL mode (with german language examples).
 The firth screenshot shows the client in RENDER mode within OBS Studio.
 
 ![screenshot-1](doc/screenshot-1.png)
