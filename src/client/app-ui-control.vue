@@ -1581,22 +1581,28 @@ export default defineComponent({
         })
 
         /*  support UI control via keystrokes (just maps onto commands below)  */
-        bindKey("f1", () => { commandBus.emit("ui:s2t-press") })
-        bindKey("f2", () => { commandBus.emit("ui:t2t-press") })
-        bindKey("f3", () => { commandBus.emit("ui:t2s-press") })
-        bindKey("f4", () => { commandBus.emit("ui:record-press") })
-        bindKey("f5", () => { commandBus.emit("ui:inject-press") })
-        bindKey("f6", () => { commandBus.emit("ui:extract-press") })
-        bindKey("f7", () => { commandBus.emit("ui:speak-press") })
+        bindKey("f1",  () => { commandBus.emit("ui:s2t-press") })
+        bindKey("f2",  () => { commandBus.emit("ui:t2t-press") })
+        bindKey("f3",  () => { commandBus.emit("ui:t2s-press") })
+        bindKey("f4",  () => { commandBus.emit("ui:record-press") })
+        bindKey("f5",  () => { commandBus.emit("ui:inject-press") })
+        bindKey("f6",  () => { commandBus.emit("ui:extract-press") })
+        bindKey("f7",  () => { commandBus.emit("ui:speak-press") })
+        bindKey("f8",  () => { commandBus.emit("ui:auto-inject-press") })
+        bindKey("f9",  () => { commandBus.emit("ui:auto-extract-press") })
+        bindKey("f10", () => { commandBus.emit("ui:auto-speak-press") })
 
         /*  support UI control via command (usually coming from server)  */
-        commandBus.on("ui:s2t-press",     () => { this.engineToggle("speech2text") })
-        commandBus.on("ui:t2t-press",     () => { this.engineToggle("text2text") })
-        commandBus.on("ui:t2s-press",     () => { this.engineToggle("text2speech") })
-        commandBus.on("ui:record-press",  () => { this.toggleRecording() })
-        commandBus.on("ui:inject-press",  () => { this.studioInject() })
-        commandBus.on("ui:extract-press", () => { this.aiExtract() })
-        commandBus.on("ui:speak-press",   () => { this.aiSpeak() })
+        commandBus.on("ui:s2t-press",          () => { this.engineToggle("speech2text") })
+        commandBus.on("ui:t2t-press",          () => { this.engineToggle("text2text") })
+        commandBus.on("ui:t2s-press",          () => { this.engineToggle("text2speech") })
+        commandBus.on("ui:record-press",       () => { this.toggleRecording() })
+        commandBus.on("ui:inject-press",       () => { this.studioInject() })
+        commandBus.on("ui:extract-press",      () => { this.aiExtract() })
+        commandBus.on("ui:speak-press",        () => { this.aiSpeak() })
+        commandBus.on("ui:auto-inject-press",  () => { this.studioAutoInject = !this.studioAutoInject })
+        commandBus.on("ui:auto-extract-press", () => { this.aiAutoExtract    = !this.aiAutoExtract })
+        commandBus.on("ui:auto-speak-press",   () => { this.aiAutoSpeak      = !this.aiAutoSpeak })
     },
     methods: {
         /*  log to the console  */
