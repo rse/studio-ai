@@ -70,6 +70,7 @@ export default class Text2Speech extends EventEmitter {
     private closing   = false
     private talking   = false
     private chromaKey: ChromaKey | null = null
+    private keepaliveTimer: ReturnType<typeof setInterval> | null = null
 
     /*  API class constructor  */
     constructor (options: Text2SpeechOptions) {
@@ -189,10 +190,20 @@ export default class Text2Speech extends EventEmitter {
                 }, { once: true })
             })
 
+            /*  enable keep-alive handling  */
+            this.keepaliveTimer = setInterval(() => {
+                this.keepalive()
+            }, 1 * 60 * 1000)
+
             this.connected = true
             this.emit("open")
         })
         this.avatar.on(StreamingEvents.STREAM_DISCONNECTED, async (ev: CustomEvent) => {
+            /*  disable keep-alive handling  */
+            if (this.keepaliveTimer !== null) {
+                clearTimeout(this.keepaliveTimer)
+                this.keepaliveTimer = null
+            }
             if (!this.closing) {
                 this.log("INFO", "HeyGen: streaming avatar: disconnected (unexpected without close) -- reconnecting")
                 this.connected = false
@@ -215,6 +226,9 @@ export default class Text2Speech extends EventEmitter {
             this.emit("speak:start")
         })
         this.avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (ev: CustomEvent) => {
+            /*  for keep-alive messages the API sends a stop event without previous start event  */
+            if (!this.talking)
+                return
             const duration = ev.detail.duration_ms as number ?? 0
             this.log("INFO", `HeyGen: streaming avatar: stop talking (duration: ${duration})`)
             this.talking = false
@@ -290,6 +304,23 @@ export default class Text2Speech extends EventEmitter {
                         resolve()
                 }
                 setTimeout(poll, 10)
+            })
+        }
+    }
+
+    /*  keep-alive task  */
+    async keepalive () {
+        /*  sanity check situation  */
+        if (this.avatar === null)
+            throw new Error("connection still not established")
+        if (!this.connected)
+            throw new Error("connected still not ready")
+
+        /*  send a dummy task to keep the connection alive  */
+        if (!this.talking) {
+            await this.avatar.speak({
+                text: ".",
+                task_type: TaskType.REPEAT
             })
         }
     }
