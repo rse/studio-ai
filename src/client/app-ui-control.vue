@@ -1585,7 +1585,7 @@ export default defineComponent({
         commandBus.on("ui:record-press",  () => { this.toggleRecording() })
         commandBus.on("ui:inject-press",  () => { this.studioInject() })
         commandBus.on("ui:extract-press", () => { this.aiExtract() })
-        commandBus.on("ui:speak-press",   () => { this.aiSpeak })
+        commandBus.on("ui:speak-press",   () => { this.aiSpeak() })
     },
     methods: {
         /*  log to the console  */
