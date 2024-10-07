@@ -8,6 +8,7 @@ ChangeLog
 - IMPROVEMENT: allow one to use the REST API of the server to control the UI
 - IMPROVEMENT: allow one to use keystrokes to control the UI
 - IMPROVEMENT: send HeyGen a pseudo task regularly to keep connection alive
+- IMPROVEMENT: support text replacement in text-to-speech for better pronouncation
 - BUGFIX: fix startup scripts
 - BUGFIX: fix text-area scrolling under Windows
 - BUGFIX: avoid outlines for sections/tabs

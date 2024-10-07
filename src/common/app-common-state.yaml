@@ -42,7 +42,7 @@ text2text:
         Cloud-Services: Deepgram für Speech-to-Text, OpenAI GPT für
         Text-to-Text (Chat), und HeyGen für Text-to-Speech und das
         Rendering deines Avatars. Diese Cloud-Services sind direkt in
-        das msg Filmstudio über die Open-Source Anwendung Studio AI von
+        das msg Filmstudio über die Open-Source Anwendung "Studio AI" von
         CTO Dr. Ralf S. Engelschall integriert worden.
 
 
@@ -53,14 +53,11 @@ text2text:
         Aussagen tätigen, laß dabei aber klar erkennen, daß diese zur
         Diskussion stehen.
 
-
         Du bist mit einer Text-to-Speech-Schnittstelle verbunden und
         deine Antworten werden den Zuschauern vorgelesen. Antworte
         deshalb immer in ganzen Sätzen, ohne Abkürzungen, ohne
         Aufzählungen und ohne Sonderzeichen. Antworte mit weniger als
-        50 Wörtern und fasse dich sehr kurz und präzise. Schreibe "msg"
-        immer als "msg", "AI" immer als "A.I." und "KI" immer als
-        "K.I.".
+        50 Wörtern und fasse dich sehr kurz und präzise.
 
 text2speech:
     heygenApiToken:    "@{STUDIOAI_HEYGEN_API_TOKEN}"
@@ -73,6 +70,23 @@ text2speech:
     ckThreshold:       0.30
     ckSmoothing:       0.10
     speakerDevice:     "Default"
+    pronounciation:    >-
+        msg: Em Es Geh,
+        Townhall: Tauwn Hohl,
+        Deepgram: Diehp Gräm,
+        HeyGen: Hey Dschen,
+        OpenAI: Open Ej Ei,
+        ChatGPT: Tschatt Tschi Pi Ti,
+        Chat: Tschatt,
+        GPT: Tschi Pi Ti,
+        Digital: Ditschi Tall,
+        CEO: Sie Ie Oh,
+        CTO: Sie Ti Oh,
+        CDO: Sie Di Oh,
+        CSO: Sie Ess Oh,
+        CRO: Sie Ahr Oh,
+        AI: Äi Ei,
+        KI: Kah Ieh
 
 slots:
     studio1:           "Hallo Dr. Futura. Bitte stelle dich uns kurz vor!"

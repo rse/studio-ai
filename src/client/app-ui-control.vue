@@ -383,6 +383,17 @@
                                 <div class="input">
                                     <input class="text" v-model.lazy="state.text2speech.speakerDevice"/>
                                 </div>
+
+                                <div class="label1">output</div>
+                                <div class="label2">(pronounciation)</div>
+                                <div class="label3">[string]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2speech.pronounciation = stateDefault.text2speech.pronounciation">RESET</div>
+                                <div class="input">
+                                    <textarea class="prompt" rows="5" v-model.lazy="state.text2speech.pronounciation"></textarea>
+                                </div>
                             </div>
                         </tab>
                     </tabs>
@@ -1778,8 +1789,17 @@ export default defineComponent({
         aiExtract (auto = false) {
             if (this.engine.text2text === 2 && this.text2textLog.length > 0) {
                 const entry = this.text2textLog[this.text2textLog.length - 1]
-                if (entry.persona === "AI")
-                    this.aiMessage = entry.message
+                if (entry.persona === "AI") {
+                    const pronounciation = this.state.text2speech.pronounciation
+                    const pronounciations = pronounciation.split(/\s*,\s*/)
+                    let message = entry.message
+                    for (const p of pronounciations) {
+                        const m = p.match(/^\s*(.+?)\s*:\s*(.+?)\s*$/)
+                        if (m !== null)
+                            message = message.replace(/\bm[1]\b/, m[2])
+                    }
+                    this.aiMessage = message
+                }
             }
         },
 
