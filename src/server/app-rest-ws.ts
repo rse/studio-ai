@@ -101,7 +101,8 @@ export default class RESTWS extends Latching {
         const msg = JSON.stringify({ cmd: "STATE", arg: { state } })
         for (const [ id, info ] of this.wsPeers.entries()) {
             this.log.log(3, `WebSocket: notify STATE: peer="${id} (${info.peer})" msg=${msg}`)
-            info.ws.send(msg)
+            if (info.ws.readyState === WebSocket.OPEN)
+                info.ws.send(msg)
         }
     }
 
@@ -110,7 +111,8 @@ export default class RESTWS extends Latching {
         const msg = JSON.stringify({ cmd: "COMMAND", arg: { command } })
         for (const [ id, info ] of this.wsPeers.entries()) {
             this.log.log(3, `WebSocket: notify COMMAN: peer="${id} (${info.peer})" msg=${msg}`)
-            info.ws.send(msg)
+            if (info.ws.readyState === WebSocket.OPEN)
+                info.ws.send(msg)
         }
     }
 }
