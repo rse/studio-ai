@@ -2,7 +2,12 @@
 ChangeLog
 =========
 
-1.0.5 (2024-10-07)
+1.0.7 (2024-10-07)
+------------------
+
+- BUGFIX: be more robust at WebSocket notify handling
+
+1.0.6 (2024-10-07)
 ------------------
 
 - IMPROVEMENT: allow one to use the REST API of the server to control the UI
