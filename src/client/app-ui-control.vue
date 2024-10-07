@@ -1157,6 +1157,7 @@ import moment              from "moment"
 import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
+import { bindKey }         from "@rwh/keystrokes"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
 import Text2Text,   { Text2TextChunk }   from "./app-sv-text2text"
 import {
@@ -1566,6 +1567,24 @@ export default defineComponent({
             this.aiSlot = 0
             this.aiMessage = ""
         })
+
+        /*  support UI control via keystrokes (just maps onto commands below)  */
+        bindKey("f1", () => { commandBus.emit("ui:s2t-press") })
+        bindKey("f2", () => { commandBus.emit("ui:t2t-press") })
+        bindKey("f3", () => { commandBus.emit("ui:t2s-press") })
+        bindKey("f4", () => { commandBus.emit("ui:record-press") })
+        bindKey("f5", () => { commandBus.emit("ui:inject-press") })
+        bindKey("f6", () => { commandBus.emit("ui:extract-press") })
+        bindKey("f7", () => { commandBus.emit("ui:speak-press") })
+
+        /*  support UI control via command (usually coming from server)  */
+        commandBus.on("ui:s2t-press",     () => { this.engineToggle("speech2text") })
+        commandBus.on("ui:t2t-press",     () => { this.engineToggle("text2text") })
+        commandBus.on("ui:t2s-press",     () => { this.engineToggle("text2speech") })
+        commandBus.on("ui:record-press",  () => { this.toggleRecording() })
+        commandBus.on("ui:inject-press",  () => { this.studioInject() })
+        commandBus.on("ui:extract-press", () => { this.aiExtract() })
+        commandBus.on("ui:speak-press",   () => { this.aiSpeak })
     },
     methods: {
         /*  log to the console  */

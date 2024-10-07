@@ -36,6 +36,18 @@ export default class RESTCommand {
                 return h.response().code(204)
             }
         })
+
+        /*  send command (alternative)  */
+        this.rest.server!.route({
+            method: "GET",
+            path: "/command/{command*}",
+            handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
+                const command = req.params.command.split(/\//)
+                const cmd = { cmd: command[0], args: command.slice(1) } satisfies CommandType
+                this.restWS.notifyCommand(cmd)
+                return h.response().code(204)
+            }
+        })
     }
 }
 
