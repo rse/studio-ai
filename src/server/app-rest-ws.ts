@@ -80,7 +80,7 @@ export default class RESTWS extends Latching {
                 const { ctx, ws } = request.websocket()
                 if (typeof request.payload !== "object" || request.payload === null)
                     return Boom.badRequest("invalid request")
-                if (!ducky.validate(request.payload, "{ cmd: string, arg?: string }"))
+                if (!ducky.validate(request.payload, "{ cmd: string, arg?: any }"))
                     return Boom.badRequest("invalid request")
                 const { cmd, arg } = request.payload as any satisfies { cmd: string, arg: any }
                 if ((cmd === "SUBSCRIBE" || cmd === "UNSUBSCRIBE") && typeof arg === "string") {
@@ -88,6 +88,17 @@ export default class RESTWS extends Latching {
                         this.wsPeers.get(ctx.id)!.subscribed.set(arg, true)
                     else
                         this.wsPeers.get(ctx.id)!.subscribed.delete(arg)
+                }
+                else if (cmd === "COMMAND") {
+                    if (typeof arg === "object"
+                        && typeof arg.cmd === "string"
+                        && typeof arg.args === "object"
+                        && arg.args instanceof Array) {
+                        const command = arg as CommandType
+                        this.notifyCommand(command)
+                    }
+                    else
+                        return Boom.badRequest("invalid request")
                 }
                 else
                     return Boom.badRequest("unknown command")
