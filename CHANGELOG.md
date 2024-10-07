@@ -9,6 +9,7 @@ ChangeLog
 - IMPROVEMENT: allow one to use keystrokes to control the UI
 - BUGFIX: fix startup scripts
 - BUGFIX: fix text-area scrolling under Windows
+- BUGFIX: avoid outlines for sections/tabs
 - UPDATE: upgrade dependencies
 
 1.0.5 (2024-10-06)

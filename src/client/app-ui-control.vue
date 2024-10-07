@@ -730,6 +730,7 @@
         justify-items: flex-start
         align-items: flex-start
         width: 100%
+        outline: none
     .tabs-component-tab-a
         padding: 2px 4px 2px 4px
         font-size: 11pt
