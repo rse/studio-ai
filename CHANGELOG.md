@@ -8,6 +8,7 @@ ChangeLog
 - IMPROVEMENT: allow StreamDeck to communicate via WebSocket, too
 - IMPROVEMENT: allow auto-toggles on control UI to be remote controlled, too
 - BUGFIX: be more robust at WebSocket notify handling
+- UPDATE: upgrade dependencies
 
 1.0.6 (2024-10-07)
 ------------------
