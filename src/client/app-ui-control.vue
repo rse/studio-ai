@@ -1545,64 +1545,70 @@ export default defineComponent({
             }, 50)
         }, { deep: true })
 
-        /*  establish speech-to-text engine  */
-        this.log("INFO", "establishing Speech-to-Text engine")
-        speech2text = new Speech2Text({
-            device:   this.state.speech2text.microphoneDevice,
-            apiToken: this.state.speech2text.deepgramApiToken,
-            model:    this.state.speech2text.deepgramModel,
-            version:  this.state.speech2text.deepgramVersion,
-            language: this.state.speech2text.deepgramLanguage,
-            keywords: this.state.speech2text.deepgramKeywords
-        })
-        speech2text.on("log", (level: string, msg: string) => {
-            this.log(level, `Speech-to-Text: ${msg}`)
-        })
-        let studioBuffer = [ "" ]
-        speech2text.on("text", (chunk: Speech2TextChunk) => {
-            studioBuffer[studioBuffer.length - 1] = chunk.text
-            if (chunk.final) {
-                studioBuffer.push("")
-                this.studioMessageFinal = true
-            }
-            else
-                this.studioMessageFinal = false
-            this.studioMessage = studioBuffer.join(" ")
-        })
-        await speech2text.init()
 
-        /*  enable/disable speech-to-text engine  */
+        /*  control Speech-to-Text engine (LOCAL)  */
+        this.log("INFO", "preparing Speech-to-Text engine")
+        let s2tStudioBuffer = [ "" ]
         const s2tEngineOpen = async () => {
+            /*  (re)establish engine  */
             this.log("INFO", "Speech-to-Text: start engine")
-            await speech2text!.open().catch((err) => {
+            speech2text = new Speech2Text({
+                device:   this.state.speech2text.microphoneDevice,
+                apiToken: this.state.speech2text.deepgramApiToken,
+                model:    this.state.speech2text.deepgramModel,
+                version:  this.state.speech2text.deepgramVersion,
+                language: this.state.speech2text.deepgramLanguage,
+                keywords: this.state.speech2text.deepgramKeywords
+            })
+
+            /*  attach to engine events  */
+            speech2text.on("log", (level: string, msg: string) => {
+                this.log(level, `Speech-to-Text: ${msg}`)
+            })
+            speech2text.on("open", () => {
+                if (this.engine.speech2text === 1)
+                    this.engine.speech2text = 2
+            })
+            speech2text.on("close", () => {
+                if (this.engine.speech2text === 2) {
+                    this.log("INFO", "Speech-to-Text: unexpected engine stop -- re-starting engine")
+                    this.engine.speech2text = 1
+                }
+            })
+            s2tStudioBuffer = [ "" ]
+            speech2text.on("text", (chunk: Speech2TextChunk) => {
+                s2tStudioBuffer[s2tStudioBuffer.length - 1] = chunk.text
+                if (chunk.final) {
+                    s2tStudioBuffer.push("")
+                    this.studioMessageFinal = true
+                }
+                else
+                    this.studioMessageFinal = false
+                this.studioMessage = s2tStudioBuffer.join(" ")
+            })
+
+            /*  attach engine audio meter to DOM  */
+            speech2text.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
+
+            /*  start engine  */
+            await speech2text.open().catch((err) => {
                 this.engine.speech2text = 0
                 this.log("ERROR", `Speech-to-Text engine failed: ${err}`)
                 this.raiseStatus("error", `Speech-to-Text engine failed: ${err}`, 2000)
             })
-            speech2text!.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
         }
         const s2tEngineClose = async () => {
+            /*  stop engine  */
             this.log("INFO", "Speech-to-Text: stop engine")
             speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
             await speech2text!.close()
+            speech2text = null
         }
         this.$watch("engine.speech2text", async () => {
-            if (speech2text === null)
-                return
             if (this.engine.speech2text === 1)
                 s2tEngineOpen()
             else if (this.engine.speech2text === 0)
                 s2tEngineClose()
-        })
-        speech2text.on("open", () => {
-            if (this.engine.speech2text === 1)
-                this.engine.speech2text = 2
-        })
-        speech2text.on("close", () => {
-            if (this.engine.speech2text === 2) {
-                this.log("INFO", "Speech-to-Text: unexpected engine stop -- re-starting engine")
-                this.engine.speech2text = 1
-            }
         })
         this.$watch("recording", () => {
             if (speech2text === null)
@@ -1610,7 +1616,7 @@ export default defineComponent({
             if (this.recording) {
                 this.log("INFO", "Speech-to-Text: start recording")
                 speech2text.setActive(true)
-                studioBuffer = [ "" ]
+                s2tStudioBuffer = [ "" ]
             }
             else {
                 this.log("INFO", "Speech-to-Text: stop recording")
@@ -1628,14 +1634,15 @@ export default defineComponent({
             }
         })
 
-        /*  establish text-to-text engine  */
-        this.log("INFO", "establishing Text-to-Text engine")
-        text2text = new Text2Text()
-        const text2textConfigure = async () => {
+        /*  control Text-to-Text engine (LOCAL)  */
+        this.log("INFO", "preparing Text-to-Text engine")
+        const t2tEngineOpen = async () => {
+            /*  (re)establish engine  */
+            this.log("INFO", "Text-to-Text: start engine")
             const attachments = [] as Text2TextAttachment[]
             for (let i = 0; i < this.attachmentCount; i++)
                 attachments.push(await this.openaiAttachmentFetch(i))
-            text2text!.configure({
+            text2text = new Text2Text({
                 apiToken:     this.state.text2text.openaiApiToken,
                 model:        this.state.text2text.openaiModel,
                 apiType:      this.state.text2text.openaiApiType,
@@ -1645,74 +1652,66 @@ export default defineComponent({
                 seed:         this.state.text2text.openaiSeed,
                 maxTokens:    this.state.text2text.openaiMaxTokens
             })
-        }
-        text2textConfigure()
-        text2text.on("log", (level: string, msg: string) => {
-            this.log(level, `Text-to-Text: ${msg}`)
-        })
-        text2text.on("text", (chunk: Text2TextChunk) => {
-            const text2textLog = this.text2textLog as Array<Text2TextLogEntry>
-            if (this.text2textLog.length === 0
-                || text2textLog[text2textLog.length - 1].persona === "Studio"
-                || text2textLog[text2textLog.length - 1].final)
-                text2textLog.push({ persona: "AI", message: "", final: false })
-            const entry = text2textLog[text2textLog.length - 1]
-            entry.message = chunk.text
-            entry.final   = chunk.final
-            if (entry.final) {
-                if (this.aiAutoExtract)
-                    this.aiExtract(true)
-                if (this.aiAutoSpeak)
-                    this.aiSpeak(true)
-            }
-        })
-        await text2text.init()
 
-        /*  enable/disable text-to-text engine  */
-        const t2tEngineOpen = async () => {
-            this.log("INFO", "Text-to-Text: start engine")
-            await text2text!.open().catch((err) => {
+            /*  attach to engine events  */
+            text2text.on("log", (level: string, msg: string) => {
+                this.log(level, `Text-to-Text: ${msg}`)
+            })
+            text2text.on("text", (chunk: Text2TextChunk) => {
+                const text2textLog = this.text2textLog as Array<Text2TextLogEntry>
+                if (this.text2textLog.length === 0
+                    || text2textLog[text2textLog.length - 1].persona === "Studio"
+                    || text2textLog[text2textLog.length - 1].final)
+                    text2textLog.push({ persona: "AI", message: "", final: false })
+                const entry = text2textLog[text2textLog.length - 1]
+                entry.message = chunk.text
+                entry.final   = chunk.final
+                if (entry.final) {
+                    if (this.aiAutoExtract)
+                        this.aiExtract(true)
+                    if (this.aiAutoSpeak)
+                        this.aiSpeak(true)
+                }
+            })
+            text2text.on("open", () => {
+                if (this.engine.text2text === 1)
+                    this.engine.text2text = 2
+            })
+            text2text.on("close", () => {
+                if (this.engine.text2text === 2) {
+                    this.log("INFO", "Text-to-Text: unexpected engine stop -- re-starting engine")
+                    this.engine.text2text = 1
+                }
+                else
+                    this.text2textLog = [] as Array<Text2TextLogEntry>
+            })
+
+            /*  start engine  */
+            await text2text.open().catch((err) => {
                 this.engine.text2text = 0
                 this.log("ERROR", `Text-to-Text engine failed: ${err}`)
                 this.raiseStatus("error", `Text-to-Text engine failed: ${err}`, 2000)
             })
         }
         const t2tEngineClose = async () => {
+            /*  stop engine  */
             this.log("INFO", "Text-to-Text: stop engine")
             await text2text!.close()
+            text2text = null
         }
         this.$watch("engine.text2text", async () => {
-            if (text2text === null)
-                return
             if (this.engine.text2text === 1)
                 t2tEngineOpen()
             else if (this.engine.text2text === 0)
                 t2tEngineClose()
         })
-        text2text.on("open", () => {
-            if (this.engine.text2text === 1)
-                this.engine.text2text = 2
-        })
-        text2text.on("close", () => {
-            if (this.engine.text2text === 2) {
-                this.log("INFO", "Text-to-Text: unexpected engine stop -- re-starting engine")
-                this.engine.text2text = 1
-            }
-            else
-                this.text2textLog = [] as Array<Text2TextLogEntry>
-        })
-        this.$watch("state.text2text.openaiApiType", async (newVal: string, oldVal: string) => {
-            if (newVal !== oldVal) {
-                await this.openaiAttachmentClear()
-                text2textConfigure()
-                if (this.engine.text2text === 2) {
-                    await t2tEngineClose()
-                    await t2tEngineOpen()
-                }
-            }
+        this.$watch("state.text2text.openaiApiType", (newVal: string, oldVal: string) => {
+            if (newVal !== oldVal)
+                this.openaiAttachmentClear()
         })
 
-        /*  establish Text-to-Speech engine (REMOTE)  */
+        /*  control Text-to-Speech engine (REMOTE)  */
+        this.log("INFO", "preparing Text-to-Speech engine")
         const t2sEngineOpen = async () => {
             this.log("INFO", "Text-to-Speech: start engine")
             this.engine.text2speech = 1

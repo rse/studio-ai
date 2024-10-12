@@ -77,8 +77,8 @@ export default class Speech2Text extends EventEmitter {
         throw error
     }
 
-    /*  one-time initialization  */
-    async init () {
+    /*  open Speech-to-Text engine  */
+    async open () {
         /*  ensure video devices can be enumerated by requesting a
             dummy media stream so permissions are granted once  */
         this.log("INFO", "requesting video device access")
@@ -92,10 +92,7 @@ export default class Speech2Text extends EventEmitter {
         /*  initialize custom media recorder  */
         this.log("INFO", "initializing media recorder")
         await MRr(await MRc())
-    }
 
-    /*  open Speech-to-Text engine  */
-    async open () {
         /*  determine microphone device  */
         this.log("INFO", "WebAudio: determine microphone device")
         const devices = await navigator.mediaDevices.enumerateDevices().catch(() => [])
@@ -316,10 +313,5 @@ export default class Speech2Text extends EventEmitter {
             this.stream.getTracks().forEach((track) => { track.stop() })
             this.stream = null
         }
-    }
-
-    /*  one-time destruction  */
-    async destroy () {
-        /*  no-op  */
     }
 }

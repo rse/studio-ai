@@ -102,6 +102,10 @@ export default class Text2Speech extends EventEmitter {
 
     /*  one-time initialization  */
     async init () {
+    }
+
+    /*  open Text-to-Speech engine  */
+    async open () {
         /*  optionally prepare for particular audio output device  */
         if (this.options.device !== "Default") {
             /*  ensure video devices can be enumerated by requesting a
@@ -114,11 +118,6 @@ export default class Text2Speech extends EventEmitter {
             if (stream !== null)
                 stream.getTracks().forEach((track) => track.stop())
         }
-    }
-
-    /*  open Text-to-Speech engine  */
-    async open () {
-        this.log("INFO", "HeyGen: ready for operation")
 
         /*  fetch streaming session token  */
         this.log("INFO", "HeyGen: fetch streaming session token")
@@ -262,6 +261,7 @@ export default class Text2Speech extends EventEmitter {
             options.voice!.voiceId = avatar.voiceId
         const info = await this.avatar.createStartAvatar(options)
         this.sessionId = info.session_id ?? ""
+        this.log("INFO", "HeyGen: ready for operation")
     }
 
     /*  speak text  */
@@ -350,10 +350,5 @@ export default class Text2Speech extends EventEmitter {
             this.avatar = null
         }
         this.closing = false
-    }
-
-    /*  one-time destruction  */
-    async destroy () {
-        await this.close()
     }
 }

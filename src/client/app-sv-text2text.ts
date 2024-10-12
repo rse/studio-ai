@@ -68,12 +68,8 @@ export default class Text2Text extends EventEmitter {
     private dialog = [] as Array<OpenAI.ChatCompletionMessageParam>
 
     /*  API class constructor  */
-    constructor () {
+    constructor (options: Text2TextOptions) {
         super()
-    }
-
-    /*  API (re-)configuration  */
-    configure (options: Text2TextOptions) {
         this.options.apiToken     = options.apiToken
         this.options.model        = options.model
         this.options.apiType      = options.apiType
@@ -94,10 +90,6 @@ export default class Text2Text extends EventEmitter {
         const error = typeof reason === "string" ? new Error(reason) : reason
         this.emit("log", "ERROR", error.toString())
         throw error
-    }
-
-    /*  one-time initialization  */
-    async init () {
     }
 
     /*  open Text-to-Text engine  */
@@ -350,10 +342,5 @@ export default class Text2Text extends EventEmitter {
             this.client = null
         }
         this.emit("close")
-    }
-
-    /*  one-time destruction  */
-    async destroy () {
-        /*  no-op  */
     }
 }

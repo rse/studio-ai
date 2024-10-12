@@ -224,13 +224,12 @@ export default defineComponent({
         })
 
         /*  establish Text-to-Speech engine  */
+        this.log("INFO", "preparing Text-to-Speech engine")
         const establishText2Speech = async (recreating: boolean) => {
             this.log("INFO", `Text-to-Speech: ${recreating ? "re" : ""}establishing Text-to-Speech engine`)
             const reOpen = this.connected
-            if (recreating) {
+            if (recreating)
                 await text2speech?.close()
-                await text2speech?.destroy()
-            }
             text2speech = new Text2Speech({
                 apiToken:     this.state.text2speech.heygenApiToken,
                 avatar:       this.state.text2speech.heygenAvatar,
@@ -244,7 +243,6 @@ export default defineComponent({
                 device:       this.state.text2speech.speakerDevice,
                 video:        this.$refs.video as HTMLVideoElement
             })
-            await text2speech.init()
 
             /*  react on Text-to-Speech engine events  */
             text2speech.on("log", (level: string, msg: string) => {

@@ -8,6 +8,7 @@ ChangeLog
 - IMPROVEMENT: allow Text-to-Text engine to use both OpenAI Completion AI and Assistant API
 - IMPROVEMENT: allow attachments to be send to Text-to-Text engine
 - IMPROVEMENT: disable settings tab when corresponding engine is active
+- IMPROVEMENT: perform a full open/close operation for all three engines
 - BUGFIX: do not copy ".map" files in build process for production builds
 - UPDATE: upgrade dependencies
 
