@@ -1755,7 +1755,25 @@ export default defineComponent({
         Mousetrap.bind("ctrl+8", () => { commandBus.emit("ui:auto-inject-press") })
         Mousetrap.bind("ctrl+9", () => { commandBus.emit("ui:auto-extract-press") })
         Mousetrap.bind("ctrl+0", () => { commandBus.emit("ui:auto-speak-press") })
-        Mousetrap.bind("ctrl+space", () => { commandBus.emit("ui:record-press") })
+        Mousetrap.bind("f1", () => {
+            if (!this.engine.speech2text) commandBus.emit("ui:s2t-press")
+            if (!this.engine.text2text)   commandBus.emit("ui:t2t-press")
+            if (!this.engine.text2speech) commandBus.emit("ui:t2s-press")
+            if (!this.studioAutoInject)   commandBus.emit("ui:auto-inject-press")
+            if (!this.aiAutoExtract)      commandBus.emit("ui:auto-extract-press")
+            if (!this.aiAutoSpeak)        commandBus.emit("ui:auto-speak-press")
+        })
+        Mousetrap.bind("f2", () => {
+            if (this.engine.speech2text)  commandBus.emit("ui:s2t-press")
+            if (this.engine.text2text)    commandBus.emit("ui:t2t-press")
+            if (this.engine.text2speech)  commandBus.emit("ui:t2s-press")
+            if (this.studioAutoInject)    commandBus.emit("ui:auto-inject-press")
+            if (this.aiAutoExtract)       commandBus.emit("ui:auto-extract-press")
+            if (this.aiAutoSpeak)         commandBus.emit("ui:auto-speak-press")
+        })
+        Mousetrap.bind("f3", () => {
+            commandBus.emit("ui:record-press")
+        })
 
         /*  support UI control via command (usually coming from server)  */
         commandBus.on("ui:s2t-press",          () => { this.engineToggle("speech2text") })
