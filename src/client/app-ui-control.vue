@@ -1966,7 +1966,7 @@ export default defineComponent({
                     for (const p of pronounciations) {
                         const m = p.match(/^\s*(.+?)\s*:\s*(.+?)\s*$/)
                         if (m !== null)
-                            message = message.replace(/\bm[1]\b/, m[2])
+                            message = message.replaceAll(new RegExp(`\\b${m[1]}\\b`, "g"), m[2])
                     }
                     this.aiMessage = message
                 }
