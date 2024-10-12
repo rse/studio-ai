@@ -1317,6 +1317,7 @@ let speech2text: Speech2Text | null = null
 let text2text: Text2Text | null = null
 type Text2TextLogEntry = { persona: string, message: string, final: boolean }
 const commandBus = new EventEmitter()
+let ws: RecWebSocket | null = null
 export default defineComponent({
     name: "app-control",
     components: {
@@ -1397,7 +1398,7 @@ export default defineComponent({
 
         /*  establish server connection  */
         this.log("INFO", "establishing WebSocket connection to server")
-        const ws = new RecWebSocket(this.wsUrl + "/control", [], {
+        ws = new RecWebSocket(this.wsUrl + "/control", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
             minReconnectionDelay:        1000,
@@ -1438,10 +1439,13 @@ export default defineComponent({
                     this.log("WARNING", `invalid schema of command: ${errors.join(", ")}`)
                     return
                 }
-                this.log("INFO", `received command "${command.cmd}" ` +
-                    `(args: ${command.args.length > 0 ? command.args.map((arg) => JSON.stringify(arg)).join(", ") : "none"})`)
                 commandBus.emit(command.cmd, ...command.args)
             }
+        })
+
+        /*  pass-through log entries of peer "render" client  */
+        commandBus.on("render:log", (level, msg) => {
+            this.log(level, `[render]: ${msg}`)
         })
 
         /*  initially load state  */
@@ -2076,14 +2080,13 @@ export default defineComponent({
 
         /*  send command  */
         async sendCommand (cmd: string, args = [] as any[] ) {
+            if (ws === null)
+                return
             const traffic = this.traffic({ send: true })
-            await axios({
-                method: "POST",
-                url:    `${this.serviceUrl}command`,
-                data:   { cmd, args }
-            }).finally(() => {
-                traffic.done()
-            })
+            const msg = JSON.stringify({ cmd: "COMMAND", arg: { cmd, args } })
+            if (ws.readyState === RecWebSocket.OPEN)
+                ws.send(msg)
+            traffic.done()
         },
 
         /*  get attachment count  */

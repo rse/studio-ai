@@ -95,7 +95,7 @@ export default class RESTWS extends Latching {
                         && typeof arg.args === "object"
                         && arg.args instanceof Array) {
                         const command = arg as CommandType
-                        this.notifyCommand(command)
+                        this.notifyCommand(command, ctx.id)
                     }
                     else
                         return Boom.badRequest("invalid request")
@@ -118,10 +118,12 @@ export default class RESTWS extends Latching {
     }
 
     /*  notify clients about command  */
-    notifyCommand (command: CommandType) {
+    notifyCommand (command: CommandType, peer = "") {
         const msg = JSON.stringify({ cmd: "COMMAND", arg: { command } })
         for (const [ id, info ] of this.wsPeers.entries()) {
-            this.log.log(3, `WebSocket: notify COMMAN: peer="${id} (${info.peer})" msg=${msg}`)
+            if (peer !== "" && id === peer)
+                continue
+            this.log.log(3, `WebSocket: notify COMMAND: peer="${id} (${info.peer})" msg=${msg}`)
             if (info.ws.readyState === WebSocket.OPEN)
                 info.ws.send(msg)
         }

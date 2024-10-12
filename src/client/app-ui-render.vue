@@ -143,6 +143,7 @@ import Text2Speech from "./app-sv-text2speech"
 <script lang="ts">
 let text2speech: Text2Speech | null = null
 const commandBus = new EventEmitter()
+let ws: RecWebSocket | null = null
 export default defineComponent({
     name: "app-render",
     components: {
@@ -176,7 +177,7 @@ export default defineComponent({
 
         /*  connect to server for state updates  */
         this.log("INFO", "establish WebSocket connection to server")
-        const ws = new RecWebSocket(this.wsUrl + "/render", [], {
+        ws = new RecWebSocket(this.wsUrl + "/render", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
             minReconnectionDelay:        1000,
@@ -215,8 +216,6 @@ export default defineComponent({
                     this.log("WARNING", `invalid schema of command: ${errors.join(", ")}`)
                     return
                 }
-                this.log("INFO", `received command "${command.cmd}" ` +
-                    `(args: ${command.args.length > 0 ? command.args.map((arg) => JSON.stringify(arg)).join(", ") : "none"})`)
                 commandBus.emit(command.cmd, ...command.args)
             }
             else
@@ -295,16 +294,18 @@ export default defineComponent({
         /*  minimum logging facility  */
         log (level: string, msg: string) {
             const timestamp = moment().format("YYYY-MM-DD hh:mm:ss.SSS")
-            console.log(`${timestamp} [${level}]: ${msg}`)
+            const levelStr = `[${level}]:     `.substring(0, 10)
+            console.log(`${timestamp} ${levelStr} ${msg}`)
+            this.sendCommand("render:log", [ level, msg ])
         },
 
         /*  send command  */
         async sendCommand (cmd: string, args = [] as any[] ) {
-            await axios({
-                method: "POST",
-                url:    `${this.serviceUrl}command`,
-                data:   { cmd, args }
-            })
+            if (ws === null)
+                return
+            const msg = JSON.stringify({ cmd: "COMMAND", arg: { cmd, args } })
+            if (ws.readyState === RecWebSocket.OPEN)
+                ws.send(msg)
         }
     }
 })
