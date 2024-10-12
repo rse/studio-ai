@@ -61,7 +61,7 @@ export default class RESTWS extends Latching {
                             const id = `${req.socket.remoteAddress}:${req.socket.remotePort}`
                             ctx.id = id
                             this.wsPeers.set(id, { ctx, ws, req, subscribed: new Map<string, boolean>(), peer })
-                            this.log.log(2, `WebSocket: connect: remote=${id}`)
+                            this.log.log(2, `WebSocket: connect: remote=${id} peer=${peer}`)
                         },
 
                         /*  on WebSocket connection close  */
@@ -70,7 +70,7 @@ export default class RESTWS extends Latching {
                             const id = ctx.id
                             const peer = this.wsPeers.get(id)!.peer
                             this.wsPeers.delete(id)
-                            this.log.log(2, `WebSocket: disconnect: remote=${id}`)
+                            this.log.log(2, `WebSocket: disconnect: remote=${id} peer=${peer}`)
                         }
                     }
                 }
