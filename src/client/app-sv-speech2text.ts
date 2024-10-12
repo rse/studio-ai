@@ -249,6 +249,7 @@ export default class Speech2Text extends EventEmitter {
             this.log("INFO", `Deepgram: transcript received: "${text}" (final: ${data.is_final})`)
             this.emit("text", { text, final: data.is_final } as Speech2TextChunk)
         })
+
         /*  Deepgram API has a timeout of 10 seconds, so keep it open  */
         this.deepgramTimer = setInterval(() => {
             if (this.deepgram !== null) {
@@ -256,6 +257,7 @@ export default class Speech2Text extends EventEmitter {
                 this.deepgram!.keepAlive()
             }
         }, 3000)
+
         this.log("INFO", "Deepgram: ready for operation")
     }
 
