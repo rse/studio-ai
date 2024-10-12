@@ -27,6 +27,7 @@ export default Vite.defineConfig(({ command, mode }) => ({
         devSourcemap: mode === "development"
     },
     build: {
+        target:                 "es2022",
         outDir:                 "../../dst/client",
         assetsDir:              "",
         emptyOutDir:            (mode === "production"),
