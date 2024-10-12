@@ -47,6 +47,12 @@ export default Vite.defineConfig(({ command, mode }) => ({
                         spec = "index.yaml"
                     return spec
                 }
+            },
+            onwarn: (entry, next) => {
+                if (entry.message.match(/node_modules.+Use of eval in/))
+                    return
+                else
+                    return next(entry)
             }
         }
     }
