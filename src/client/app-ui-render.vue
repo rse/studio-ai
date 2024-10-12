@@ -175,7 +175,7 @@ export default defineComponent({
         this.state = state
 
         /*  connect to server for state updates  */
-        this.log("INFO", "establish WebSocket server connection")
+        this.log("INFO", "establish WebSocket connection to server")
         const ws = new RecWebSocket(this.wsUrl + "/render", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
@@ -224,9 +224,9 @@ export default defineComponent({
         })
 
         /*  establish Text-to-Speech engine  */
-        this.log("INFO", "preparing Text-to-Speech engine")
+        this.log("INFO", "preparing T2S engine")
         const establishText2Speech = async (recreating: boolean) => {
-            this.log("INFO", `Text-to-Speech: ${recreating ? "re" : ""}establishing Text-to-Speech engine`)
+            this.log("INFO", `T2S: ${recreating ? "re" : ""}establishing T2S engine`)
             const reOpen = this.connected
             if (recreating)
                 await text2speech?.close()
@@ -246,7 +246,7 @@ export default defineComponent({
 
             /*  react on Text-to-Speech engine events  */
             text2speech.on("log", (level: string, msg: string) => {
-                this.log(level, `Text-to-Speech: ${msg}`)
+                this.log(level, `T2S: ${msg}`)
             })
             text2speech.on("open", () => {
                 this.sendCommand("t2s:opened")
@@ -273,7 +273,7 @@ export default defineComponent({
         }
         await establishText2Speech(false)
         this.$watch("state.text2speech", () => {
-            this.log("INFO", "Text-to-Speech: reconfiguration detected")
+            this.log("INFO", "T2S: reconfiguration detected")
             establishText2Speech(true)
         }, { deep: true })
 

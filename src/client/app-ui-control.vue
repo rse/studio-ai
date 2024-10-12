@@ -1396,7 +1396,7 @@ export default defineComponent({
             (this.$refs[this.selectTab0] as any).selectTab(`#${this.selectTab1}`)
 
         /*  establish server connection  */
-        this.log("INFO", "establishing WebSocket connection")
+        this.log("INFO", "establishing WebSocket connection to server")
         const ws = new RecWebSocket(this.wsUrl + "/control", [], {
             reconnectionDelayGrowFactor: 1.3,
             maxReconnectionDelay:        4000,
@@ -1544,11 +1544,11 @@ export default defineComponent({
 
 
         /*  control Speech-to-Text engine (LOCAL)  */
-        this.log("INFO", "preparing Speech-to-Text engine")
+        this.log("INFO", "preparing S2T engine (LOCAL)")
         let s2tStudioBuffer = [ "" ]
         const s2tEngineOpen = async () => {
             /*  (re)establish engine  */
-            this.log("INFO", "Speech-to-Text: start engine")
+            this.log("INFO", "S2T: start engine")
             speech2text = new Speech2Text({
                 device:   this.state.speech2text.microphoneDevice,
                 apiToken: this.state.speech2text.deepgramApiToken,
@@ -1560,7 +1560,7 @@ export default defineComponent({
 
             /*  attach to engine events  */
             speech2text.on("log", (level: string, msg: string) => {
-                this.log(level, `Speech-to-Text: ${msg}`)
+                this.log(level, `S2T: ${msg}`)
             })
             speech2text.on("open", () => {
                 if (this.engine.speech2text === 1)
@@ -1568,7 +1568,7 @@ export default defineComponent({
             })
             speech2text.on("close", () => {
                 if (this.engine.speech2text === 2) {
-                    this.log("INFO", "Speech-to-Text: unexpected engine stop -- re-starting engine")
+                    this.log("INFO", "S2T: unexpected engine stop -- re-starting engine")
                     this.engine.speech2text = 1
                 }
             })
@@ -1590,13 +1590,13 @@ export default defineComponent({
             /*  start engine  */
             await speech2text.open().catch((err) => {
                 this.engine.speech2text = 0
-                this.log("ERROR", `Speech-to-Text engine failed: ${err}`)
-                this.raiseStatus("error", `Speech-to-Text engine failed: ${err}`, 2000)
+                this.log("ERROR", `S2T engine failed: ${err}`)
+                this.raiseStatus("error", `S2T engine failed: ${err}`, 2000)
             })
         }
         const s2tEngineClose = async () => {
             /*  stop engine  */
-            this.log("INFO", "Speech-to-Text: stop engine")
+            this.log("INFO", "S2T: stop engine")
             speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
             await speech2text!.close()
             speech2text = null
@@ -1611,12 +1611,12 @@ export default defineComponent({
             if (speech2text === null)
                 return
             if (this.recording) {
-                this.log("INFO", "Speech-to-Text: start recording")
+                this.log("INFO", "S2T: start recording")
                 speech2text.setActive(true)
                 s2tStudioBuffer = [ "" ]
             }
             else {
-                this.log("INFO", "Speech-to-Text: stop recording")
+                this.log("INFO", "S2T: stop recording")
                 speech2text.setActive(false)
                 if (this.studioAutoInject) {
                     let timer: ReturnType<typeof setTimeout> | null = null
@@ -1632,10 +1632,10 @@ export default defineComponent({
         })
 
         /*  control Text-to-Text engine (LOCAL)  */
-        this.log("INFO", "preparing Text-to-Text engine")
+        this.log("INFO", "preparing T2T engine (LOCAL)")
         const t2tEngineOpen = async () => {
             /*  (re)establish engine  */
-            this.log("INFO", "Text-to-Text: start engine")
+            this.log("INFO", "T2T: start engine")
             const attachments = [] as Text2TextAttachment[]
             for (let i = 0; i < this.attachmentCount; i++)
                 attachments.push(await this.openaiAttachmentFetch(i))
@@ -1652,7 +1652,7 @@ export default defineComponent({
 
             /*  attach to engine events  */
             text2text.on("log", (level: string, msg: string) => {
-                this.log(level, `Text-to-Text: ${msg}`)
+                this.log(level, `T2T: ${msg}`)
             })
             text2text.on("text", (chunk: Text2TextChunk) => {
                 const text2textLog = this.text2textLog as Array<Text2TextLogEntry>
@@ -1676,7 +1676,7 @@ export default defineComponent({
             })
             text2text.on("close", () => {
                 if (this.engine.text2text === 2) {
-                    this.log("INFO", "Text-to-Text: unexpected engine stop -- re-starting engine")
+                    this.log("INFO", "T2T: unexpected engine stop -- re-starting engine")
                     this.engine.text2text = 1
                 }
                 else
@@ -1686,13 +1686,13 @@ export default defineComponent({
             /*  start engine  */
             await text2text.open().catch((err) => {
                 this.engine.text2text = 0
-                this.log("ERROR", `Text-to-Text engine failed: ${err}`)
-                this.raiseStatus("error", `Text-to-Text engine failed: ${err}`, 2000)
+                this.log("ERROR", `T2T engine failed: ${err}`)
+                this.raiseStatus("error", `T2T engine failed: ${err}`, 2000)
             })
         }
         const t2tEngineClose = async () => {
             /*  stop engine  */
-            this.log("INFO", "Text-to-Text: stop engine")
+            this.log("INFO", "T2T: stop engine")
             await text2text!.close()
             text2text = null
         }
@@ -1708,14 +1708,14 @@ export default defineComponent({
         })
 
         /*  control Text-to-Speech engine (REMOTE)  */
-        this.log("INFO", "preparing Text-to-Speech engine")
+        this.log("INFO", "preparing T2S engine (REMOTE)")
         const t2sEngineOpen = async () => {
-            this.log("INFO", "Text-to-Speech: start engine")
+            this.log("INFO", "T2S: start engine")
             this.engine.text2speech = 1
             this.sendCommand("t2s:open")
         }
         const t2sEngineClose = async () => {
-            this.log("INFO", "Text-to-Speech: stop engine")
+            this.log("INFO", "T2S: stop engine")
             this.sendCommand("t2s:close")
         }
         this.$watch("engine.text2speech", async () => {
@@ -1725,7 +1725,7 @@ export default defineComponent({
                 t2sEngineClose()
         })
         commandBus.on("t2s:opened", () => {
-            this.log("INFO", "Text-to-Speech: engine started")
+            this.log("INFO", "T2S: engine started")
             this.engine.text2speech = 2
         })
         commandBus.on("t2s:closed", () => {
