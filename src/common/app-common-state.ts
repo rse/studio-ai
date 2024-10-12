@@ -22,6 +22,8 @@ export type StateType = {
     text2text: {
         openaiApiToken:    string,
         openaiModel:       string,
+        openaiApiType:     string,
+        openaiAttachment:  string,
         openaiPrompt:      string,
         openaiTemperature: number,
         openaiSeed:        number,
@@ -92,6 +94,8 @@ export const StateSchema = `{
     text2text: {
         openaiApiToken:    string,
         openaiModel:       string,
+        openaiApiType:     string,
+        openaiAttachment:  string,
         openaiPrompt:      string,
         openaiTemperature: number,
         openaiSeed:        number,

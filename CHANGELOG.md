@@ -2,14 +2,20 @@
 ChangeLog
 =========
 
+1.1.0 (2024-10-12)
+------------------
+
+- IMPROVEMENT: allow Text-to-Text engine to use both OpenAI Completion AI and Assistant API
+- IMPROVEMENT: allow attachments to be send to Text-to-Text engine
+- BUGFIX: do not copy ".map" files in build process for production builds
+- UPDATE: upgrade dependencies
+
 1.0.7 (2024-10-08)
 ------------------
 
 - IMPROVEMENT: allow StreamDeck to communicate via WebSocket, too
 - IMPROVEMENT: allow auto-toggles on control UI to be remote controlled, too
-- BUGFIX: do not copy ".map" files in build process for production builds
 - BUGFIX: be more robust at WebSocket notify handling
-- UPDATE: upgrade dependencies
 
 1.0.6 (2024-10-07)
 ------------------

@@ -122,7 +122,7 @@
                             </div>
                             <div class="control">
                                 <div class="label1">openai</div>
-                                <div class="label2">(API)</div>
+                                <div class="label2">(api)</div>
                                 <div class="label3">[token]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
@@ -202,6 +202,36 @@
                                 </div>
 
                                 <div class="label1">openai</div>
+                                <div class="label2">(api)</div>
+                                <div class="label3">[type]:</div>
+                                <div class="value">
+                                    <div class="fixed">*</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2text.openaiApiType = stateDefault.text2text.openaiApiType">RESET</div>
+                                <div class="input apitype">
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'completion' }" v-on:click="state.text2text.openaiApiType = 'completion'">Completion</div>
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'assistant' }"  v-on:click="state.text2text.openaiApiType = 'assistant'">Assistant</div>
+                                </div>
+
+                                <div class="label1">openai</div>
+                                <div class="label2">(attachment)</div>
+                                <div class="label3">[files]:</div>
+                                <div class="value">
+                                    <div class="fixed">{{ attachmentCount }}</div>
+                                </div>
+                                <div class="button" v-on:click="state.text2text.openaiAttachment = stateDefault.text2text.openaiAttachment">RESET</div>
+                                <div class="input attachment">
+                                    <div class="button" v-on:click="$refs.attachmentInput.click()">UPLOAD</div>
+                                    <div class="button" v-on:click="openaiAttachmentClear()">CLEAR</div>
+                                    <input ref="attachmentInput"
+                                        class="attachment-input"
+                                        type="file"
+                                        v-bind:multiple="true"
+                                        v-bind:accept="openaiMimeTypes"
+                                        v-on:change="openaiAttachmentChange"/>
+                                </div>
+
+                                <div class="label1">openai</div>
                                 <div class="label2">(prompt)</div>
                                 <div class="label3">[string]:</div>
                                 <div class="value">
@@ -209,7 +239,7 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2text.openaiPrompt = stateDefault.text2text.openaiPrompt">RESET</div>
                                 <div class="input">
-                                    <textarea class="prompt" rows="15" v-model.lazy="state.text2text.openaiPrompt"></textarea>
+                                    <textarea class="prompt" rows="10" v-model.lazy="state.text2text.openaiPrompt"></textarea>
                                 </div>
                             </div>
                         </tab>
@@ -824,6 +854,53 @@
             &:hover
                 background-color: var(--color-acc-bg-5)
                 color: var(--color-acc-fg-5)
+        .input.apitype
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            .button
+                flex-grow: 1
+                background-color: var(--color-std-bg-2)
+                color: var(--color-std-fg-3)
+                border-radius: 4px
+                padding: 4px 8px 4px 8px
+                min-height: 20px
+                text-align: center
+                font-size: 10pt
+                font-weight: normal
+                cursor: pointer
+                &.selected
+                    background-color: var(--color-acc-bg-3)
+                    color: var(--color-acc-fg-3)
+                &:hover
+                    background-color: var(--color-acc-bg-5)
+                    color: var(--color-acc-fg-5)
+            .button:first-child
+                margin-right: 5px
+        .input.attachment
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            .button
+                flex-grow: 1
+                background-color: var(--color-std-bg-5)
+                color: var(--color-std-fg-5)
+                border-radius: 4px
+                padding: 4px 8px 4px 8px
+                min-height: 20px
+                text-align: center
+                font-size: 10pt
+                font-weight: 200
+                cursor: pointer
+                &:hover
+                    background-color: var(--color-acc-bg-5)
+                    color: var(--color-acc-fg-5)
+            .button:first-child
+                margin-right: 5px
+            .attachment-input
+                display: none
         textarea
             background-color: var(--color-acc-bg-3)
             color: var(--color-acc-fg-5)
@@ -1171,7 +1248,8 @@ import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
 import { bindKey }         from "@rwh/keystrokes"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
-import Text2Text,   { Text2TextChunk }   from "./app-sv-text2text"
+import Text2Text, { Text2TextChunk, Text2TextAttachment } from "./app-sv-text2text"
+import TextExtract         from "./app-sv-textextract"
 import {
     StateType, StateTypePartial,
     StateSchema, StateSchemaPartial,
@@ -1229,6 +1307,7 @@ export default defineComponent({
         aiAutoExtract: false,
         aiAutoSpeak: false,
         text2textLog: [] as Array<Text2TextLogEntry>,
+        attachmentCount: 0,
         status: {
             kind: "",
             msg:  ""
@@ -1245,6 +1324,21 @@ export default defineComponent({
             text2speech: 0
         }
     }),
+    computed: {
+        openaiMimeTypes () {
+            if (this.state.text2text.openaiApiType === "assistant")
+                return ".txt,  text/plain, " +
+                    ".md,   text/markdown, " +
+                    ".html, text/html, " +
+                    ".json, application/json, " +
+                    ".pdf,  application/pdf, " +
+                    ".docx, application/vnd.openxmlformats-officedocument.wordprocessingml.document, " +
+                    ".pptx, application/vnd.openxmlformats-officedocument.presentationml.presentation, " +
+                    ".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            else
+                return TextExtract.supportedHtmlAccept
+        }
+    },
     created () {
         this.log("INFO", `starting ${pkg.name} ${pkg.version} (${pkg["x-date"]}) <${pkg.homepage}> client (CONTROL mode)`)
     },
@@ -1308,6 +1402,9 @@ export default defineComponent({
 
         /*  initially load state  */
         await this.loadState()
+
+        /*  initially load number of attachments  */
+        await this.openaiAttachmentCount()
 
         /*  react on all subsequent state changes  */
         let timer: ReturnType<typeof setTimeout> | null = null
@@ -1472,7 +1569,7 @@ export default defineComponent({
                 this.log("INFO", "Speech-to-Text: stop recording")
                 speech2text.setActive(false)
                 if (this.studioAutoInject) {
-                    let timer = null
+                    let timer: ReturnType<typeof setTimeout> | null = null
                     const poll = () => {
                         if (this.studioMessage !== "" && this.studioMessageFinal)
                             this.studioInject()
@@ -1486,14 +1583,23 @@ export default defineComponent({
 
         /*  establish text-to-text engine  */
         this.log("INFO", "establishing Text-to-Text engine")
-        text2text = new Text2Text({
-            apiToken:     this.state.text2text.openaiApiToken,
-            model:        this.state.text2text.openaiModel,
-            prompt:       this.state.text2text.openaiPrompt,
-            temperature:  this.state.text2text.openaiTemperature,
-            seed:         this.state.text2text.openaiSeed,
-            maxTokens:    this.state.text2text.openaiMaxTokens
-        })
+        text2text = new Text2Text()
+        const text2textConfigure = async () => {
+            const attachments = [] as Text2TextAttachment[]
+            for (let i = 0; i < this.attachmentCount; i++)
+                attachments.push(await this.openaiAttachmentFetch(i))
+            text2text!.configure({
+                apiToken:     this.state.text2text.openaiApiToken,
+                model:        this.state.text2text.openaiModel,
+                apiType:      this.state.text2text.openaiApiType,
+                attachments,
+                prompt:       this.state.text2text.openaiPrompt,
+                temperature:  this.state.text2text.openaiTemperature,
+                seed:         this.state.text2text.openaiSeed,
+                maxTokens:    this.state.text2text.openaiMaxTokens
+            })
+        }
+        text2textConfigure()
         text2text.on("log", (level: string, msg: string) => {
             this.log(level, `Text-to-Text: ${msg}`)
         })
@@ -1545,10 +1651,21 @@ export default defineComponent({
                 this.log("INFO", "Text-to-Text: unexpected engine stop -- re-starting engine")
                 this.engine.text2text = 1
             }
+            else
+                this.text2textLog = [] as Array<Text2TextLogEntry>
+        })
+        this.$watch("state.text2text.openaiApiType", async (newVal: string, oldVal: string) => {
+            if (newVal !== oldVal) {
+                await this.openaiAttachmentClear()
+                text2textConfigure()
+                if (this.engine.text2text === 2) {
+                    await t2tEngineClose()
+                    await t2tEngineOpen()
+                }
+            }
         })
 
         /*  establish Text-to-Speech engine (REMOTE)  */
-        this.log("INFO", "Text-to-Speech: engine starting")
         const t2sEngineOpen = async () => {
             this.log("INFO", "Text-to-Speech: start engine")
             this.engine.text2speech = 1
@@ -1887,6 +2004,60 @@ export default defineComponent({
             }).finally(() => {
                 this.connection.send = false
             })
+        },
+
+        /*  get attachment count  */
+        async openaiAttachmentCount () {
+            const response = await axios({
+                method:  "GET",
+                url:     `${this.serviceUrl}attachment/count`
+            })
+            this.attachmentCount = parseInt(response?.data?.count) ?? 0
+        },
+
+        /*  attach a file  */
+        async openaiAttachmentChange (ev: Event) {
+            const files = (ev.target as any)!.files as FileList
+            if (files.length > 0) {
+                const formData = new FormData()
+                let i = 0
+                while (i < files.length) {
+                    formData.append(`attachment-${i}`, files[i])
+                    i++
+                }
+                await axios({
+                    method:  "POST",
+                    url:     `${this.serviceUrl}attachment`,
+                    headers: { "Content-Type": "multipart/form-data" },
+                    data:    formData
+                })
+                this.attachmentCount = i
+            }
+        },
+
+        /*  fetch a particular attachment  */
+        async openaiAttachmentFetch (i: number) {
+            const response = await axios({
+                method:       "GET",
+                url:          `${this.serviceUrl}attachment/${i}`,
+                responseType: "arraybuffer"
+            })
+            const data = response.data as any
+            let   name = `attachment-${i}`
+            const header = response.headers["content-disposition"] ?? ""
+            let m
+            if ((m = header.match(/filename="(.+?)"/)) !== null)
+                name = m[1]
+            return { name, data } as Text2TextAttachment
+        },
+
+        /*  remove all attachments  */
+        async openaiAttachmentClear () {
+            await axios({
+                method:  "GET",
+                url:     `${this.serviceUrl}attachment/clear`
+            })
+            this.attachmentCount = 0
         }
     }
 })

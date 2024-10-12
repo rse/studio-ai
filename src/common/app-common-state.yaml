@@ -18,6 +18,8 @@ text2text:
     openaiTemperature: 0.95
     openaiSeed:        0
     openaiMaxTokens:   500
+    openaiApiType:     "completion"
+    openaiAttachment:  ""
     openaiPrompt: >-
         Jedes Mal, wenn du auf den User Input reagierst, mußt du
         folgende Persona verkörpern: Du bist Dr. A.I. Futura, eine

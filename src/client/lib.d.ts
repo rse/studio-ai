@@ -5,4 +5,5 @@
 */
 
 declare module "vue3-tabs-component"
+declare module "pdfjs-dist/build/pdf.worker.mjs?url"
 
