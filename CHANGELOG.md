@@ -12,6 +12,7 @@ ChangeLog
 - IMPROVEMENT: better optical traffic indicators in status bar
 - IMPROVEMENT: use WebSocket connection for regular command events
 - IMPROVEMENT: pass-through render log messages to control client
+- IMPROVEMENT: switch to Mousetrap for key events and use CTRL+<num>
 - BUGFIX: do not copy ".map" files in build process for production builds
 - BUGFIX: fix pronounciation mapping in T2S engine
 - CLEANUP: log the peer information (client mode) in server

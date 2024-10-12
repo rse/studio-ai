@@ -1293,7 +1293,7 @@ import moment              from "moment"
 import PerfectScrollbar    from "perfect-scrollbar"
 import { Tabs, Tab }       from "vue3-tabs-component"
 import { VueSpinnerGrid, VueSpinnerBars, VueSpinnerRings } from "vue3-spinners"
-import { bindKey }         from "@rwh/keystrokes"
+import Mousetrap           from "mousetrap"
 import Speech2Text, { Speech2TextChunk } from "./app-sv-speech2text"
 import Text2Text, { Text2TextChunk, Text2TextAttachment } from "./app-sv-text2text"
 import TextExtract         from "./app-sv-textextract"
@@ -1745,16 +1745,17 @@ export default defineComponent({
         })
 
         /*  support UI control via keystrokes (just maps onto commands below)  */
-        bindKey("f1",  () => { commandBus.emit("ui:s2t-press") })
-        bindKey("f2",  () => { commandBus.emit("ui:t2t-press") })
-        bindKey("f3",  () => { commandBus.emit("ui:t2s-press") })
-        bindKey("f4",  () => { commandBus.emit("ui:record-press") })
-        bindKey("f5",  () => { commandBus.emit("ui:inject-press") })
-        bindKey("f6",  () => { commandBus.emit("ui:extract-press") })
-        bindKey("f7",  () => { commandBus.emit("ui:speak-press") })
-        bindKey("f8",  () => { commandBus.emit("ui:auto-inject-press") })
-        bindKey("f9",  () => { commandBus.emit("ui:auto-extract-press") })
-        bindKey("f10", () => { commandBus.emit("ui:auto-speak-press") })
+        Mousetrap.bind("ctrl+1", () => { commandBus.emit("ui:s2t-press") })
+        Mousetrap.bind("ctrl+2", () => { commandBus.emit("ui:t2t-press") })
+        Mousetrap.bind("ctrl+3", () => { commandBus.emit("ui:t2s-press") })
+        Mousetrap.bind("ctrl+4", () => { commandBus.emit("ui:record-press") })
+        Mousetrap.bind("ctrl+5", () => { commandBus.emit("ui:inject-press") })
+        Mousetrap.bind("ctrl+6", () => { commandBus.emit("ui:extract-press") })
+        Mousetrap.bind("ctrl+7", () => { commandBus.emit("ui:speak-press") })
+        Mousetrap.bind("ctrl+8", () => { commandBus.emit("ui:auto-inject-press") })
+        Mousetrap.bind("ctrl+9", () => { commandBus.emit("ui:auto-extract-press") })
+        Mousetrap.bind("ctrl+0", () => { commandBus.emit("ui:auto-speak-press") })
+        Mousetrap.bind("ctrl+space", () => { commandBus.emit("ui:record-press") })
 
         /*  support UI control via command (usually coming from server)  */
         commandBus.on("ui:s2t-press",          () => { this.engineToggle("speech2text") })
