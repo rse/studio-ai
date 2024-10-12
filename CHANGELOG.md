@@ -7,6 +7,7 @@ ChangeLog
 
 - IMPROVEMENT: allow StreamDeck to communicate via WebSocket, too
 - IMPROVEMENT: allow auto-toggles on control UI to be remote controlled, too
+- BUGFIX: do not copy ".map" files in build process for production builds
 - BUGFIX: be more robust at WebSocket notify handling
 - UPDATE: upgrade dependencies
 
