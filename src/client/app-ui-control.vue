@@ -544,7 +544,7 @@
                                     <span v-show="recording" class="icon">
                                         <spinner-rings class="spinner-rings" size="30"/>
                                     </span>
-                                    RECORD
+                                    LISTEN
                                 </div>
                                 <div class="button"
                                     v-bind:class="{ disabled: studioMessage === '' || engine.text2text !== 2 }"
