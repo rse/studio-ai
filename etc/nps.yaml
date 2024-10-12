@@ -25,12 +25,12 @@ scripts:
     #   code compilation/transpiling (building)
     build:                  npm start build-client build-server
     build-dev:              npm start build-client-dev build-server-dev
-    build-client:           vite --config etc/vite-client.mts build --logLevel info --mode production
-    build-client-dev:       vite --config etc/vite-client.mts build --logLevel info --mode development
-    build-client-dev-watch: vite --config etc/vite-client.mts build --logLevel info --mode development --watch
-    build-server:           vite --config etc/vite-server.mts build --logLevel info --mode production
-    build-server-dev:       vite --config etc/vite-server.mts build --logLevel info --mode development
-    build-server-dev-watch: vite --config etc/vite-server.mts build --logLevel info --mode development --watch
+    build-client:           vite --config etc/vite-client.mts build --mode production
+    build-client-dev:       vite --config etc/vite-client.mts build --mode development
+    build-client-dev-watch: vite --config etc/vite-client.mts build --mode development --watch
+    build-server:           vite --config etc/vite-server.mts build --mode production
+    build-server-dev:       vite --config etc/vite-server.mts build --mode development
+    build-server-dev-watch: vite --config etc/vite-server.mts build --mode development --watch
 
     #   start server run-time
     server-delay:           delay 2.0

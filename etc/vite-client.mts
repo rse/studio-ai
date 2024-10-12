@@ -11,6 +11,7 @@ import { nodePolyfills } from "vite-plugin-node-polyfills"
 import SvgLoader         from "vite-svg-loader"
 
 export default Vite.defineConfig(({ command, mode }) => ({
+    logLevel: "info",
     base: "",
     root: "src/client",
     assetsInclude: [ "index.yaml" ],

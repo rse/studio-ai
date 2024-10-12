@@ -11,6 +11,7 @@ import { viteStaticCopy } from "vite-plugin-static-copy"
 import { node }           from "@liuli-util/vite-plugin-node"
 
 export default Vite.defineConfig(({ command, mode }) => ({
+    logLevel: "info",
     appType: "custom",
     base: "",
     root: "",
