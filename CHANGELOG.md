@@ -9,6 +9,7 @@ ChangeLog
 - IMPROVEMENT: allow attachments to be send to Text-to-Text engine
 - IMPROVEMENT: disable settings tab when corresponding engine is active
 - IMPROVEMENT: perform a full open/close operation for all three engines
+- IMPROVEMENT: better optical traffic indicators in status bar
 - CLEANUP: log the peer information (client mode) in server
 - BUGFIX: do not copy ".map" files in build process for production builds
 - UPDATE: upgrade dependencies

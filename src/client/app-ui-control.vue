@@ -676,12 +676,12 @@
 
                 <!--  Traffic Send  -->
                 <div class="traffic send" v-bind:class="{ active: connection.send }">
-                    <i class="fa-solid fa-circle"></i>
+                    <i class="fa-solid fa-circle-arrow-up"></i>
                 </div>
 
                 <!--  Traffic Recv  -->
                 <div class="traffic recv" v-bind:class="{ active: connection.recv }">
-                    <i class="fa-solid fa-circle"></i>
+                    <i class="fa-solid fa-circle-arrow-down"></i>
                 </div>
             </div>
         </div>
@@ -763,7 +763,7 @@
             .online
                 margin-right: 8px
                 &.yes
-                    color: var(--color-std-fg-1)
+                    color: var(--color-acc-fg-1)
                 &.no
                     color: var(--color-sig-fg-1)
             .traffic
@@ -1414,10 +1414,7 @@ export default defineComponent({
 
         /*  receive server messages  */
         ws.addEventListener("message", (ev: MessageEvent) => {
-            this.connection.recv = true
-            setTimeout(() => {
-                this.connection.recv = false
-            }, 250)
+            this.traffic({ recv: true }).done()
             if (typeof ev.data !== "string") {
                 this.raiseStatus("warning", "invalid WebSocket message received", 1000)
                 return
@@ -1862,12 +1859,12 @@ export default defineComponent({
 
         /*  load current state  */
         async loadState () {
-            this.connection.recv = true
+            const traffic = this.traffic({ recv: true })
             const state = await axios({
                 method: "GET",
                 url:    `${this.serviceUrl}state`
             }).then((response) => response.data).catch(() => null).finally(() => {
-                this.connection.recv = false
+                traffic.done()
             })
             if (state === null)
                 throw new Error("failed to load state")
@@ -1879,13 +1876,13 @@ export default defineComponent({
 
         /*  save current state  */
         async saveState () {
-            this.connection.send = true
+            const traffic = this.traffic({ send: true })
             await axios({
                 method: "POST",
                 url:    `${this.serviceUrl}state`,
                 data:   this.state
             }).finally(() => {
-                this.connection.send = false
+                traffic.done()
             })
         },
 
@@ -1893,13 +1890,13 @@ export default defineComponent({
         async patchState (paths: Readonly<string[]>) {
             const state = {}
             StateUtil.copy(state, this.state, paths)
-            this.connection.send = true
+            const traffic = this.traffic({ send: true })
             await axios({
                 method: "PATCH",
                 url:    `${this.serviceUrl}state`,
                 data:   state
             }).finally(() => {
-                this.connection.send = false
+                traffic.done()
             })
         },
 
@@ -2040,23 +2037,63 @@ export default defineComponent({
                 this.engine[engine] = 1
         },
 
+        /*  provide connection indicator flashing  */
+        traffic (flags: { send?: boolean, recv?: boolean }): { done (): void } {
+            /*  fetch flags onto stack  */
+            const send = flags.send ?? false
+            const recv = flags.recv ?? false
+
+            /*  raise flags  */
+            if (send) this.connection.send = true
+            if (recv) this.connection.recv = true
+
+            /*  later teardown flags again  */
+            const doneAction = () => {
+                if (send) this.connection.send = false
+                if (recv) this.connection.recv = false
+            }
+
+            /*  track seen triggers  */
+            let seenTimer    = false
+            let seenCallback = false
+
+            /*  provide timer tigger  */
+            setTimeout(() => {
+                if (seenCallback /* timer comes later */)
+                    doneAction()
+                seenTimer = true
+            }, 250)
+
+            /*  provide callback tigger  */
+            return {
+                done () {
+                    if (seenTimer /* callback comes later */)
+                        doneAction()
+                    seenCallback = true
+                }
+            }
+        },
+
         /*  send command  */
         async sendCommand (cmd: string, args = [] as any[] ) {
-            this.connection.send = true
+            const traffic = this.traffic({ send: true })
             await axios({
                 method: "POST",
                 url:    `${this.serviceUrl}command`,
                 data:   { cmd, args }
             }).finally(() => {
-                this.connection.send = false
+                traffic.done()
             })
         },
 
         /*  get attachment count  */
         async openaiAttachmentCount () {
+            const traffic = this.traffic({ recv: true })
             const response = await axios({
                 method:  "GET",
                 url:     `${this.serviceUrl}attachment/count`
+            }).finally(() => {
+                traffic.done()
             })
             this.attachmentCount = parseInt(response?.data?.count) ?? 0
         },
@@ -2071,11 +2108,14 @@ export default defineComponent({
                     formData.append(`attachment-${i}`, files[i])
                     i++
                 }
+                const traffic = this.traffic({ send: true })
                 await axios({
                     method:  "POST",
                     url:     `${this.serviceUrl}attachment`,
                     headers: { "Content-Type": "multipart/form-data" },
                     data:    formData
+                }).finally(() => {
+                    traffic.done()
                 })
                 this.attachmentCount = i
             }
@@ -2083,10 +2123,13 @@ export default defineComponent({
 
         /*  fetch a particular attachment  */
         async openaiAttachmentFetch (i: number) {
+            const traffic = this.traffic({ recv: true })
             const response = await axios({
                 method:       "GET",
                 url:          `${this.serviceUrl}attachment/${i}`,
                 responseType: "arraybuffer"
+            }).finally(() => {
+                traffic.done()
             })
             const data = response.data as any
             let   name = `attachment-${i}`
@@ -2099,9 +2142,12 @@ export default defineComponent({
 
         /*  remove all attachments  */
         async openaiAttachmentClear () {
+            const traffic = this.traffic({ send: true })
             await axios({
                 method:  "GET",
                 url:     `${this.serviceUrl}attachment/clear`
+            }).finally(() => {
+                traffic.done()
             })
             this.attachmentCount = 0
         }
