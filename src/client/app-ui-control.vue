@@ -27,8 +27,12 @@
                                 based on the <b>Deepgram</b> AI cloud service.
                                 <br/>
                                 The S2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
+                                <div class="control-disabled" v-show="engine.speech2text > 0">
+                                    The S2T engine is currently running. In order to
+                                    re-configure it here, please stop it first under <b>Control</b>.
+                                </div>
                             </div>
-                            <div class="control">
+                            <div class="control" v-bind:class="{ disabled: engine.speech2text > 0 }">
                                 <div class="label1">input</div>
                                 <div class="label2">(microphone)</div>
                                 <div class="label3">[device]:</div>
@@ -109,6 +113,8 @@
                                 <div class="input">
                                     <input class="text" v-model.lazy="state.speech2text.deepgramKeywords"/>
                                 </div>
+
+                                <div class="control-overlay" v-show="engine.speech2text > 0"></div>
                             </div>
                         </tab>
 
@@ -119,8 +125,12 @@
                                 based on the <b>OpenAI GPT</b> AI cloud service.
                                 <br/>
                                 The T2T engine runs inside the <b>Studio AI</b> <b>control</b> client.
+                                <div class="control-disabled" v-show="engine.text2text > 0">
+                                    The T2T engine is currently running. In order to
+                                    re-configure it here, please stop it first under <b>Control</b>.
+                                </div>
                             </div>
-                            <div class="control">
+                            <div class="control" v-bind:class="{ disabled: engine.text2text > 0 }">
                                 <div class="label1">openai</div>
                                 <div class="label2">(api)</div>
                                 <div class="label3">[token]:</div>
@@ -167,6 +177,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2text.openaiTemperature"
                                         v-bind:min="0.0" v-bind:max="2.0" v-bind:step="0.05"
+                                        v-bind:disabled="engine.text2text > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -182,6 +193,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2text.openaiSeed"
                                         v-bind:min="0" v-bind:max="100" v-bind:step="1"
+                                        v-bind:disabled="engine.text2text > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -197,6 +209,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2text.openaiMaxTokens"
                                         v-bind:min="10" v-bind:max="1000" v-bind:step="10"
+                                        v-bind:disabled="engine.text2text > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -241,6 +254,8 @@
                                 <div class="input">
                                     <textarea class="prompt" rows="10" v-model.lazy="state.text2text.openaiPrompt"></textarea>
                                 </div>
+
+                                <div class="control-overlay" v-show="engine.text2text > 0"></div>
                             </div>
                         </tab>
 
@@ -251,8 +266,12 @@
                                 based on the <b>HeyGen</b> AI cloud service.
                                 <br/>
                                 The T2S engine runs inside the <b>Studio AI</b> <b>render</b> client.
+                                <div class="control-disabled" v-show="engine.text2speech > 0">
+                                    The T2S engine is currently running. In order to
+                                    re-configure it here, please stop it first under <b>Control</b>.
+                                </div>
                             </div>
-                            <div class="control">
+                            <div class="control" v-bind:class="{ disabled: engine.text2speech > 0 }">
                                 <div class="label1">heygen</div>
                                 <div class="label2">(API)</div>
                                 <div class="label3">[token]:</div>
@@ -317,6 +336,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2speech.heygenRate"
                                         v-bind:min="0.50" v-bind:max="1.50" v-bind:step="0.05"
+                                        v-bind:disabled="engine.text2speech > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -384,6 +404,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2speech.ckThreshold"
                                         v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                        v-bind:disabled="engine.text2speech > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -399,6 +420,7 @@
                                 <div class="input">
                                     <slider class="slider" v-model="state.text2speech.ckSmoothing"
                                         v-bind:min="0.0" v-bind:max="1.0" v-bind:step="0.01"
+                                        v-bind:disabled="engine.text2speech > 0"
                                         show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
                                     ></slider>
                                 </div>
@@ -424,6 +446,8 @@
                                 <div class="input">
                                     <textarea class="prompt" rows="5" v-model.lazy="state.text2speech.pronounciation"></textarea>
                                 </div>
+
+                                <div class="control-overlay" v-show="engine.text2speech > 0"></div>
                             </div>
                         </tab>
                     </tabs>
@@ -781,7 +805,17 @@
         margin-bottom: 20px
         b
             font-weight: normal
+        .control-disabled
+            border: 1px solid var(--color-std-fg-1)
+            border-radius: 4px
+            padding: 4px 8px 4px 8px
+            margin-top: 10px
+            color: var(--color-sig-fg-3)
+            font-weight: 500
+            b
+                font-weight: bold
     .control
+        position: relative
         display: grid
         grid-template-columns: auto auto auto 7vw auto auto
         grid-template-rows: auto
@@ -914,6 +948,19 @@
             &.prompt
                 font-size: 11pt
                 font-weight: normal
+        &.disabled
+            opacity: 0.5
+        .control-overlay
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            display: flex
+            flex-direction: row
+            justify-content: center
+            align-items: center
+            z-index: 1000
     .render
         .preview-control
             margin-top: 20px
