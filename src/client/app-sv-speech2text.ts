@@ -44,6 +44,7 @@ export default class Speech2Text extends EventEmitter {
     } as Speech2TextOptions
 
     /*  internal state  */
+    private static initialized = false
     private stream: MediaStream | null = null
     private mediarecorder: IMediaRecorder | null = null
     private audioCtx: AudioContext | null = null
@@ -79,19 +80,24 @@ export default class Speech2Text extends EventEmitter {
 
     /*  open Speech-to-Text engine  */
     async open () {
-        /*  ensure video devices can be enumerated by requesting a
-            dummy media stream so permissions are granted once  */
-        this.log("INFO", "requesting video device access")
-        const stream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-            video: true
-        }).catch(() => null)
-        if (stream !== null)
-            stream.getTracks().forEach((track) => track.stop())
+        if (!Speech2Text.initialized) {
+            /*  ensure video devices can be enumerated by requesting a
+                dummy media stream so permissions are granted once  */
+            this.log("INFO", "requesting video device access")
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: true,
+                video: true
+            }).catch(() => null)
+            if (stream !== null)
+                stream.getTracks().forEach((track) => track.stop())
 
-        /*  initialize custom media recorder  */
-        this.log("INFO", "initializing media recorder")
-        await MRr(await MRc())
+            /*  initialize custom media recorder  */
+            this.log("INFO", "initializing media recorder")
+            await MRr(await MRc())
+
+            /*  remember that we were now once initialized  */
+            Speech2Text.initialized = true
+        }
 
         /*  determine microphone device  */
         this.log("INFO", "WebAudio: determine microphone device")
