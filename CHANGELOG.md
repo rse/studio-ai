@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+1.1.1 (2024-10-13)
+------------------
+
+- CLEANUP: add missing files
+- CLEANUP: remove items from TODO
+
 1.1.0 (2024-10-12)
 ------------------
 
