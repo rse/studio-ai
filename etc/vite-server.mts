@@ -21,13 +21,15 @@ export default Vite.defineConfig(({ command, mode }) => ({
             shims:  true
         }),
         YAMLPlugin(),
-        viteStaticCopy({
-            structured: false,
-            targets: [
-                { src: "dst/server/index.js",     dest: "", rename: (fn, ext, p) => "index.mjs" },
-                { src: "dst/server/index.js.map", dest: "", rename: (fn, ext, p) => "index.mjs.map" }
-            ]
-        })
+        ...(mode === "development" ? [
+            viteStaticCopy({
+                structured: false,
+                targets: [
+                    { src: "dst/server/index.js",     dest: "", rename: (fn, ext, p) => "index.mjs" },
+                    { src: "dst/server/index.js.map", dest: "", rename: (fn, ext, p) => "index.mjs.map" }
+                ]
+            }) ] : []
+        )
     ],
     build: {
         target:                 "node20",
