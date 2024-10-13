@@ -13,23 +13,13 @@ import { glob }        from "glob"
 
 import Argv            from "./app-util-argv"
 import REST            from "./app-rest"
-import RESTWS          from "./app-rest-ws"
 
 export default class RESTAttachment {
     constructor (
-        private argv:   Argv,
-        private rest:   REST,
-        private restWS: RESTWS
+        private argv: Argv,
+        private rest: REST
     ) {}
     async init () {
-        /*  remove all old attachments  */
-        const removeAllAttachments = async () => {
-            const files = await glob(path.join(
-                this.argv.stateDir, "studio-ai-attachment-*.*"))
-            for (const file of files)
-                await fs.promises.unlink(file)
-        }
-
         /*  get number of attachments  */
         this.rest.server!.route({
             method: "GET",
@@ -41,7 +31,25 @@ export default class RESTAttachment {
             }
         })
 
-        /*  receive attachments  */
+        /*  get filenames of attachments  */
+        this.rest.server!.route({
+            method: "GET",
+            path: "/attachment/filenames",
+            handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
+                const files = await glob(path.join(
+                    this.argv.stateDir, "studio-ai-attachment-*.txt"))
+                const filenames = [] as string[]
+                for (let i = 0; i < files.length; i++) {
+                    const file = path.join(this.argv.stateDir, `studio-ai-attachment-${i}.txt`)
+                    let filename = await fs.promises.readFile(file, { encoding: "utf8" })
+                    filename = filename.replace(/\r?\n$/, "")
+                    filenames.push(filename)
+                }
+                return h.response({ filenames }).code(200)
+            }
+        })
+
+        /*  upload new attachments  */
         this.rest.server!.route({
             method: "POST",
             path: "/attachment",
@@ -54,15 +62,13 @@ export default class RESTAttachment {
                 }
             },
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
-                /*  remove all old attachments  */
-                await removeAllAttachments()
-
-                /*  extract new attachments from upload request  */
+                /*  extract additional attachments from upload request  */
                 const data = req.payload as any
+                const files = await glob(path.join(
+                    this.argv.stateDir, "studio-ai-attachment-*.txt"))
+                let i = files.length
                 for (const key of Object.keys(data)) {
-                    let m
-                    if ((m = key.match(/^attachment-(\d+)$/)) !== null) {
-                        const i = parseInt(m[1])
+                    if (key.match(/^attachment-\d+$/) !== null) {
                         let name = (data[key].hapi?.filename as string) ?? key
                         name = name.replace(/[^A-Za-z0-9-.]+/g, "-").replace(/--+/g, "-")
 
@@ -83,13 +89,14 @@ export default class RESTAttachment {
                                 reject(new Error(`Error writing attachment file #${i}: ${err}`))
                             })
                         })
+                        i++
                     }
                 }
                 return h.response().code(201)
             }
         })
 
-        /*  fetch a particular attachments  */
+        /*  fetch one attachment  */
         this.rest.server!.route({
             method: "GET",
             path: "/attachment/{i}",
@@ -120,7 +127,10 @@ export default class RESTAttachment {
             method: "GET",
             path: "/attachment/clear",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
-                await removeAllAttachments()
+                const files = await glob(path.join(
+                    this.argv.stateDir, "studio-ai-attachment-*.*"))
+                for (const file of files)
+                    await fs.promises.unlink(file)
                 return h.response().code(201)
             }
         })

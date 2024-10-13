@@ -5,6 +5,7 @@ ChangeLog
 1.1.2 (2024-10-13)
 ------------------
 
+- IMPROVEMENT: allow multiple files to be uploaded multiple times
 - CLEANUP: package.json dependency sorting
 
 1.1.1 (2024-10-13)

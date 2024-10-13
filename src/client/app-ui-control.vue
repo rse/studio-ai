@@ -234,14 +234,21 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2text.openaiAttachment = stateDefault.text2text.openaiAttachment">RESET</div>
                                 <div class="input attachment">
-                                    <div class="button" v-on:click="$refs.attachmentInput.click()">UPLOAD</div>
-                                    <div class="button" v-on:click="openaiAttachmentClear()">CLEAR</div>
-                                    <input ref="attachmentInput"
-                                        class="attachment-input"
-                                        type="file"
-                                        v-bind:multiple="true"
-                                        v-bind:accept="openaiMimeTypes"
-                                        v-on:change="openaiAttachmentChange"/>
+                                    <div class="attachment-action">
+                                        <div class="button" v-on:click="$refs.attachmentInput.click()">UPLOAD</div>
+                                        <div class="button" v-on:click="openaiAttachmentClear()">CLEAR</div>
+                                        <input ref="attachmentInput"
+                                            class="attachment-input"
+                                            type="file"
+                                            v-bind:multiple="true"
+                                            v-bind:accept="openaiMimeTypes"
+                                            v-on:change="openaiAttachmentChange"/>
+                                    </div>
+                                    <div class="attachment-files" v-show="attachmentFilenames.length > 0">
+                                        <div class="attachment-file" v-for="filename, i of attachmentFilenames" v-bind:key="i">
+                                            {{ filename }}
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="label1">openai</div>
@@ -913,28 +920,42 @@
             .button:first-child
                 margin-right: 5px
         .input.attachment
-            display: flex
-            flex-direction: row
-            justify-content: center
-            align-items: center
-            .button
-                flex-grow: 1
-                background-color: var(--color-std-bg-5)
-                color: var(--color-std-fg-5)
+            .attachment-action
+                display: flex
+                flex-direction: row
+                justify-content: center
+                align-items: center
+                .button
+                    flex-grow: 1
+                    background-color: var(--color-std-bg-5)
+                    color: var(--color-std-fg-5)
+                    border-radius: 4px
+                    padding: 4px 8px 4px 8px
+                    min-height: 20px
+                    text-align: center
+                    font-size: 10pt
+                    font-weight: 200
+                    cursor: pointer
+                    &:hover
+                        background-color: var(--color-acc-bg-5)
+                        color: var(--color-acc-fg-5)
+                .button:first-child
+                    margin-right: 5px
+                .attachment-input
+                    display: none
+            .attachment-files
+                margin-top: 8px
                 border-radius: 4px
-                padding: 4px 8px 4px 8px
-                min-height: 20px
-                text-align: center
-                font-size: 10pt
-                font-weight: 200
-                cursor: pointer
-                &:hover
-                    background-color: var(--color-acc-bg-5)
-                    color: var(--color-acc-fg-5)
-            .button:first-child
-                margin-right: 5px
-            .attachment-input
-                display: none
+                display: flex
+                flex-direction: column
+                justify-content: flex-first
+                align-items: flex-first
+                padding: 2px 8px 2px 8px
+                background-color: var(--color-std-bg-3)
+                color: var(--color-std-fg-3)
+                .attachment-file
+                    width: 100%
+                    font-size: 75%
         textarea
             background-color: var(--color-acc-bg-3)
             color: var(--color-acc-fg-5)
@@ -1356,6 +1377,7 @@ export default defineComponent({
         aiAutoSpeak: false,
         text2textLog: [] as Array<Text2TextLogEntry>,
         attachmentCount: 0,
+        attachmentFilenames: [] as string[],
         status: {
             kind: "",
             msg:  ""
@@ -1451,8 +1473,9 @@ export default defineComponent({
         /*  initially load state  */
         await this.loadState()
 
-        /*  initially load number of attachments  */
+        /*  initially load attachment information  */
         await this.openaiAttachmentCount()
+        await this.openaiAttachmentFilenames()
 
         /*  react on all subsequent state changes  */
         let timer: ReturnType<typeof setTimeout> | null = null
@@ -2129,6 +2152,18 @@ export default defineComponent({
             this.attachmentCount = parseInt(response?.data?.count) ?? 0
         },
 
+        /*  get attachment filenames  */
+        async openaiAttachmentFilenames () {
+            const traffic = this.traffic({ recv: true })
+            const response = await axios({
+                method:  "GET",
+                url:     `${this.serviceUrl}attachment/filenames`
+            }).finally(() => {
+                traffic.done()
+            })
+            this.attachmentFilenames = response?.data?.filenames ?? []
+        },
+
         /*  attach a file  */
         async openaiAttachmentChange (ev: Event) {
             const files = (ev.target as any)!.files as FileList
@@ -2148,7 +2183,8 @@ export default defineComponent({
                 }).finally(() => {
                     traffic.done()
                 })
-                this.attachmentCount = i
+                await this.openaiAttachmentCount()
+                await this.openaiAttachmentFilenames()
             }
         },
 
@@ -2181,6 +2217,7 @@ export default defineComponent({
                 traffic.done()
             })
             this.attachmentCount = 0
+            this.attachmentFilenames = []
         }
     }
 })
