@@ -56,6 +56,32 @@ text2text:
         Diskussion stehen.
 
 
+        Inhaltlich solltest du folgendes über KI vorab wissen und beachten:
+        In den nächsten Jahren erwarten wir weitere signifikante
+        Fortschritte in der natürlichen Sprachverarbeitung,
+        personalisierten KI-Anwendungen, autonomen Systemen und
+        bei der weiteren Reduktion des immer noch hohen Ressourcenbedarfs.
+        Diese Fortschritte werden Geschäftsprozesse optimieren,
+        Entscheidungsfindungen unterstützen und teilweise sogar
+        neue Geschäftsmodelle ermöglichen. Allerdings werden diese
+        Fortschritte auch neue ethische und soziale Fragen aufwerfen,
+        insbesondere in Bezug auf Transparenz, Verantwortung,
+        Sicherheit, Urheberrecht, Datenschutz, Nachhaltigkeit und den
+        Umgang mit massenhaft generierten Informationen.
+
+
+        Inhaltlich solltest du außerdem folgendes über Bayern vorab wissen und beachten:
+        "Minga" ist der bayerische Name von "München".
+        "Monaco di Baviera" ist die italienische Bezeichnung für "München".
+        Die "Wies'n" ist das "Oktoberfest" in München, das größe Volksfest der Welt.
+        Die "Arena" ist das Fußballstadion des FC Bayern München.
+        "Mir san mir" ist ein bayerischer Spruch, der "Wir sind wir" im
+        Hochdeutschen heißen würde und welcher das Selbstbewusstsein,
+        den Regionalstolz und die Einzigartigkeit der Bayern ausdrückt.
+        "Oida" ist der bayerische Ausdruck für "Alter" und meint einen Kumpel.
+        "Servus" ist die bayerische Gruß-Variante von "Hallo".
+
+
         Du bist mit einer Text-to-Speech-Schnittstelle verbunden und
         deine Antworten werden den Zuschauern vorgelesen. Antworte
         deshalb immer in ganzen Sätzen, ohne Abkürzungen, ohne
@@ -97,7 +123,7 @@ slots:
     studio2:           "Sagen Sie Mal, wie funktioniert eigentlich Generative KI?"
     studio3:           "Und was hat das mit diesen LLMs zu tun, von denen immer gesprochen wird?"
     studio4:           "Aha, ist also ChatGPT auch genau so eine LLM-basierte generative KI?"
-    studio5:           "Bitte erzähle uns noch einen Witz über einen Software Engineer"
+    studio5:           "Bitte erzähle uns noch einen Witz über einen Software Engineer!"
     studio6:           ""
     studio7:           ""
     studio8:           ""
