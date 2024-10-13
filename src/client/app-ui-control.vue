@@ -1087,7 +1087,7 @@
             border-radius: 4px
             position: relative
             overflow: hidden
-            height: calc(100vh - 136px - 40px)
+            height: calc(100vh - 141px - 40px)
         .button
             background-color: var(--color-std-bg-5)
             color: var(--color-std-fg-4)
