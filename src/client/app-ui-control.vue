@@ -1058,9 +1058,12 @@
                 flex-grow: 1
                 height: 48%
                 width: 100%
+                position: relative
                 .flow-right
-                    position: relative
+                    position: absolute
                     top: 80px
+                    left: 0
+                    width: 80%
                     fill: var(--color-acc-bg-3)
                     margin-right: 5px
                     &.active
@@ -1069,10 +1072,12 @@
                 flex-grow: 1
                 height: 52%
                 width: 100%
+                position: relative
                 .flow-left
-                    position: relative
-                    top: 80px
+                    position: absolute
+                    bottom: 140px
                     right: -1px
+                    width: 80%
                     fill: var(--color-std-bg-4)
                     transform: rotate(180deg)
                     transform-origin: middle center
