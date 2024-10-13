@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.1.3 (2024-10-13)
+------------------
+
+- BUGFIX: fix building server under production mode
+
 1.1.2 (2024-10-13)
 ------------------
 
