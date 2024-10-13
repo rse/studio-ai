@@ -1017,7 +1017,7 @@
             background-color: var(--color-acc-bg-3)
             color: var(--color-acc-fg-5)
             border-radius: 4px
-            padding: 8px 8px 8px 8px
+            padding: 8px 16px 8px 16px
             font-size: 12pt
             width: auto
             height: auto
