@@ -1566,6 +1566,9 @@ export default defineComponent({
             speech2text.on("log", (level: string, msg: string) => {
                 this.log(level, `S2T: ${msg}`)
             })
+            speech2text.on("traffic", (flags: { send?: boolean, recv?: boolean }) => {
+                this.traffic(flags).done()
+            })
             speech2text.on("open", () => {
                 if (this.engine.speech2text === 1)
                     this.engine.speech2text = 2
@@ -1658,6 +1661,9 @@ export default defineComponent({
             text2text.on("log", (level: string, msg: string) => {
                 this.log(level, `T2T: ${msg}`)
             })
+            text2text.on("traffic", (flags: { send?: boolean, recv?: boolean }) => {
+                this.traffic(flags).done()
+            })
             text2text.on("text", (chunk: Text2TextChunk) => {
                 const text2textLog = this.text2textLog as Array<Text2TextLogEntry>
                 if (this.text2textLog.length === 0
@@ -1742,6 +1748,9 @@ export default defineComponent({
             this.speaking = false
             this.aiSlot = 0
             this.aiMessage = ""
+        })
+        commandBus.on("t2s:traffic", (flags: { send?: boolean, recv?: boolean }) => {
+            this.traffic(flags).done()
         })
 
         /*  support UI control via keystrokes (just maps onto commands below)  */

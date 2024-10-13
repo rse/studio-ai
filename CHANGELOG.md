@@ -5,6 +5,7 @@ ChangeLog
 1.1.1 (2024-10-13)
 ------------------
 
+- IMPROVEMENT: track traffic of the three engines, too
 - CLEANUP: add missing files
 - CLEANUP: remove items from TODO
 

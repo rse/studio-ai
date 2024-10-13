@@ -247,6 +247,9 @@ export default defineComponent({
             text2speech.on("log", (level: string, msg: string) => {
                 this.log(level, `T2S: ${msg}`)
             })
+            text2speech.on("traffic", (flags: { send?: boolean, recv?: boolean }) => {
+                this.sendCommand("t2s:traffic", [ flags ])
+            })
             text2speech.on("open", () => {
                 this.sendCommand("t2s:opened")
                 this.connected = true

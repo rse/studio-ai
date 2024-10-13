@@ -85,6 +85,11 @@ export default class Text2Text extends EventEmitter {
         this.emit("log", level, msg)
     }
 
+    /*  minimum traffic monitoring  */
+    traffic (flags: { send?: boolean, recv?: boolean }) {
+        this.emit("traffic", flags)
+    }
+
     /*  minimum fatal error handling  */
     error (reason: string | Error): never {
         const error = typeof reason === "string" ? new Error(reason) : reason
@@ -247,6 +252,7 @@ export default class Text2Text extends EventEmitter {
                 this.thread!.id, { role: "user", content: message })
 
             /*  run thread once (again)  */
+            this.traffic({ send: true })
             const run = this.client.beta.threads.runs.stream(this.thread!.id, {
                 assistant_id: this.assistant!.id,
                 max_completion_tokens: this.options.maxTokens,
@@ -258,6 +264,7 @@ export default class Text2Text extends EventEmitter {
             /*  retrieve text results from thread run  */
             run.on("textDelta", (delta, snapshot) => {
                 /*  case 1: intermediate result  */
+                this.traffic({ recv: true })
                 let text = snapshot.value
                 if (snapshot.annotations)
                     for (const annotation of snapshot.annotations)
@@ -267,6 +274,7 @@ export default class Text2Text extends EventEmitter {
             })
             run.on("textDone", (content, snapshot) => {
                 /*  case 2: final result  */
+                this.traffic({ recv: true })
                 let text = content.value
                 if (content.annotations)
                     for (const annotation of content.annotations)
@@ -277,6 +285,7 @@ export default class Text2Text extends EventEmitter {
         }
         else if (this.options.apiType === "completion") {
             this.dialog.push({ role: "user", content: message })
+            this.traffic({ send: true })
             this.stream = this.client.beta.chat.completions.stream({
                 stream:                true,
                 model:                 this.options.model,
@@ -287,6 +296,7 @@ export default class Text2Text extends EventEmitter {
                 messages:              this.dialog
             })
             this.stream.on("content", (delta, snapshot) => {
+                this.traffic({ recv: true })
                 this.emit("text", { text: snapshot, final: false } as Text2TextChunk)
             })
             const completion = await this.stream.finalChatCompletion()

@@ -71,6 +71,11 @@ export default class Speech2Text extends EventEmitter {
         this.emit("log", level, msg)
     }
 
+    /*  minimum traffic monitoring  */
+    traffic (flags: { send?: boolean, recv?: boolean }) {
+        this.emit("traffic", flags)
+    }
+
     /*  minimum fatal error handling  */
     error (reason: string | Error): never {
         const error = typeof reason === "string" ? new Error(reason) : reason
@@ -243,6 +248,7 @@ export default class Speech2Text extends EventEmitter {
             this.log("ERROR", `Deepgram: ERROR: unhandled event: ${JSON.stringify(data)}`)
         })
         this.deepgram.on(Deepgram.LiveTranscriptionEvents.Transcript, async (data: Deepgram.LiveTranscriptionEvent) => {
+            this.traffic({ recv: true })
             const text = data.channel?.alternatives[0].transcript ?? ""
             if (text === "")
                 return

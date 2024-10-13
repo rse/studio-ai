@@ -93,15 +93,16 @@ export default class Text2Speech extends EventEmitter {
         this.emit("log", level, msg)
     }
 
+    /*  minimum traffic monitoring  */
+    traffic (flags: { send?: boolean, recv?: boolean }) {
+        this.emit("traffic", flags)
+    }
+
     /*  minimum fatal error handling  */
     error (reason: string | Error): never {
         const error = typeof reason === "string" ? new Error(reason) : reason
         this.emit("log", "ERROR", error.toString())
         throw error
-    }
-
-    /*  one-time initialization  */
-    async init () {
     }
 
     /*  open Text-to-Speech engine  */
@@ -259,6 +260,7 @@ export default class Text2Speech extends EventEmitter {
         } as StartAvatarRequest
         if (avatar.voiceId !== "")
             options.voice!.voiceId = avatar.voiceId
+        this.traffic({ send: true })
         const info = await this.avatar.createStartAvatar(options)
         this.sessionId = info.session_id ?? ""
         this.log("INFO", "HeyGen: ready for operation")
@@ -278,6 +280,7 @@ export default class Text2Speech extends EventEmitter {
 
         /*  start new speaking  */
         this.log("INFO", `HeyGen: streaming avatar: speak "${text}"`)
+        this.traffic({ send: true })
         await this.avatar.speak({
             text,
             task_type: TaskType.REPEAT
@@ -295,6 +298,7 @@ export default class Text2Speech extends EventEmitter {
         /*  interrupt speaking task  */
         if (this.talking) {
             this.log("INFO", "HeyGen: streaming avatar: interrupting active speaking task")
+            this.traffic({ send: true })
             await this.avatar.interrupt()
             await new Promise<void>((resolve) => {
                 const poll = () => {
@@ -318,6 +322,7 @@ export default class Text2Speech extends EventEmitter {
 
         /*  send a dummy task to keep the connection alive  */
         if (!this.talking) {
+            this.traffic({ send: true })
             await this.avatar.speak({
                 text: ".",
                 task_type: TaskType.REPEAT
@@ -346,6 +351,7 @@ export default class Text2Speech extends EventEmitter {
         }
         if (this.avatar !== null) {
             this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
+            this.traffic({ send: true })
             await this.avatar.stopAvatar()
             this.avatar = null
         }
