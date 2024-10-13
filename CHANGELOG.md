@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+1.1.4 (2024-10-13)
+------------------
+
+- CLEANUP: improve default configuration
+- UPDATE: upgrade dependencies
+
 1.1.3 (2024-10-13)
 ------------------
 
