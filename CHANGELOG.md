@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.1.2 (2024-10-13)
+------------------
+
+- CLEANUP: package.json dependency sorting
+
 1.1.1 (2024-10-13)
 ------------------
 
