@@ -7,6 +7,7 @@ ChangeLog
 
 - IMPROVEMENT: allow multiple files to be uploaded multiple times
 - CLEANUP: package.json dependency sorting
+- CLEANUP: small CSS glitches
 
 1.1.1 (2024-10-13)
 ------------------
