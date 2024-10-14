@@ -131,12 +131,12 @@ The **Studio AI** application was inspired by a prototype application
 from [msg systems ag](https://www.msg.group), which employees of its
 public sector division and AI cross-division initially crafted for
 controlling an AI avatar on the panel discussion at the
-conference [Nordl@nder Digital](https://www.nordlaender-digital.de/) in September 2025.
+conference [Nordl@nder Digital](https://www.nordlaender-digital.de/) in September 2024.
 This prototype application was based on an earlier version of the
 [HeyGen Interactive Avatar Demo](https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo)
 for their [HeyGen Streaming API](https://github.com/HeyGen-Official/StreamingAvatarSDK).
 
-In October 2025 [Dr. Ralf S. Engelschall](https://engelschall.com),
+In October 2024 [Dr. Ralf S. Engelschall](https://engelschall.com),
 CTO of msg group, initially integrated this prototype application into
 his msg Filmstudio. Unfortunately, the implementation did not allow a
 seamless studio integration. As a result, he just took the ideas of the
