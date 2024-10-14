@@ -6,6 +6,7 @@ ChangeLog
 ------------------
 
 - CLEANUP: improve default configuration
+- CLEANUP: fix dates in README
 - UPDATE: upgrade dependencies
 
 1.1.3 (2024-10-13)
