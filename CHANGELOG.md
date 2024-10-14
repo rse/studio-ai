@@ -5,6 +5,7 @@ ChangeLog
 1.1.4 (2024-10-13)
 ------------------
 
+- CLEANUP: patch @typescript-eslint/typescript-estree to stop displaying large warnings
 - CLEANUP: improve default configuration
 - CLEANUP: fix dates in README
 - UPDATE: upgrade dependencies
