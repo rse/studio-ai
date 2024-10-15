@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.1.5 (2024-10-16)
+------------------
+
+- BUGFIX: fix audio meter of Speech-to-Text component
+
 1.1.4 (2024-10-13)
 ------------------
 

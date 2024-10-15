@@ -1619,20 +1619,22 @@ export default defineComponent({
                 this.studioMessage = s2tStudioBuffer.join(" ")
             })
 
-            /*  attach engine audio meter to DOM  */
-            speech2text.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
-
             /*  start engine  */
             await speech2text.open().catch((err) => {
                 this.engine.speech2text = 0
                 this.log("ERROR", `S2T engine failed: ${err}`)
                 this.raiseStatus("error", `S2T engine failed: ${err}`, 2000)
             })
+
+            /*  attach engine audio meter to DOM  */
+            speech2text.audioMeterApply(this.$refs.studioMeter as HTMLCanvasElement)
         }
         const s2tEngineClose = async () => {
+            /*  deattach engine audio meter from DOM  */
+            speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
+
             /*  stop engine  */
             this.log("INFO", "S2T: stop engine")
-            speech2text!.audioMeterUnapply(this.$refs.studioMeter as HTMLCanvasElement)
             await speech2text!.close()
             speech2text = null
         }
