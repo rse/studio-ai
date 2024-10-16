@@ -1344,6 +1344,7 @@ let text2text: Text2Text | null = null
 type Text2TextLogEntry = { persona: string, message: string, final: boolean }
 const commandBus = new EventEmitter()
 let ws: RecWebSocket | null = null
+let studioAutoInjectTimer: ReturnType<typeof setInterval> | undefined
 export default defineComponent({
     name: "app-control",
     components: {
@@ -1371,6 +1372,7 @@ export default defineComponent({
         stateDefault: clone(StateDefault),
         watchState: true,
         recording: false,
+        recordingDisabled: false,
         speaking: false,
         studioMessage: "",
         studioMessageFinal: true,
@@ -1644,7 +1646,7 @@ export default defineComponent({
             else if (this.engine.speech2text === 0)
                 s2tEngineClose()
         })
-        this.$watch("recording", () => {
+        this.$watch("recording", async () => {
             if (speech2text === null)
                 return
             if (this.recording) {
@@ -1656,14 +1658,25 @@ export default defineComponent({
                 this.log("INFO", "S2T: stop recording")
                 speech2text.setActive(false)
                 if (this.studioAutoInject) {
-                    let timer: ReturnType<typeof setTimeout> | null = null
-                    const poll = () => {
-                        if (this.studioMessage !== "" && this.studioMessageFinal)
-                            this.studioInject()
-                        else
-                            timer = setTimeout(poll, 10)
+                    const iterationDelay = 10
+                    let iterationCount = (10 * 1000) / iterationDelay
+                    if (studioAutoInjectTimer !== undefined) {
+                        clearInterval(studioAutoInjectTimer)
+                        studioAutoInjectTimer = undefined
+                        await new Promise((resolve) => setTimeout(resolve, iterationDelay))
                     }
-                    timer = setTimeout(poll, 0)
+                    const poll = () => {
+                        if (this.studioMessage !== "" && this.studioMessageFinal) {
+                            clearInterval(studioAutoInjectTimer)
+                            studioAutoInjectTimer = undefined
+                            this.studioInject()
+                        }
+                        else if (iterationCount-- <= 0) {
+                            clearInterval(studioAutoInjectTimer)
+                            studioAutoInjectTimer = undefined
+                        }
+                    }
+                    studioAutoInjectTimer = setInterval(poll, iterationDelay)
                 }
             }
         })
@@ -2080,6 +2093,8 @@ export default defineComponent({
         async toggleRecording () {
             if (this.engine.speech2text !== 2)
                 return
+            if (this.recordingDisabled)
+                return
             if (!this.recording) {
                 /*  start recording  */
                 this.recording = true
@@ -2088,6 +2103,10 @@ export default defineComponent({
             else {
                 /*  stop recording  */
                 this.recording = false
+                this.recordingDisabled = true
+                setTimeout(() => {
+                    this.recordingDisabled = false
+                }, 500)
             }
         },
 
