@@ -19,7 +19,7 @@
     "main":            "src/client/index.html",
     "dependencies": {
         "vue":                                   "3.5.12",
-        "vue-tippy":                             "6.4.4",
+        "vue-tippy":                             "6.5.0",
         "@vueform/slider":                       "2.1.10",
         "@vueform/toggle":                       "2.1.4",
         "@vueform/multiselect":                  "2.6.10",
@@ -33,9 +33,9 @@
         "@deepgram/sdk":                         "3.8.1",
         "audio-node-suite":                      "1.1.7",
         "extendable-media-recorder":             "9.2.13",
-        "extendable-media-recorder-wav-encoder": "7.0.117",
+        "extendable-media-recorder-wav-encoder": "7.0.118",
         "openai":                                "4.67.3",
-        "@dotenvx/dotenvx":                      "1.19.2",
+        "@dotenvx/dotenvx":                      "1.19.3",
         "@heygen/streaming-avatar":              "2.0.6",
 
         "pdf-text-reader":                       "5.1.0",
