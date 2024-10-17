@@ -2,11 +2,17 @@
 ChangeLog
 =========
 
+1.1.7 (2024-10-17)
+------------------
+
+- UPDATE: upgrade dependencies
+
 1.1.6 (2024-10-16)
 ------------------
 
 - BUGFIX: allow pressing the LISTEN button just after a grace period
 - BUGFIX: ensure that no old AUTO-INJECT pollings are pending
+- UPDATE: upgrade dependencies
 
 1.1.5 (2024-10-16)
 ------------------
