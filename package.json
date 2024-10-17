@@ -32,10 +32,10 @@
         "@opensumi/reconnecting-websocket":      "4.4.0",
         "@deepgram/sdk":                         "3.8.1",
         "audio-node-suite":                      "1.1.7",
-        "extendable-media-recorder":             "9.2.13",
+        "extendable-media-recorder":             "9.2.14",
         "extendable-media-recorder-wav-encoder": "7.0.118",
         "openai":                                "4.67.3",
-        "@dotenvx/dotenvx":                      "1.19.3",
+        "@dotenvx/dotenvx":                      "1.20.0",
         "@heygen/streaming-avatar":              "2.0.6",
 
         "pdf-text-reader":                       "5.1.0",
@@ -78,7 +78,7 @@
         "latching":                              "1.1.2",
         "awilix":                                "12.0.2",
 
-        "@types/node":                           "22.7.5",
+        "@types/node":                           "22.7.6",
         "@types/clone":                          "2.1.4",
         "@types/hapi__inert":                    "5.2.10",
         "@types/js-yaml":                        "4.0.9",
