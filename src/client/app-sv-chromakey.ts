@@ -4,8 +4,11 @@
 **  Licensed under GPL 3.0 <https://spdx.org/licenses/GPL-3.0-only>
 */
 
+/* eslint no-unused-vars: off */
+/* eslint no-undef: off */
+
 /*  declare still somewhat non-standard MediaStream functionality
-    (but already can be used in Chome, which is sufficient for us)  */
+    (but already can be used in Chrome, which is sufficient for us)  */
 declare global {
     class MediaStreamTrackProcessor extends MediaStreamTrack {
         constructor (options: {
@@ -27,10 +30,10 @@ export class Color {
         this.v = v
     }
     get r () { return this.v[0] }
-    get g () { return this.v[1] }
-    get b () { return this.v[2] }
     set r (n: number) { this.v[0] = n }
+    get g () { return this.v[1] }
     set g (n: number) { this.v[1] = n }
+    get b () { return this.v[2] }
     set b (n: number) { this.v[2] = n }
     toYCC () {
         const Y  = 0.2989 * this.r + 0.5866 * this.g + 0.1145 * this.b

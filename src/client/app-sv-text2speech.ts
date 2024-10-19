@@ -65,7 +65,7 @@ export default class Text2Speech extends EventEmitter {
 
     /*  internal state  */
     private avatar:  StreamingAvatar | null = null
-    private sessionId: string = ""
+    private sessionId = ""
     private connected = false
     private closing   = false
     private talking   = false

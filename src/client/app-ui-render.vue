@@ -129,7 +129,7 @@ import moment                     from "moment"
 import axios                      from "axios"
 import { VueSpinnerGrid }         from "vue3-spinners"
 import {
-    StateType, StateTypePartial,
+    StateTypePartial,
     StateSchema, StateSchemaPartial,
     StateDefault, StateUtil
 } from "../common/app-common-state"

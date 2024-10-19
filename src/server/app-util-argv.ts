@@ -23,7 +23,7 @@ export default class Argv {
         /*  command-line option parsing  */
         // @ts-ignore
         const args = yargs()
-            /* eslint indent: off */
+            /* eslint @stylistic/indent: off */
             .usage(
                 "Usage: $0 [-h] [-V] " +
                 "[-v <log-level>] [-l|--log-file <log-file>] " +
