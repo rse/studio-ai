@@ -2,9 +2,10 @@
 ChangeLog
 =========
 
-1.1.7 (2024-10-17)
+1.2.0 (2024-10-19)
 ------------------
 
+- IMPROVEMENT: finally switched to ESLint version 9
 - UPDATE: upgrade dependencies
 
 1.1.6 (2024-10-16)
