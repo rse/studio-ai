@@ -141,8 +141,7 @@
         "shx":                                   "0.3.4"
     },
     "scripts": {
-        "postinstall": "patch-package --patch-dir package.d",
-        "patch-update": "npm shrinkwrap && patch-package --patch-dir package.d @typescript-eslint/typescript-estree && shx rm -f npm-shrinkwrap.json",
-        "start": "nps -c etc/nps.yaml"
+        "postinstall": "npm start patch-apply",
+        "start":       "nps -c etc/nps.yaml"
     }
 }

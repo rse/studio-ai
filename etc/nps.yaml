@@ -5,6 +5,13 @@
 ##
 
 scripts:
+    #   make and apply patches
+    patch-make: >
+                            npm shrinkwrap &&
+                            patch-package --patch-dir package.d "@typescript-eslint/typescript-estree" htmllint-cli &&
+                            shx rm -f npm-shrinkwrap.json
+    patch-apply:            patch-package --patch-dir package.d
+
     #   multiview-style development dashboard
     dev: >
                             stmux -w always -m beep -e "built.in.+ms" --
