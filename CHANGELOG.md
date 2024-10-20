@@ -6,7 +6,8 @@ ChangeLog
 ------------------
 
 - IMPROVEMENT: finally switched to ESLint version 9
-- UPDATE: upgrade dependencies
+- IMPROVEMENT: finally upgraded to HTMLLint 8
+- UPDATE: upgraded dependencies
 
 1.1.6 (2024-10-16)
 ------------------
