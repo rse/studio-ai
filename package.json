@@ -89,7 +89,6 @@
         "@types/throttle-debounce":              "5.0.2",
         "@types/object-path":                    "0.11.4",
         "@types/minimatch":                      "5.1.2",
-        "@types/source-map-support":             "0.5.10",
         "@types/locks":                          "0.2.3",
         "@types/write-file-atomic":              "4.0.3",
         "@types/html-to-text":                   "9.0.4",
@@ -117,7 +116,6 @@
 
         "typescript":                            "5.6.3",
         "vue-tsc":                               "2.1.6",
-        "source-map-support":                    "0.5.21",
 
         "stylus":                                "0.64.0",
         "stylelint":                             "16.10.0",
