@@ -290,7 +290,7 @@ export default class Text2Text extends EventEmitter {
                 stream:                true,
                 model:                 this.options.model,
                 seed:                  this.options.seed !== 0 ? this.options.seed : null,
-                temperature:           this.options.temperature,
+                temperature:           this.options.model.match(/^o[34]/) ? 1.0 : this.options.temperature,
                 max_completion_tokens: this.options.maxTokens,
                 n:                     1,
                 messages:              this.dialog
