@@ -225,8 +225,8 @@
                                 </div>
                                 <div class="button" v-on:click="state.text2text.openaiApiType = stateDefault.text2text.openaiApiType">RESET</div>
                                 <div class="input apitype">
-                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'completion' }" v-on:click="state.text2text.openaiApiType = 'completion'">Completion</div>
-                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'assistant' }"  v-on:click="state.text2text.openaiApiType = 'assistant'">Assistant</div>
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'completion' }" v-on:click="state.text2text.openaiApiType = 'completion'">Completion (faster)</div>
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'assistant' }"  v-on:click="state.text2text.openaiApiType = 'assistant'">Assistant (slower)</div>
                                 </div>
 
                                 <div class="label1">openai</div>
