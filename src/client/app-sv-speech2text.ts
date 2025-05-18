@@ -183,10 +183,15 @@ export default class Speech2Text extends EventEmitter {
         /*  connect to Deepgram API  */
         this.log("INFO", "Deepgram: connection to Websocket API initiating")
         const deepgramClient = Deepgram.createClient(this.options.apiToken)
-        const options = {
+        let language = "en"
+        if (this.options.model.match(/^nova-2/) && this.options.language !== "en")
+            language = this.options.language
+        else if (this.options.model.match(/^nova-3/) && this.options.language !== "en")
+            language = "multi"
+        const options: Deepgram.LiveSchema = {
             model:            this.options.model,
             version:          this.options.version,
-            language:         this.options.language,
+            language,
             channels:         channelCount,
             multichannel:     false,
             sample_rate:      sampleRate,
@@ -203,19 +208,47 @@ export default class Speech2Text extends EventEmitter {
             measurements:     false,
             profanity_filter: false,
             utterances:       false
-        } as Deepgram.LiveSchema
-        if (this.options.keywords !== "" && this.options.model.match(/^nova-2/))
-            options.keywords = this.options.keywords
-                .split(/(?:\s+|\s*,\s*)/)
-                .map((kw) => `${kw}:1`)
+        }
+        if (this.options.keywords !== "") {
+            if (this.options.model.match(/^nova-2/))
+                options.keywords = this.options.keywords
+                    .split(/(?:\s+|\s*,\s*)/)
+                    .map((kw) => `${kw}:1`)
+            else if (this.options.model.match(/^nova-3/) && this.options.language === "en")
+                options.keyterm = this.options.keywords
+                    .split(/(?:\s+|\s*,\s*)/)
+                    .join(" ")
+        }
         this.deepgram = deepgramClient.listen.live(options)
+
+        /*  wait for connection  */
         await new Promise((resolve, reject) => {
-            this.deepgram!.once(Deepgram.LiveTranscriptionEvents.Open, () => {
+            let timer: ReturnType<typeof setTimeout> | null = setTimeout(() => {
+                this.deepgram!.off(Deepgram.LiveTranscriptionEvents.Open,  onOpen)
+                this.deepgram!.off(Deepgram.LiveTranscriptionEvents.Error, onError)
+                if (timer !== null) {
+                    timer = null
+                    reject(new Error("Deepgram: timeout waiting for connection open"))
+                }
+            }, 3000)
+            const clearTimer = () => {
+                if (timer !== null) {
+                    clearTimeout(timer)
+                    timer = null
+                }
+            }
+            const onOpen = () => {
+                this.deepgram!.off(Deepgram.LiveTranscriptionEvents.Error, onError)
+                clearTimer()
                 resolve(null)
-            })
-            this.deepgram!.once(Deepgram.LiveTranscriptionEvents.Error, (ev: Deepgram.LiveTranscriptionEvent) => {
-                reject(JSON.stringify(ev))
-            })
+            }
+            const onError = (ev: Deepgram.LiveTranscriptionEvent) => {
+                this.deepgram!.off(Deepgram.LiveTranscriptionEvents.Open, onOpen)
+                clearTimer()
+                reject(new Error(`Deepgram: error: event: ${JSON.stringify(ev)}`))
+            }
+            this.deepgram!.once(Deepgram.LiveTranscriptionEvents.Open, onOpen)
+            this.deepgram!.once(Deepgram.LiveTranscriptionEvents.Error, onError)
         }).catch((err: Error) => {
             this.error(`Deepgram: connection to Websocket API failed (initially): ${err}`)
         })

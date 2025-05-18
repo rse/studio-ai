@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="button" v-on:click="state.speech2text.deepgramKeywords = stateDefault.speech2text.deepgramKeywords">RESET</div>
                                 <div class="input">
-                                    <input class="text" v-model.lazy="state.speech2text.deepgramKeywords"/>
+                                    <input class="text" v-model.lazy="state.speech2text.deepgramKeywords" v-bind:disabled="state.speech2text.deepgramModel === 'nova-3-general' && state.speech2text.deepgramLanguage !== 'en'"/>
                                 </div>
 
                                 <div class="control-overlay" v-show="engine.speech2text > 0"></div>
@@ -900,6 +900,10 @@
             &:hover
                 background-color: var(--color-acc-bg-5)
                 color: var(--color-acc-fg-5)
+            &:disabled
+                background-color: var(--color-acc-bg-1)
+                color: var(--color-acc-bg-1)
+                user-select: none !important
         .input.apitype
             display: flex
             flex-direction: row
