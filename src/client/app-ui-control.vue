@@ -68,7 +68,8 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.speech2text.deepgramModel"
                                         v-bind:options="[
-                                            { label: 'Nova-2 ($0.0043/min)', value: 'nova-2-general' }
+                                            { label: 'Nova-2 ($0.0043/min)', value: 'nova-2-general' },
+                                            { label: 'Nova-3 ($0.0052/min)', value: 'nova-3-general' }
                                         ]"
                                     />
                                 </div>
@@ -155,13 +156,15 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.text2text.openaiModel"
                                         v-bind:options="[
-                                            { label: 'GPT-3.5-turbo ($3.00/1Mit, $6.00/1Mot)', value: 'gpt-3.5-turbo' },
-                                            { label: 'GPT-4 ($30.00/1Mit, $60.00/1Mot)',       value: 'gpt-4' },
-                                            { label: 'GPT-4-turbo ($10.00/1Mit, $30.00/1Mot)', value: 'gpt-4-turbo' },
-                                            { label: 'GPT-4o-mini ($0.15/1Mit, $0.60/1Mot)',   value: 'gpt-4o-mini' },
-                                            { label: 'GPT-4o ($2.50/1Mit, $10.00/1Mot)',       value: 'gpt-4o' },
-                                            { label: 'O1-Mini ($3.00/1Mit, $12.00/1Mot)',      value: 'o1-mini' },
-                                            { label: 'O1-Preview ($15.00/1Mit, $60.00/1Mot)',  value: 'o1-preview' }
+                                            { label: 'GPT-4.1      [2025-04] ($2.00/1Mit, $8.00/1Mot)',   value: 'gpt-4.1' },
+                                            { label: 'GPT-4.1-Mini [2025-04] ($0.40/1Mit, $1.60/1Mot)',   value: 'gpt-4.1-mini' },
+                                            { label: 'GPT-4.1-Nano [2025-04] ($0.10/1Mit, $0.40/1Mot)',   value: 'gpt-4.1-nano' },
+                                            { label: 'o3           [2025-04] ($10.00/1Mit, $40.00/1Mot)', value: 'o3' },
+                                            { label: 'o3-Mini      [2025-01] ($1.10/1Mit, $4.40/1Mot)',   value: 'o3-mini' },
+                                            { label: 'o4-Mini      [2025-04] ($1.10/1Mit, $4.40/1Mot)',   value: 'o4-mini' },
+                                            { label: 'GPT-4o       [2024-08] ($2.50/1Mit, $10.00/1Mot)',  value: 'gpt-4o' },
+                                            { label: 'GPT-4o-Mini  [2024-07] ($0.15/1Mit, $0.60/1Mot)',   value: 'gpt-4o-mini' },
+                                            { label: 'ChatGPT-4o   [2025-05] ($5.00/1Mit, $15.00/1Mot)',  value: 'chatgpt-4o-latest' }
                                         ]"
                                     />
                                 </div>
@@ -235,7 +238,7 @@
                                 <div class="button" v-on:click="state.text2text.openaiAttachment = stateDefault.text2text.openaiAttachment">RESET</div>
                                 <div class="input attachment">
                                     <div class="attachment-action">
-                                        <div class="button" v-on:click="$refs.attachmentInput.click()">UPLOAD</div>
+                                        <div class="button" v-on:click="($refs.attachmentInput as any).click()">UPLOAD</div>
                                         <div class="button" v-on:click="openaiAttachmentClear()">CLEAR</div>
                                         <input ref="attachmentInput"
                                             class="attachment-input"
@@ -948,8 +951,8 @@
                 border-radius: 4px
                 display: flex
                 flex-direction: column
-                justify-content: flex-first
-                align-items: flex-first
+                justify-content: flex-start
+                align-items: flex-start
                 padding: 2px 8px 2px 8px
                 background-color: var(--color-std-bg-3)
                 color: var(--color-std-fg-3)
@@ -1035,11 +1038,12 @@
             min-width: 400px
             display: flex
             flex-direction: column
-            justify-content: flex-first
-            align-items: flex-first
+            justify-content: flex-start
+            align-items: flex-start
             .actions
                 display: flex
                 flex-direction: row
+                width: 100%
                 *
                     flex-grow: 1
             .actions:first-child
@@ -1080,7 +1084,7 @@
                     width: 80%
                     fill: var(--color-std-bg-4)
                     transform: rotate(180deg)
-                    transform-origin: middle center
+                    transform-origin: center center
                     margin-left: 5px
         .right
             flex-grow: 1
@@ -1172,10 +1176,12 @@
             flex-shrink: 1
             flex-basis: 50%
             overflow: hidden
+            width: 100%
             textarea
                 background-color: var(--color-acc-bg-3)
                 color: var(--color-acc-fg-5)
                 border: 0
+                border-top-right-radius: 4px
                 border-bottom-left-radius: 4px
                 border-bottom-right-radius: 4px
                 padding: 6px 12px 6px 12px
@@ -1207,10 +1213,12 @@
             flex-shrink: 1
             flex-basis: 50%
             overflow: hidden
+            width: 100%
             textarea
                 background-color: var(--color-acc-bg-3)
                 color: var(--color-acc-fg-5)
                 border: 0
+                border-top-right-radius: 4px
                 border-bottom-left-radius: 4px
                 border-bottom-right-radius: 4px
                 padding: 6px 12px 6px 12px

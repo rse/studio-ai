@@ -60,7 +60,7 @@ export default class Text2Text extends EventEmitter {
     /*  internal state (OpenAI Assistant API only)  */
     private assistant: OpenAI.Beta.Assistants.Assistant     | null = null
     private documents: OpenAI.Files.FileObject[]            | null = null
-    private store:     OpenAI.Beta.VectorStores.VectorStore | null = null
+    private store:     OpenAI.VectorStores.VectorStore      | null = null
     private thread:    OpenAI.Beta.Thread                   | null = null
 
     /*  internal state (OpenAI Completion API only)  */
@@ -156,15 +156,15 @@ export default class Text2Text extends EventEmitter {
 
             /*  create OpenAI vector store  */
             this.log("INFO", "OpenAI: retrieve (or create) vector store for thread attachments")
-            const stores: OpenAI.Beta.VectorStores.VectorStore[] = []
-            const storesList = await this.client.beta.vectorStores.list({ limit: 10 })
+            const stores: OpenAI.VectorStores.VectorStore[] = []
+            const storesList = await this.client.vectorStores.list({ limit: 10 })
             for await (const page of storesList.iterPages())
                 page.getPaginatedItems().forEach((store) => { stores.push(store) })
             const store = stores.find((store) => store.name === this.namespace)
             if (store !== undefined)
                 this.store = store
             if (this.store === null) {
-                this.store = await this.client.beta.vectorStores.create({
+                this.store = await this.client.vectorStores.create({
                     name:          this.namespace,
                     expires_after: { anchor: "last_active_at", days: 1 }
                 })
@@ -172,8 +172,8 @@ export default class Text2Text extends EventEmitter {
 
             /*  synchronize OpenAI thread attachments  */
             this.log("INFO", "OpenAI: synchronize thread attachments with vector store")
-            const storeFiles = [] as { file: OpenAI.Beta.VectorStores.VectorStoreFile, current: boolean }[]
-            const storeFilesList = await this.client.beta.vectorStores.files.list(this.store.id)
+            const storeFiles = [] as { file: OpenAI.VectorStores.VectorStoreFile, current: boolean }[]
+            const storeFilesList = await this.client.vectorStores.files.list(this.store.id)
             for await (const page of storeFilesList.iterPages())
                 page.getPaginatedItems().forEach((file) => { storeFiles.push({ file, current: false }) })
             for (const attachment of this.options.attachments) {
@@ -185,12 +185,12 @@ export default class Text2Text extends EventEmitter {
                 }
                 else {
                     this.log("INFO", `OpenAI: vector store file "${attachment.name}": linking`)
-                    await this.client.beta.vectorStores.files.create(this.store.id, { file_id: file.id })
+                    await this.client.vectorStores.files.create(this.store.id, { file_id: file.id })
                 }
             }
             for (const entry of storeFiles)
                 if (!entry.current)
-                    await this.client.beta.vectorStores.files.del(this.store.id, entry.file.id)
+                    await this.client.vectorStores.files.del(this.store.id, entry.file.id)
 
             /*  create OpenAI thread  */
             this.log("INFO", "OpenAI: create thread")
@@ -321,7 +321,7 @@ export default class Text2Text extends EventEmitter {
                 /*  delete OpenAI vector store  */
                 if (this.store !== null) {
                     this.log("INFO", "OpenAI: delete vector store")
-                    await this.client.beta.vectorStores.del(this.store.id)
+                    await this.client.vectorStores.del(this.store.id)
                     this.store = null
                 }
 

@@ -2,6 +2,14 @@
 ChangeLog
 =========
 
+1.3.0 (2025-05-18)
+------------------
+
+- UPDATE: upgraded dependencies
+- UPDATE: update OpenAI and Deepgram models
+- BUGFIX: fix CSS properties in control UI
+- BUGFIX: fix OpenAI API usage after recent changes
+
 1.2.0 (2024-10-19)
 ------------------
 
