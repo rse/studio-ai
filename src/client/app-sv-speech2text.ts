@@ -285,7 +285,7 @@ export default class Speech2Text extends EventEmitter {
             const text = data.channel?.alternatives[0].transcript ?? ""
             if (text === "")
                 return
-            this.log("INFO", `Deepgram: transcript received: "${text}" (final: ${data.is_final})`)
+            this.log("INFO", `Deepgram: transcript received: "${text}" (duration: ${data.duration}, final: ${data.is_final})`)
             this.emit("text", { text, final: data.is_final } as Speech2TextChunk)
         })
 
