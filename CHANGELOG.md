@@ -6,7 +6,7 @@ ChangeLog
 ------------------
 
 - UPDATE: upgraded dependencies
-- UPDATE: update OpenAI and Deepgram models
+- UPDATE: update Deepgram, OpenAI and HeyGen models
 - BUGFIX: fix CSS properties in control UI
 - BUGFIX: fix OpenAI API usage after recent changes
 
