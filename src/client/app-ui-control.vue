@@ -721,6 +721,8 @@
         font-size: 20px
         line-height: 20px
         position: relative
+        b
+            font-weight: 700
         .logo
             position: relative
             top: 2px
