@@ -39,11 +39,18 @@ export type Text2SpeechAvatarType = {
     voiceId:  string
 }
 export const Text2SpeechAvatars = [
-    { id: "kayla",  name: "Kayla",  avatarId: "Kayla-incasualsuit-20220818", voiceId: "21d9632a2fc842308ad9b5c5b5014e3a" },
-    { id: "edward", name: "Edward", avatarId: "Eric_public_pro2_20230608",   voiceId: "" },
-    { id: "tyler",  name: "Tyler",  avatarId: "Tyler-incasualsuit-20220721", voiceId: "" },
-    { id: "anna",   name: "Anna",   avatarId: "Anna_public_3_20240108",      voiceId: "" },
-    { id: "susan",  name: "Susan",  avatarId: "Susan_public_2_20240328",     voiceId: "" }
+    { id: "kayla",       name: "Kayla",       avatarId: "Kayla-incasualsuit-20220818",         voiceId: "21d9632a2fc842308ad9b5c5b5014e3a" },
+    { id: "katya",       name: "Katya",       avatarId: "Katya_Black_Suit_public",             voiceId: "" },
+    { id: "alessandra",  name: "Alessandra",  avatarId: "Alessandra_ProfessionalLook2_public", voiceId: "" },
+    { id: "anastasia",   name: "Anastasia",   avatarId: "Anastasia_ProfessionalLook2_public",  voiceId: "" },
+    { id: "amina",       name: "Amina",       avatarId: "Amina_ProfessionalLook2_public",      voiceId: "" },
+    { id: "rika",        name: "Rika",        avatarId: "Rika_ProfessionalLook2_public",       voiceId: "" },
+    { id: "marianne",    name: "Marianne",    avatarId: "Marianne_ProfessionalLook2_public",   voiceId: "" },
+    { id: "graham",      name: "Graham",      avatarId: "Graham_ProfessionalLook2_public",     voiceId: "" },
+    { id: "edward",      name: "Edward",      avatarId: "Eric_public_pro2_20230608",           voiceId: "" },
+    { id: "tyler",       name: "Tyler",       avatarId: "Tyler-incasualsuit-20220721",         voiceId: "" },
+    { id: "anna",        name: "Anna",        avatarId: "Anna_public_3_20240108",              voiceId: "" },
+    { id: "susan",       name: "Susan",       avatarId: "Susan_public_2_20240328",             voiceId: "" }
 ] as Array<Text2SpeechAvatarType>
 
 /*  Text-to-Speech API class  */

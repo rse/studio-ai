@@ -306,11 +306,18 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.text2speech.heygenAvatar"
                                         v-bind:options="[
-                                            { label: 'Kayla (very good)', value: 'kayla' },
-                                            { label: 'Tyler (good)',      value: 'tyler' },
-                                            { label: 'Anna (good)',       value: 'anna' },
-                                            { label: 'Edward (decent)',   value: 'edward' },
-                                            { label: 'Susan (decent)',    value: 'susan' }
+                                            { label: 'Kayla (very good)',         value: 'kayla' },
+                                            { label: 'Katya (very good)',         value: 'katya' },
+                                            { label: 'Alessandra (good, cutted)', value: 'alessandra' },
+                                            { label: 'Anastasia (good, cutted)',  value: 'anastasia' },
+                                            { label: 'Amina (good, cutted)',      value: 'amina' },
+                                            { label: 'Rika (good, cutted)',       value: 'rika' },
+                                            { label: 'Marianne (good, cutted)',   value: 'marianne' },
+                                            { label: 'Graham (good, cutted)',     value: 'graham' },
+                                            { label: 'Tyler (good)',              value: 'tyler' },
+                                            { label: 'Anna (good)',               value: 'anna' },
+                                            { label: 'Edward (decent)',           value: 'edward' },
+                                            { label: 'Susan (decent)',            value: 'susan' }
                                         ]"
                                     />
                                 </div>
