@@ -159,7 +159,7 @@
                                             { label: 'GPT-4.1      [2025-04] ($2.00/1Mit, $8.00/1Mot)',   value: 'gpt-4.1' },
                                             { label: 'GPT-4.1-Mini [2025-04] ($0.40/1Mit, $1.60/1Mot)',   value: 'gpt-4.1-mini' },
                                             { label: 'GPT-4.1-Nano [2025-04] ($0.10/1Mit, $0.40/1Mot)',   value: 'gpt-4.1-nano' },
-                                            { label: 'o3           [2025-04] ($10.00/1Mit, $40.00/1Mot)', value: 'o3' },
+                                            { label: 'o3           [2025-04] ($2.00/1Mit, $8.00/1Mot)',   value: 'o3' },
                                             { label: 'o3-Mini      [2025-01] ($1.10/1Mit, $4.40/1Mot)',   value: 'o3-mini' },
                                             { label: 'o4-Mini      [2025-04] ($1.10/1Mit, $4.40/1Mot)',   value: 'o4-mini' },
                                             { label: 'GPT-4o       [2024-08] ($2.50/1Mit, $10.00/1Mot)',  value: 'gpt-4o' },
