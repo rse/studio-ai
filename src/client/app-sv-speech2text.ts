@@ -159,7 +159,7 @@ export default class Speech2Text extends EventEmitter {
             intervalTime:       1000 / 30,
             intervalCount:      300 * (1000 / 30),
             decibelBars:        [ -60, -45, -21, -6 ],
-            colorBars:          [ "#904800", "#a05810", "##06820", "#c07830" ],
+            colorBars:          [ "#904800", "#a05810", "#b06820", "#c07830" ],
             colorBarsDeactive:  [ "#606060", "#808080", "#a0a0a0", "#c0c0c0" ],
             colorRMS:           "#ff0000",
             colorBackground:    "#222222",
