@@ -1498,6 +1498,21 @@ export default defineComponent({
             this.log(level, `[render]: ${msg}`)
         })
 
+        /*  receive text for studio and AI  */
+        commandBus.on("control:text-studio", (text) => {
+            this.log("INFO", `text for Studio: "${text}"`)
+            this.studioMessage = text
+            this.studioMessageFinal = true
+            if (this.engine.text2text === 2 && this.studioAutoInject)
+                this.studioInject()
+        })
+        commandBus.on("control:text-ai", (text) => {
+            this.log("INFO", `text for AI: "${text}"`)
+            this.aiMessage = text
+            if (this.engine.text2speech === 2 && !this.speaking && this.aiAutoSpeak)
+                this.aiSpeak()
+        })
+
         /*  initially load state  */
         await this.loadState()
 
