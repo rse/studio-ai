@@ -354,6 +354,7 @@ export default class Text2Speech extends EventEmitter {
                 video.load()
             }
             catch (err) {
+                /*  intentionally ignore video cleanup errors during shutdown  */
             }
         }
         if (this.avatar !== null) {
