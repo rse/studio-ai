@@ -59,7 +59,7 @@ export default class TextExtract extends EventEmitter {
             /*  extract text from JSON (JavaScript Object Notation) format  */
             return jsonToPlainText(content, {
                 spacing:                false,
-                seperator:              ":",
+                seperator:              ":", /* NOTICE: spelling error is part of the external API */
                 squareBracketsForArray: false,
                 doubleQuotesForKeys:    false,
                 doubleQuotesForValues:  false
