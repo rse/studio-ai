@@ -16,7 +16,7 @@ import mammoth                from "mammoth"
 import { jsonToPlainText }    from "json-to-plain-text"
 import { fileTypeFromBuffer } from "file-type"
 
-/*  ensure pdf-text-reader's underlying PDFjs works as expectd  */
+/*  ensure pdf-text-reader's underlying PDFjs works as expected  */
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 /*  internal handler definition  */
