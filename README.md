@@ -132,10 +132,18 @@ Usage (Production)
   $ curl -X POST -H "Content-Type: application/json" \
     -d '{ "cmd": "ui:text-studio", "args": [ "<text>" ] }' \
     http://127.0.0.1:12345/command
+  # select preset for "Studio" text field
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:text-studio-preset", "args": [ <number> ] }' \
+    http://127.0.0.1:12345/command
 
   # enter text into "AI" text field
   $ curl -X POST -H "Content-Type: application/json" \
     -d '{ "cmd": "ui:text-ai", "args": [ "<text>" ] }' \
+    http://127.0.0.1:12345/command
+  # select preset for "AI" text field
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:text-ai-preset", "args": [ <number> ] }' \
     http://127.0.0.1:12345/command
   ```
 
