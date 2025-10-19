@@ -189,6 +189,7 @@ export default class Speech2Text extends EventEmitter {
         else if (this.options.model.match(/^nova-3/) && this.options.language !== "en")
             language = "multi"
         const options: Deepgram.LiveSchema = {
+            mip_opt_out:      true,
             model:            this.options.model,
             version:          this.options.version,
             language,
