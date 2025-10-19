@@ -345,6 +345,12 @@ export default class Text2Speech extends EventEmitter {
             clearTimeout(this.keepaliveTimer)
             this.keepaliveTimer = null
         }
+        if (this.avatar !== null) {
+            this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
+            this.traffic({ send: true })
+            await this.avatar.stopAvatar()
+            this.avatar = null
+        }
         if (this.chromaKey !== null) {
             this.log("INFO", "destroying chroma-key video transformer")
             this.chromaKey.destroy()
@@ -361,12 +367,6 @@ export default class Text2Speech extends EventEmitter {
             catch (err) {
                 /*  intentionally ignore video cleanup errors during shutdown  */
             }
-        }
-        if (this.avatar !== null) {
-            this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
-            this.traffic({ send: true })
-            await this.avatar.stopAvatar()
-            this.avatar = null
         }
     }
 }
