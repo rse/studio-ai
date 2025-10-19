@@ -152,7 +152,7 @@ export default class Text2Text extends EventEmitter {
             }
             for (const entry of files)
                 if (!entry.current)
-                    await this.client.files.del(entry.file.id)
+                    await this.client.files.delete(entry.file.id)
 
             /*  create OpenAI vector store  */
             this.log("INFO", "OpenAI: retrieve (or create) vector store for thread attachments")
@@ -190,7 +190,7 @@ export default class Text2Text extends EventEmitter {
             }
             for (const entry of storeFiles)
                 if (!entry.current)
-                    await this.client.vectorStores.files.del(this.store.id, entry.file.id)
+                    await this.client.vectorStores.files.delete(entry.file.id, { vector_store_id: this.store.id })
 
             /*  create OpenAI thread  */
             this.log("INFO", "OpenAI: create thread")
@@ -286,7 +286,7 @@ export default class Text2Text extends EventEmitter {
         else if (this.options.apiType === "completion") {
             this.dialog.push({ role: "user", content: message })
             this.traffic({ send: true })
-            this.stream = this.client.beta.chat.completions.stream({
+            this.stream = this.client.chat.completions.stream({
                 stream:                true,
                 model:                 this.options.model,
                 seed:                  this.options.seed !== 0 ? this.options.seed : null,
@@ -314,14 +314,14 @@ export default class Text2Text extends EventEmitter {
                 /*  delete OpenAI thread  */
                 if (this.thread !== null) {
                     this.log("INFO", "OpenAI: delete thread")
-                    await this.client.beta.threads.del(this.thread.id)
+                    await this.client.beta.threads.delete(this.thread.id)
                     this.thread = null
                 }
 
                 /*  delete OpenAI vector store  */
                 if (this.store !== null) {
                     this.log("INFO", "OpenAI: delete vector store")
-                    await this.client.vectorStores.del(this.store.id)
+                    await this.client.vectorStores.delete(this.store.id)
                     this.store = null
                 }
 
@@ -329,14 +329,14 @@ export default class Text2Text extends EventEmitter {
                 if (this.documents !== null) {
                     this.log("INFO", "OpenAI: delete uploaded files")
                     for (const document of this.documents)
-                        await this.client.files.del(document.id)
+                        await this.client.files.delete(document.id)
                     this.documents = null
                 }
 
                 /*  delete OpenAI assistant  */
                 if (this.assistant !== null) {
                     this.log("INFO", "OpenAI: delete assistant")
-                    await this.client.beta.assistants.del(this.assistant.id)
+                    await this.client.beta.assistants.delete(this.assistant.id)
                     this.assistant = null
                 }
             }
