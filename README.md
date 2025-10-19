@@ -92,6 +92,72 @@ Usage (Production)
 - Use the client component (renderer mode) in OBS Studio or vMix browser sources:<br/>
   https://127.0.0.1:12345/#/render
 
+- Remote control (e.g. from an Elgato Stream Deck device) is possible, too:
+
+  ```
+  #  press "AUTO-INJECT" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:auto-inject-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  #  press "AUTO-EXTRACT" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:auto-extract-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  #  press "AUTO-SPEAK" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:auto-speak-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  ```
+
+  ```
+  # press "S2T" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:s2t-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+
+  # press "T2T" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:t2t-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+
+  # press "T2S" button
+  $ curl -X POST -H "Content-Type: application/json" \
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:t2s-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  ```
+
+  ```
+  # enter text into "Studio" text field
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:text-studio", "args": [ "<text>" ] }' \
+    http://127.0.0.1:12345/command
+
+  # enter text into "AI" text field
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:text-ai", "args": [ "<text>" ] }' \
+    http://127.0.0.1:12345/command
+  ```
+
+  ```
+  #  press "LISTEN" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:record-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  #  press "INJECT" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:inject-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  #  press "EXTRACT" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:extract-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  #  press "SPEAK" button
+  $ curl -X POST -H "Content-Type: application/json" \
+    -d '{ "cmd": "ui:speak-press", "args": [] }' \
+    http://127.0.0.1:12345/command
+  ```
+
 Usage (Development)
 -------------------
 
