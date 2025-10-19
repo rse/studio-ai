@@ -223,6 +223,7 @@ export default class Text2Speech extends EventEmitter {
                 this.connected = false
                 this.emit("close")
                 this.close()
+                this.closing = false
             }
         })
 
@@ -340,6 +341,10 @@ export default class Text2Speech extends EventEmitter {
     /*  close Text-to-Speech engine  */
     async close () {
         this.closing = true
+        if (this.keepaliveTimer !== null) {
+            clearTimeout(this.keepaliveTimer)
+            this.keepaliveTimer = null
+        }
         if (this.chromaKey !== null) {
             this.log("INFO", "destroying chroma-key video transformer")
             this.chromaKey.destroy()
@@ -363,6 +368,5 @@ export default class Text2Speech extends EventEmitter {
             await this.avatar.stopAvatar()
             this.avatar = null
         }
-        this.closing = false
     }
 }
