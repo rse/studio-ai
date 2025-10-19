@@ -58,7 +58,6 @@ export default class TextExtract extends EventEmitter {
         async handler (content) {
             /*  extract text from JSON (JavaScript Object Notation) format  */
             return jsonToPlainText(content, {
-                color:                  false,
                 spacing:                false,
                 seperator:              ":",
                 squareBracketsForArray: false,
