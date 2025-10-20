@@ -14,8 +14,8 @@ speech2text:
 
 text2text:
     openaiApiToken:    "@{STUDIOAI_OPENAI_API_TOKEN}"
-    openaiModel:       "gpt-4o-mini"
-    openaiTemperature: 0.95
+    openaiModel:       "gpt-5-mini"
+    openaiTemperature: 1.00
     openaiSeed:        0
     openaiMaxTokens:   500
     openaiApiType:     "completion"
