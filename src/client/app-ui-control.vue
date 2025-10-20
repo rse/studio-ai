@@ -156,15 +156,12 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.text2text.openaiModel"
                                         v-bind:options="[
+                                            { label: 'GPT-5-Pro    [2025-08] ($15.00/1Mit, $120.00/1Mot)',value: 'gpt-5-pro' },
+                                            { label: 'GPT-5        [2025-08] ($1.25/1Mit, $10.00/1Mot)',  value: 'gpt-5' },
+                                            { label: 'GPT-5-Mini   [2025-08] ($0.25/1Mit, $2.00/1Mot)',   value: 'gpt-5-mini' },
+                                            { label: 'GPT-5-Nano   [2025-08] ($0.05/1Mit, $0.40/1Mot)',   value: 'gpt-5-nano' },
                                             { label: 'GPT-4.1      [2025-04] ($2.00/1Mit, $8.00/1Mot)',   value: 'gpt-4.1' },
-                                            { label: 'GPT-4.1-Mini [2025-04] ($0.40/1Mit, $1.60/1Mot)',   value: 'gpt-4.1-mini' },
-                                            { label: 'GPT-4.1-Nano [2025-04] ($0.10/1Mit, $0.40/1Mot)',   value: 'gpt-4.1-nano' },
-                                            { label: 'o3           [2025-04] ($2.00/1Mit, $8.00/1Mot)',   value: 'o3' },
-                                            { label: 'o3-Mini      [2025-01] ($1.10/1Mit, $4.40/1Mot)',   value: 'o3-mini' },
-                                            { label: 'o4-Mini      [2025-04] ($1.10/1Mit, $4.40/1Mot)',   value: 'o4-mini' },
-                                            { label: 'GPT-4o       [2024-08] ($2.50/1Mit, $10.00/1Mot)',  value: 'gpt-4o' },
-                                            { label: 'GPT-4o-Mini  [2024-07] ($0.15/1Mit, $0.60/1Mot)',   value: 'gpt-4o-mini' },
-                                            { label: 'ChatGPT-4o   [2025-05] ($5.00/1Mit, $15.00/1Mot)',  value: 'chatgpt-4o-latest' }
+                                            { label: 'GPT-4.1-Nano [2025-04] ($0.10/1Mit, $0.40/1Mot)',   value: 'gpt-4.1-nano' }
                                         ]"
                                     />
                                 </div>
