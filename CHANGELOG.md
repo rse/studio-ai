@@ -6,6 +6,11 @@ ChangeLog
 ------------------
 
 - IMPROVEMENT: reimplement Text-to-Text code with new OpenAI Responses API for GPT-5
+- IMPROVEMENT: opt-out of training for Deepgram API
+- IMPROVEMENT: document the remote control possibilities
+- BUGFIX: fix typo in CSS coloring
+- BUGFIX: fix HeyGen avatar shutdown procedure
+- UPDATE: the available OpenAI model and their pricing
 - UPDATE: upgraded dependencies
 
 1.3.0 (2025-05-18)
