@@ -56,7 +56,7 @@ text2speech:
     ckThreshold:       0.30
     ckSmoothing:       0.10
     speakerDevice:     "Default"
-    pronounciation:    >-
+    pronunciation:     >-
         msg: Em Es Geh,
         Townhall: Tauwn Hohl,
         Deepgram: Diehp Gräm,

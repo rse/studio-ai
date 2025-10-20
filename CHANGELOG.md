@@ -79,7 +79,7 @@ ChangeLog
 - IMPROVEMENT: pass-through render log messages to control client
 - IMPROVEMENT: switch to Mousetrap for key events and use CTRL+<num>
 - BUGFIX: do not copy ".map" files in build process for production builds
-- BUGFIX: fix pronounciation mapping in T2S engine
+- BUGFIX: fix pronunciation mapping in T2S engine
 - CLEANUP: log the peer information (client mode) in server
 - UPDATE: upgrade dependencies
 

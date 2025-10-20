@@ -451,14 +451,14 @@
                                 </div>
 
                                 <div class="label1">output</div>
-                                <div class="label2">(pronounciation)</div>
+                                <div class="label2">(pronunciation)</div>
                                 <div class="label3">[string]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.text2speech.pronounciation = stateDefault.text2speech.pronounciation">RESET</div>
+                                <div class="button" v-on:click="state.text2speech.pronunciation = stateDefault.text2speech.pronunciation">RESET</div>
                                 <div class="input">
-                                    <textarea class="prompt" rows="5" v-model.lazy="state.text2speech.pronounciation"></textarea>
+                                    <textarea class="prompt" rows="5" v-model.lazy="state.text2speech.pronunciation"></textarea>
                                 </div>
 
                                 <div class="control-overlay" v-show="engine.text2speech > 0"></div>
@@ -2088,10 +2088,10 @@ export default defineComponent({
             if (this.engine.text2text === 2 && this.text2textLog.length > 0) {
                 const entry = this.text2textLog[this.text2textLog.length - 1]
                 if (entry.persona === "AI") {
-                    const pronounciation = this.state.text2speech.pronounciation
-                    const pronounciations = pronounciation.split(/\s*,\s*/)
+                    const pronunciation = this.state.text2speech.pronunciation
+                    const pronunciations = pronunciation.split(/\s*,\s*/)
                     let message = entry.message
-                    for (const p of pronounciations) {
+                    for (const p of pronunciations) {
                         const m = p.match(/^\s*(.+?)\s*:\s*(.+?)\s*$/)
                         if (m !== null)
                             message = message.replaceAll(new RegExp(`\\b${m[1]}\\b`, "g"), m[2])

@@ -40,7 +40,7 @@ export type StateType = {
         ckThreshold:          number,
         ckSmoothing:          number,
         speakerDevice:        string,
-        pronounciation:       string
+        pronunciation:        string
     },
     slots: {
         studio1:              string,
@@ -112,7 +112,7 @@ export const StateSchema = `{
         ckThreshold:          number,
         ckSmoothing:          number,
         speakerDevice:        string,
-        pronounciation:       string
+        pronunciation:        string
     },
     slots: {
         studio1:              string,
