@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.4.1 (2025-10-20)
+------------------
+
+- BUGFIX: fix attachment handling in server for Windows (different path separators)
+
 1.4.0 (2025-10-20)
 ------------------
 

@@ -25,8 +25,8 @@ export default class RESTAttachment {
             method: "GET",
             path: "/attachment/count",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
-                const files = await glob(path.join(
-                    this.argv.stateDir, "studio-ai-attachment-*.txt"))
+                const files = await glob("studio-ai-attachment-*.txt",
+                    { cwd: this.argv.stateDir, absolute: true })
                 return h.response({ count: files.length }).code(200)
             }
         })
@@ -36,11 +36,10 @@ export default class RESTAttachment {
             method: "GET",
             path: "/attachment/filenames",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
-                const files = await glob(path.join(
-                    this.argv.stateDir, "studio-ai-attachment-*.txt"))
+                const files = await glob("studio-ai-attachment-*.txt",
+                    { cwd: this.argv.stateDir, absolute: true })
                 const filenames = [] as string[]
-                for (let i = 0; i < files.length; i++) {
-                    const file = path.join(this.argv.stateDir, `studio-ai-attachment-${i}.txt`)
+                for (const file of files) {
                     let filename = await fs.promises.readFile(file, { encoding: "utf8" })
                     filename = filename.replace(/\r?\n$/, "")
                     filenames.push(filename)
@@ -64,8 +63,8 @@ export default class RESTAttachment {
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
                 /*  extract additional attachments from upload request  */
                 const data = req.payload as any
-                const files = await glob(path.join(
-                    this.argv.stateDir, "studio-ai-attachment-*.txt"))
+                const files = await glob("studio-ai-attachment-*.txt",
+                    { cwd: this.argv.stateDir, absolute: true })
                 let i = files.length
                 for (const key of Object.keys(data)) {
                     if (key.match(/^attachment-\d+$/) !== null) {
@@ -102,14 +101,14 @@ export default class RESTAttachment {
             path: "/attachment/{i}",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
                 const i = req.params.i
-                const filename1 = await glob(path.join(
-                    this.argv.stateDir, `studio-ai-attachment-${i}.txt`))
+                const filename1 = await glob(`studio-ai-attachment-${i}.txt`,
+                    { cwd: this.argv.stateDir, absolute: true })
                 if (filename1.length !== 1)
                     return Boom.badRequest("invalid request")
                 if (!await (fs.promises.stat(filename1[0]).then(() => true).catch(() => false)))
                     return Boom.badRequest("invalid request")
-                const filename2 = await glob(path.join(
-                    this.argv.stateDir, `studio-ai-attachment-${i}.bin`))
+                const filename2 = await glob(`studio-ai-attachment-${i}.bin`,
+                    { cwd: this.argv.stateDir, absolute: true })
                 if (filename2.length !== 1)
                     return Boom.badRequest("invalid request")
                 if (!await (fs.promises.stat(filename2[0]).then(() => true).catch(() => false)))
@@ -127,8 +126,8 @@ export default class RESTAttachment {
             method: "GET",
             path: "/attachment/clear",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
-                const files = await glob(path.join(
-                    this.argv.stateDir, "studio-ai-attachment-*.*"))
+                const files = await glob("studio-ai-attachment-*.*",
+                    { cwd: this.argv.stateDir, absolute: true })
                 for (const file of files)
                     await fs.promises.unlink(file)
                 return h.response().code(201)
