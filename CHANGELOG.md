@@ -8,6 +8,7 @@ ChangeLog
 - IMPROVEMENT: reimplement Text-to-Text code with new OpenAI Responses API for GPT-5
 - IMPROVEMENT: opt-out of training for Deepgram API
 - IMPROVEMENT: document the remote control possibilities
+- IMPROVEMENT: provide my standard prompts as external markdown files
 - BUGFIX: fix typo in CSS coloring
 - BUGFIX: fix HeyGen avatar shutdown procedure
 - UPDATE: the available OpenAI model and their pricing
