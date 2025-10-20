@@ -18,7 +18,7 @@ text2text:
     openaiTemperature: 1.00
     openaiSeed:        0
     openaiMaxTokens:   500
-    openaiApiType:     "completion"
+    openaiAttachmentType: "file"
     openaiAttachment:  ""
     openaiPrompt: >-
         Jedes Mal, wenn du auf den User Input reagierst, mußt du

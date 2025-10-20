@@ -215,15 +215,15 @@
                                 </div>
 
                                 <div class="label1">openai</div>
-                                <div class="label2">(api)</div>
+                                <div class="label2">(attachment)</div>
                                 <div class="label3">[type]:</div>
                                 <div class="value">
                                     <div class="fixed">*</div>
                                 </div>
-                                <div class="button" v-on:click="state.text2text.openaiApiType = stateDefault.text2text.openaiApiType">RESET</div>
+                                <div class="button" v-on:click="state.text2text.openaiAttachmentType = stateDefault.text2text.openaiAttachmentType">RESET</div>
                                 <div class="input apitype">
-                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'completion' }" v-on:click="state.text2text.openaiApiType = 'completion'">Completion (faster)</div>
-                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiApiType === 'assistant' }"  v-on:click="state.text2text.openaiApiType = 'assistant'">Assistant (slower)</div>
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiAttachmentType === 'text' }" v-on:click="state.text2text.openaiAttachmentType = 'text'">Extracted Text (ad-hoc, fast)</div>
+                                    <div class="button" v-bind:class="{ selected: state.text2text.openaiAttachmentType === 'file' }" v-on:click="state.text2text.openaiAttachmentType = 'file'">Original File (flexible, slow)</div>
                                 </div>
 
                                 <div class="label1">openai</div>
@@ -1710,7 +1710,7 @@ export default defineComponent({
             text2text = new Text2Text({
                 apiToken:     this.state.text2text.openaiApiToken,
                 model:        this.state.text2text.openaiModel,
-                apiType:      this.state.text2text.openaiApiType,
+                attachmentType: this.state.text2text.openaiAttachmentType,
                 attachments,
                 prompt:       this.state.text2text.openaiPrompt,
                 temperature:  this.state.text2text.openaiTemperature,

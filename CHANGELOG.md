@@ -2,6 +2,12 @@
 ChangeLog
 =========
 
+1.4.0 (2025-10-20)
+------------------
+
+- IMPROVEMENT: reimplement Text-to-Text code with new OpenAI Responses API for GPT-5
+- UPDATE: upgraded dependencies
+
 1.3.0 (2025-05-18)
 ------------------
 
