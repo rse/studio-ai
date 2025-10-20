@@ -2,6 +2,11 @@
 ChangeLog
 =========
 
+1.4.2 (2025-10-20)
+------------------
+
+- BUGFIX: try to fix attachment handling again
+
 1.4.1 (2025-10-20)
 ------------------
 

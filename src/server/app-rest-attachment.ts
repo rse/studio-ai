@@ -115,7 +115,7 @@ export default class RESTAttachment {
                     return Boom.badRequest("invalid request")
                 let filename = await fs.promises.readFile(filename1[0], { encoding: "utf8" })
                 filename = filename.replace(/\r?\n$/, "")
-                return h.file(filename2[0])
+                return h.file(filename2[0], { confine: false })
                     .type("application/octet-stream")
                     .header("content-disposition", `attachment; filename="${filename}"`)
             }
