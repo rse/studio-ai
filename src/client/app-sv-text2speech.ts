@@ -108,7 +108,7 @@ export default class Text2Speech extends EventEmitter {
     /*  minimum fatal error handling  */
     error (reason: string | Error): never {
         const error = typeof reason === "string" ? new Error(reason) : reason
-        this.emit("log", "ERROR", error.toString())
+        this.log("ERROR", error.toString())
         throw error
     }
 
