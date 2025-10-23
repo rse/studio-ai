@@ -94,7 +94,7 @@
         "@types/mousetrap":                      "1.6.15"
     },
     "devDependencies": {
-        "vite":                                  "7.1.11",
+        "vite":                                  "7.1.12",
         "@typescript-eslint/eslint-plugin":      "8.46.2",
         "@typescript-eslint/parser":             "8.46.2",
         "@vitejs/plugin-vue":                    "6.0.1",
