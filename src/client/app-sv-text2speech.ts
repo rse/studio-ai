@@ -269,7 +269,12 @@ export default class Text2Speech extends EventEmitter {
         if (avatar.voiceId !== "")
             options.voice!.voiceId = avatar.voiceId
         this.traffic({ send: true })
-        const info = await this.avatar.createStartAvatar(options)
+        const info = await this.avatar.createStartAvatar(options).catch((error) => {
+            let msg = error instanceof Error ? error.message : error.toString()
+            if (msg.match(/status\s+400/))
+                msg = "quota reached"
+            this.error(`HeyGen: failed to start avatar: ${msg}`)
+        })
         this.sessionId = info.session_id ?? ""
         this.log("INFO", "HeyGen: ready for operation")
     }
