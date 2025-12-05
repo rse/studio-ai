@@ -2,9 +2,10 @@
 ChangeLog
 =========
 
-1.4.3 (2025-12-05)
+1.5.0 (2025-12-05)
 ------------------
 
+- REFACTORING: change from HeyGen Interactive Avatar to Live Avatar SDK
 - UPDATE: upgraded NPM dependencies
 
 1.4.2 (2025-10-20)

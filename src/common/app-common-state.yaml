@@ -32,10 +32,7 @@ text2text:
 
 text2speech:
     heygenApiToken:    "@{STUDIOAI_HEYGEN_API_TOKEN}"
-    heygenAvatar:      "kayla"
-    heygenQuality:     "high"
-    heygenRate:        1.20
-    heygenEmotion:     "broadcaster"
+    heygenAvatar:      "katja-black"
     heygenLanguage:    "de"
     ckEnable:          true
     ckThreshold:       0.30

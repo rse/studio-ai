@@ -232,9 +232,6 @@ export default defineComponent({
             text2speech = new Text2Speech({
                 apiToken:     this.state.text2speech.heygenApiToken,
                 avatar:       this.state.text2speech.heygenAvatar,
-                quality:      this.state.text2speech.heygenQuality,
-                rate:         this.state.text2speech.heygenRate,
-                emotion:      this.state.text2speech.heygenEmotion,
                 language:     this.state.text2speech.heygenLanguage,
                 ckEnable:     this.state.text2speech.ckEnable,
                 ckThreshold:  this.state.text2speech.ckThreshold,

@@ -5,24 +5,15 @@
 */
 
 /*  import external dependencies  */
-import { EventEmitter }       from "events"
-import axios                  from "axios"
-import StreamingAvatar, {
-    AvatarQuality,
-    StreamingEvents,
-    VoiceEmotion,
-    TaskType,
-    StartAvatarRequest
-} from "@heygen/streaming-avatar"
-import ChromaKey from "./app-sv-chromakey"
+import { EventEmitter }                                     from "events"
+import axios                                                from "axios"
+import { LiveAvatarSession, SessionEvent, AgentEventsEnum } from "@heygen/liveavatar-web-sdk"
+import ChromaKey                                            from "./app-sv-chromakey"
 
 /*  type of constructor options  */
 export type Text2SpeechOptions = {
     apiToken:    string,
     avatar:      string,
-    quality:     string,
-    rate:        number,
-    emotion:     string,
     language:    string,
     ckEnable:    boolean,
     ckThreshold: number,
@@ -33,24 +24,26 @@ export type Text2SpeechOptions = {
 
 /*  list of avatars working with HeyGen Instant Avatar Streaming API  */
 export type Text2SpeechAvatarType = {
-    id:       string,
-    name:     string,
-    avatarId: string,
-    voiceId:  string
+    id:        string,
+    name:      string,
+    avatarId:  string,
+    contextId: string,
+    voiceId:   string
 }
 export const Text2SpeechAvatars = [
-    { id: "kayla",       name: "Kayla",       avatarId: "Kayla-incasualsuit-20220818",         voiceId: "21d9632a2fc842308ad9b5c5b5014e3a" },
-    { id: "katya",       name: "Katya",       avatarId: "Katya_Black_Suit_public",             voiceId: "" },
-    { id: "alessandra",  name: "Alessandra",  avatarId: "Alessandra_ProfessionalLook2_public", voiceId: "" },
-    { id: "anastasia",   name: "Anastasia",   avatarId: "Anastasia_ProfessionalLook2_public",  voiceId: "" },
-    { id: "amina",       name: "Amina",       avatarId: "Amina_ProfessionalLook2_public",      voiceId: "" },
-    { id: "rika",        name: "Rika",        avatarId: "Rika_ProfessionalLook2_public",       voiceId: "" },
-    { id: "marianne",    name: "Marianne",    avatarId: "Marianne_ProfessionalLook2_public",   voiceId: "" },
-    { id: "graham",      name: "Graham",      avatarId: "Graham_ProfessionalLook2_public",     voiceId: "" },
-    { id: "edward",      name: "Edward",      avatarId: "Eric_public_pro2_20230608",           voiceId: "" },
-    { id: "tyler",       name: "Tyler",       avatarId: "Tyler-incasualsuit-20220721",         voiceId: "" },
-    { id: "anna",        name: "Anna",        avatarId: "Anna_public_3_20240108",              voiceId: "" },
-    { id: "susan",       name: "Susan",       avatarId: "Susan_public_2_20240328",             voiceId: "" }
+    { id: "katya-black",      name: "Katya (Black Suit)",      avatarId: "26393b8e-e944-4367-98ef-e2bc75c4b792", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "graham-black",     name: "Graham (Black Suit)",     avatarId: "03f8332d-9046-42a1-bff3-3b2309f77b58", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "amina-black",      name: "Amina (Black Suit)",      avatarId: "42700a53-38ab-4485-b46f-26be6e0953dc", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "amina-blue",       name: "Amina (Blue Suit)",       avatarId: "bfed3e3e-7d44-4fdb-b2be-ce9a9fd0b9b5", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "anthony-white",    name: "Anthony (White Suit)",    avatarId: "509609b9-cda3-4f74-b1b2-97b4d98834fd", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "anthony-black",    name: "Anthony (Black Suit)",    avatarId: "38ad67ed-98f0-407c-a2d2-4f0998b306fc", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "rika-blue",        name: "Rika (Blue Suit)",        avatarId: "0aae6046-0ab9-44fe-a08d-c5ac3f406d34", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "pedro-black",      name: "Pedro (Black Suit)",      avatarId: "200eba85-74c0-4210-8670-81ceab4efd0d", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "alessandra-black", name: "Alessandra (Black Suit)", avatarId: "9c59a215-4c9f-478f-9d95-edca74c7b0d0", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "anastasia-black",  name: "Anastasia (Black Suit)",  avatarId: "ebdfdc7e-7e2c-4d2c-8407-a78883e5000a", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "thaddeus-black",   name: "Thaddeus (Black Suit)",   avatarId: "246e8d9d-5826-4f49-b8a0-07cb73ff7556", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "marianne-black",   name: "Marianne (Black Suit)",   avatarId: "f86e8b45-3389-424a-b3d7-7f6e8729e36d", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" },
+    { id: "marianne-red",     name: "Marianne (Red Suit)",     avatarId: "8532b602-89e8-44fa-a9e2-5a4259a058cc", contextId: "094505de-fef7-4b09-9b75-11a86fe8fd6c", voiceId: "" }
 ] as Array<Text2SpeechAvatarType>
 
 /*  Text-to-Speech API class  */
@@ -59,9 +52,6 @@ export default class Text2Speech extends EventEmitter {
     private options = {
         apiToken:    "",
         avatar:      "",
-        quality:     "",
-        rate:        1.0,
-        emotion:     "",
         language:    "",
         ckEnable:    true,
         ckThreshold: 0.30,
@@ -71,8 +61,7 @@ export default class Text2Speech extends EventEmitter {
     } as Text2SpeechOptions
 
     /*  internal state  */
-    private avatar:  StreamingAvatar | null = null
-    private sessionId = ""
+    private avatar: LiveAvatarSession | null = null
     private connected = false
     private closing   = false
     private talking   = false
@@ -84,9 +73,6 @@ export default class Text2Speech extends EventEmitter {
         super()
         this.options.apiToken     = options.apiToken
         this.options.avatar       = options.avatar
-        this.options.quality      = options.quality
-        this.options.rate         = options.rate
-        this.options.emotion      = options.emotion
         this.options.language     = options.language
         this.options.ckEnable     = options.ckEnable
         this.options.ckThreshold  = options.ckThreshold
@@ -127,37 +113,67 @@ export default class Text2Speech extends EventEmitter {
                 stream.getTracks().forEach((track) => track.stop())
         }
 
+        /*  determine session parameters  */
+        const avatar = Text2SpeechAvatars.find((entry) => entry.id === this.options.avatar)
+        if (avatar === undefined)
+            throw new Error("invalid avatar")
+        const options = {
+            mode:           "FULL",
+            avatar_id:      avatar.avatarId,
+            avatar_persona: {
+                context_id: avatar.contextId,
+                language:   this.options.language
+            }
+        } as any
+        if (avatar.voiceId !== "")
+            options.avatar_persona!.voice_id = avatar.voiceId
+
         /*  fetch streaming session token  */
         this.log("INFO", "HeyGen: fetch streaming session token")
         const response = await axios({
             method:  "POST",
-            url:     "https://api.heygen.com/v1/streaming.create_token",
+            url:     "https://api.liveavatar.com/v1/sessions/token",
             headers: { "x-api-key": this.options.apiToken },
-            data:    {}
+            data:    options,
+            validateStatus: (status) => status < 500
         })
         if (response.status !== 200)
-            this.error(`failed to fetch session token: "${response.data?.error ?? ""}"`)
-        const token = response.data?.data?.token ?? ""
+            this.error(`failed to fetch session token: "${JSON.stringify(response.data)}"`)
+        const id    = response.data?.data?.session_id    ?? ""
+        const token = response.data?.data?.session_token ?? ""
 
         /*  create new streaming avatar  */
         this.log("INFO", "HeyGen: establish new streaming avatar")
-        this.avatar = new StreamingAvatar({ token })
+        this.avatar = new LiveAvatarSession(token)
 
         /*  react on connection events  */
-        this.avatar.on(StreamingEvents.STREAM_READY, async (ev: CustomEvent) => {
+        this.avatar.on(SessionEvent.SESSION_STREAM_READY, async () => {
             this.log("INFO", "HeyGen: streaming avatar: ready")
 
-            /*  determine media stream  */
-            let stream = ev.detail as MediaStream
+            /*  attach avatar to our video element  */
+            this.avatar?.attach(this.options.video!)
 
             /*  optionally apply chroma-key to media stream  */
             if (this.options.ckEnable) {
+                /*  wait a small amount of time to ensure that the srcObject on
+                    the video element was finally modified by underlying LiveKit  */
+                await new Promise((resolve) => setTimeout(resolve, 50))
+
+                /*  determine underlying media stream  */
+                if (!(this.options.video!.srcObject instanceof MediaStream))
+                    this.error("video element does not contain a MediaStream")
+                let stream = this.options.video!.srcObject
+
+                /*  wrap chroma-key transformation over stream  */
                 this.log("INFO", "apply chroma-key video transformer")
                 this.chromaKey = new ChromaKey({
                     threshold: this.options.ckThreshold,
                     smoothing: this.options.ckSmoothing
                 })
                 stream = this.chromaKey.process(stream)
+
+                /*  replace the media stream inside the video element  */
+                this.options.video!.srcObject = stream
             }
 
             /*  optionally use a particular output device  */
@@ -176,9 +192,6 @@ export default class Text2Speech extends EventEmitter {
                 this.options.video!.setSinkId(device.deviceId)
             }
 
-            /*  apply media stream onto video element  */
-            this.options.video!.srcObject = stream
-
             /*  lazy unmute video element  */
             this.options.video!.addEventListener("play", () => {
                 if (this.options.video!.muted) {
@@ -188,7 +201,7 @@ export default class Text2Speech extends EventEmitter {
             }, { once: true })
 
             /*  try to play the content  */
-            await this.options.video!.play().catch(() => {
+            this.options.video!.play().catch(() => {
                 this.log("INFO", "HeyGen: streaming avatar: playing of video element has to be deferred")
                 document.addEventListener("click", () => {
                     this.log("INFO", "HeyGen: streaming avatar: deferred unmuting video element")
@@ -205,7 +218,7 @@ export default class Text2Speech extends EventEmitter {
             this.connected = true
             this.emit("open")
         })
-        this.avatar.on(StreamingEvents.STREAM_DISCONNECTED, async (ev: CustomEvent) => {
+        this.avatar.on(SessionEvent.SESSION_DISCONNECTED, async (ev) => {
             /*  disable keep-alive handling  */
             if (this.keepaliveTimer !== null) {
                 clearInterval(this.keepaliveTimer)
@@ -228,54 +241,27 @@ export default class Text2Speech extends EventEmitter {
         })
 
         /*  react on talking events  */
-        this.avatar.on(StreamingEvents.AVATAR_START_TALKING, (ev: CustomEvent) => {
+        this.avatar.on(AgentEventsEnum.AVATAR_SPEAK_STARTED, (ev) => {
             this.log("INFO", "HeyGen: streaming avatar: start talking")
             this.talking = true
             this.emit("speak:start")
         })
-        this.avatar.on(StreamingEvents.AVATAR_STOP_TALKING, (ev: CustomEvent) => {
+        this.avatar.on(AgentEventsEnum.AVATAR_SPEAK_ENDED, (ev) => {
             /*  for keep-alive messages the API sends a stop event without previous start event  */
             if (!this.talking)
                 return
-            const duration = ev.detail.duration_ms as number ?? 0
-            this.log("INFO", `HeyGen: streaming avatar: stop talking (duration: ${duration})`)
+            this.log("INFO", "HeyGen: streaming avatar: stop talking")
             this.talking = false
-            this.emit("speak:stop", { duration })
+            this.emit("speak:stop")
         })
 
-        /*  start new streaming  */
-        let quality = AvatarQuality.Low
-        if      (this.options.quality === "low")    quality = AvatarQuality.Low
-        else if (this.options.quality === "medium") quality = AvatarQuality.Medium
-        else if (this.options.quality === "high")   quality = AvatarQuality.High
-        let emotion = VoiceEmotion.BROADCASTER
-        if      (this.options.emotion === "broadcaster") emotion = VoiceEmotion.BROADCASTER
-        else if (this.options.emotion === "excited")     emotion = VoiceEmotion.EXCITED
-        else if (this.options.emotion === "friendly")    emotion = VoiceEmotion.FRIENDLY
-        else if (this.options.emotion === "serious")     emotion = VoiceEmotion.SERIOUS
-        else if (this.options.emotion === "soothing")    emotion = VoiceEmotion.SOOTHING
-        const avatar = Text2SpeechAvatars.find((entry) => entry.id === this.options.avatar)
-        if (avatar === undefined)
-            throw new Error("invalid avatar")
-        const options = {
-            avatarName:  avatar.avatarId,
-            quality,
-            voice: {
-                rate:    this.options.rate,
-                emotion
-            },
-            language:    this.options.language
-        } as StartAvatarRequest
-        if (avatar.voiceId !== "")
-            options.voice!.voiceId = avatar.voiceId
         this.traffic({ send: true })
-        const info = await this.avatar.createStartAvatar(options).catch((error) => {
+        await this.avatar.start().catch((error) => {
             let msg = error instanceof Error ? error.message : error.toString()
             if (msg.match(/status\s+400/))
                 msg = "quota reached"
             this.error(`HeyGen: failed to start avatar: ${msg}`)
         })
-        this.sessionId = info.session_id ?? ""
         this.log("INFO", "HeyGen: ready for operation")
     }
 
@@ -294,10 +280,7 @@ export default class Text2Speech extends EventEmitter {
         /*  start new speaking  */
         this.log("INFO", `HeyGen: streaming avatar: speak "${text}"`)
         this.traffic({ send: true })
-        await this.avatar.speak({
-            text,
-            task_type: TaskType.REPEAT
-        })
+        this.avatar.repeat(text)
     }
 
     /*  interrupt task  */
@@ -312,7 +295,7 @@ export default class Text2Speech extends EventEmitter {
         if (this.talking) {
             this.log("INFO", "HeyGen: streaming avatar: interrupting active speaking task")
             this.traffic({ send: true })
-            await this.avatar.interrupt()
+            this.avatar.interrupt()
             await new Promise<void>((resolve) => {
                 const poll = () => {
                     if (this.talking)
@@ -336,10 +319,7 @@ export default class Text2Speech extends EventEmitter {
         /*  send a dummy task to keep the connection alive  */
         if (!this.talking) {
             this.traffic({ send: true })
-            await this.avatar.speak({
-                text: ".",
-                task_type: TaskType.REPEAT
-            })
+            await this.avatar.keepAlive()
         }
     }
 
@@ -353,7 +333,7 @@ export default class Text2Speech extends EventEmitter {
         if (this.avatar !== null) {
             this.log("INFO", "HeyGen: streaming avatar: stopping avatar")
             this.traffic({ send: true })
-            await this.avatar.stopAvatar()
+            await this.avatar.stop()
             this.avatar = null
         }
         if (this.chromaKey !== null) {

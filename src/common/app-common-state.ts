@@ -32,9 +32,6 @@ export type StateType = {
     text2speech: {
         heygenApiToken:       string,
         heygenAvatar:         string,
-        heygenQuality:        string,
-        heygenRate:           number,
-        heygenEmotion:        string,
         heygenLanguage:       string,
         ckEnable:             boolean,
         ckThreshold:          number,
@@ -104,9 +101,6 @@ export const StateSchema = `{
     text2speech: {
         heygenApiToken:       string,
         heygenAvatar:         string,
-        heygenQuality:        string,
-        heygenRate:           number,
-        heygenEmotion:        string,
         heygenLanguage:       string,
         ckEnable:             boolean,
         ckThreshold:          number,

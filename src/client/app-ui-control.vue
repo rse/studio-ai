@@ -300,76 +300,19 @@
                                         v-bind:can-deselect="false" v-bind:can-clear="false"
                                         v-model.lazy="state.text2speech.heygenAvatar"
                                         v-bind:options="[
-                                            { label: 'Kayla (very good)',         value: 'kayla' },
-                                            { label: 'Katya (very good)',         value: 'katya' },
-                                            { label: 'Alessandra (good, cutted)', value: 'alessandra' },
-                                            { label: 'Anastasia (good, cutted)',  value: 'anastasia' },
-                                            { label: 'Amina (good, cutted)',      value: 'amina' },
-                                            { label: 'Rika (good, cutted)',       value: 'rika' },
-                                            { label: 'Marianne (good, cutted)',   value: 'marianne' },
-                                            { label: 'Graham (good, cutted)',     value: 'graham' },
-                                            { label: 'Tyler (good)',              value: 'tyler' },
-                                            { label: 'Anna (good)',               value: 'anna' },
-                                            { label: 'Edward (decent)',           value: 'edward' },
-                                            { label: 'Susan (decent)',            value: 'susan' }
-                                        ]"
-                                    />
-                                </div>
-
-                                <div class="label1">heygen</div>
-                                <div class="label2">(avatar quality)</div>
-                                <div class="label3">[level]:</div>
-                                <div class="value">
-                                    <div class="fixed">*</div>
-                                </div>
-                                <div class="button" v-on:click="state.text2speech.heygenQuality = stateDefault.text2speech.heygenQuality">RESET</div>
-                                <div class="input">
-                                    <Multiselect class="multiselect"
-                                        v-bind:searchable="true"    v-bind:required="true"
-                                        v-bind:can-deselect="false" v-bind:can-clear="false"
-                                        v-model.lazy="state.text2speech.heygenQuality"
-                                        v-bind:options="[
-                                            { label: 'Low',    value: 'low' },
-                                            { label: 'Medium', value: 'medium' },
-                                            { label: 'High',   value: 'high' },
-                                        ]"
-                                    />
-                                </div>
-
-                                <div class="label1">heygen</div>
-                                <div class="label2">(voice rate)</div>
-                                <div class="label3">[number]:</div>
-                                <div class="value">
-                                    <input tabindex="8" v-bind:value="fieldExport(state.text2speech.heygenRate)"
-                                        v-on:change="(ev) => state.text2speech.heygenRate = fieldImport((ev.target! as HTMLInputElement).value, 0.50, 1.50)"/>
-                                </div>
-                                <div class="button" v-on:click="state.text2speech.heygenRate = stateDefault.text2speech.heygenRate">RESET</div>
-                                <div class="input">
-                                    <slider class="slider" v-model="state.text2speech.heygenRate"
-                                        v-bind:min="0.50" v-bind:max="1.50" v-bind:step="0.05"
-                                        v-bind:disabled="engine.text2speech > 0"
-                                        show-tooltip="drag" v-bind:format="formatSliderValue" v-bind:lazy="false"
-                                    ></slider>
-                                </div>
-
-                                <div class="label1">heygen</div>
-                                <div class="label2">(voice emotion)</div>
-                                <div class="label3">[type]:</div>
-                                <div class="value">
-                                    <div class="fixed">*</div>
-                                </div>
-                                <div class="button" v-on:click="state.text2speech.heygenEmotion = stateDefault.text2speech.heygenEmotion">RESET</div>
-                                <div class="input">
-                                    <Multiselect class="multiselect"
-                                        v-bind:searchable="true"    v-bind:required="true"
-                                        v-bind:can-deselect="false" v-bind:can-clear="false"
-                                        v-model.lazy="state.text2speech.heygenEmotion"
-                                        v-bind:options="[
-                                            { label: 'Broadcaster', value: 'broadcaster' },
-                                            { label: 'Excited',     value: 'excited' },
-                                            { label: 'Friendly',    value: 'friendly' },
-                                            { label: 'Serious',     value: 'serious' },
-                                            { label: 'Soothing',    value: 'soothing' }
+                                            { label: 'Katya Black Suit (EN/DE)',      value: 'katya-black' },
+                                            { label: 'Amina Black Suit (EN/DE)',      value: 'amina-black' },
+                                            { label: 'Amina Blue Suit (EN/DE)',       value: 'amina-blue' },
+                                            { label: 'Alessandra Black Suit (EN/DE)', value: 'alessandra-black' },
+                                            { label: 'Anthony Black Suit (EN/DE)',    value: 'anthony-black' },
+                                            { label: 'Anthony White Suit (EN/DE)',    value: 'anthony-white' },
+                                            { label: 'Thaddeus Black Suit (EN/DE)',   value: 'thaddeus-black' },
+                                            { label: 'Rika Blue Suit (EN)',           value: 'rika-blue' },
+                                            { label: 'Pedro Black Suit (EN)',         value: 'pedro-black' },
+                                            { label: 'Anastasia Black Suit (EN)',     value: 'anastasia-black' },
+                                            { label: 'Marianne Black Suit (EN)',      value: 'marianne-black' },
+                                            { label: 'Marianne Red Suit (EN)',        value: 'marianne-red' },
+                                            { label: 'Graham Black Suit (EN)',        value: 'graham-black' }
                                         ]"
                                     />
                                 </div>
