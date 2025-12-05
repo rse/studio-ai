@@ -131,7 +131,7 @@ export default class RESTAttachment {
                     { cwd: this.argv.stateDir, absolute: true })
                 for (const file of files)
                     await fs.promises.unlink(file)
-                return h.response().code(201)
+                return h.response().code(204)
             }
         })
     }
