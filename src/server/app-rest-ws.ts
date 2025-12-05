@@ -23,7 +23,7 @@ type wsPeerInfo = {
     ctx:        wsPeerCtx
     ws:         WebSocket
     req:        http.IncomingMessage
-    subscribed: Map<string, boolean>,
+    subscribed: Map<string, boolean>
     peer:       string
 }
 
