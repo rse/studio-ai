@@ -2,7 +2,7 @@
 ChangeLog
 =========
 
-1.4.3 (2025-10-22)
+1.4.3 (2025-12-05)
 ------------------
 
 - UPDATE: upgraded NPM dependencies
