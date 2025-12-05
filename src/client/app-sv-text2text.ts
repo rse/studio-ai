@@ -219,7 +219,7 @@ export default class Text2Text extends EventEmitter {
                 previous_response_id: this.responseId
             } : {}),
             ...(this.options.model.startsWith("gpt-5") ? {
-                reasoning: { effort: (store !== null ? "low" : "minimal") },
+                reasoning: { effort: (store !== null ? "low" : (this.options.model.startsWith("gpt-5.1") ? "none" : "minimal")) },
             } : {}),
             ...(store !== null ? {
                 tools: [ { type: "file_search", vector_store_ids: [ store.id ] } ]
