@@ -294,7 +294,7 @@ export default class Speech2Text extends EventEmitter {
         this.deepgramTimer = setInterval(() => {
             if (this.deepgram !== null) {
                 this.log("INFO", "Deepgram: sending keep-alive message to Websocket API")
-                this.deepgram!.keepAlive()
+                this.deepgram.keepAlive()
             }
         }, 3000)
 
@@ -321,8 +321,8 @@ export default class Speech2Text extends EventEmitter {
         this.active = active
         if (!this.active && this.deepgram !== null) {
             this.log("INFO", "Deepgram: finalizing current transcription")
-            this.deepgram!.finalize()
-            this.deepgram!.keepAlive()
+            this.deepgram.finalize()
+            this.deepgram.keepAlive()
         }
         if (this.audioMeter !== null)
             this.audioMeter.deactive(!active)
@@ -334,7 +334,7 @@ export default class Speech2Text extends EventEmitter {
         if (this.deepgram !== null) {
             this.log("INFO", "shutdown: Deepgram Websocket API connection")
             if (this.deepgramTimer !== null) {
-                clearTimeout(this.deepgramTimer)
+                clearInterval(this.deepgramTimer)
                 this.deepgramTimer = null
             }
             this.deepgram.requestClose()
