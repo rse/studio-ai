@@ -208,7 +208,7 @@ export default class Text2Speech extends EventEmitter {
         this.avatar.on(StreamingEvents.STREAM_DISCONNECTED, async (ev: CustomEvent) => {
             /*  disable keep-alive handling  */
             if (this.keepaliveTimer !== null) {
-                clearTimeout(this.keepaliveTimer)
+                clearInterval(this.keepaliveTimer)
                 this.keepaliveTimer = null
             }
             if (!this.closing) {
@@ -347,7 +347,7 @@ export default class Text2Speech extends EventEmitter {
     async close () {
         this.closing = true
         if (this.keepaliveTimer !== null) {
-            clearTimeout(this.keepaliveTimer)
+            clearInterval(this.keepaliveTimer)
             this.keepaliveTimer = null
         }
         if (this.avatar !== null) {
