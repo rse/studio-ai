@@ -103,7 +103,7 @@ export default class ChromaKey {
             Math.sqrt(p0.reduce((acc, val, i) => acc + Math.pow(val - p1[i], 2), 0))
 
         /*  determine helper values  */
-        const chromaColVec = this.options.color.toYCC().slice(1, 2)
+        const chromaColVec = this.options.color.toYCC().slice(1)
 
         /*  establish media stream processing  */
         this.active = true
@@ -136,7 +136,7 @@ export default class ChromaKey {
                         pixels[i + 1] / 0xff,
                         pixels[i + 2] / 0xff
                     ])
-                    const sampleColVec = sampleCol.toYCC().slice(1, 2)
+                    const sampleColVec = sampleCol.toYCC().slice(1)
                     const chromaKey = smoothstep(
                         options.threshold,
                         options.threshold + options.smoothing,

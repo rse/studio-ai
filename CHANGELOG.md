@@ -6,6 +6,7 @@ ChangeLog
 ------------------
 
 - REFACTORING: change from HeyGen Interactive Avatar to Live Avatar SDK
+- BUGFIX: fix chrome-key filter
 - UPDATE: upgraded NPM dependencies
 
 1.4.2 (2025-10-20)
