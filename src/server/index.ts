@@ -33,15 +33,15 @@ import DB             from "./app-db"
     const ctx = {}
     container.register({
         ctx:            awilix.asValue(ctx),
-        pkg:            awilix.asClass(Pkg        ).setLifetime(awilix.Lifetime.SINGLETON),
-        argv:           awilix.asClass(Argv       ).setLifetime(awilix.Lifetime.SINGLETON),
-        log:            awilix.asClass(Log        ).setLifetime(awilix.Lifetime.SINGLETON),
-        db:             awilix.asClass(DB         ).setLifetime(awilix.Lifetime.SINGLETON),
-        rest:           awilix.asClass(REST       ).setLifetime(awilix.Lifetime.SINGLETON),
-        restState:      awilix.asClass(RESTState  ).setLifetime(awilix.Lifetime.SINGLETON),
-        restCommand:    awilix.asClass(RESTCommand).setLifetime(awilix.Lifetime.SINGLETON),
+        pkg:            awilix.asClass(Pkg           ).setLifetime(awilix.Lifetime.SINGLETON),
+        argv:           awilix.asClass(Argv          ).setLifetime(awilix.Lifetime.SINGLETON),
+        log:            awilix.asClass(Log           ).setLifetime(awilix.Lifetime.SINGLETON),
+        db:             awilix.asClass(DB            ).setLifetime(awilix.Lifetime.SINGLETON),
+        rest:           awilix.asClass(REST          ).setLifetime(awilix.Lifetime.SINGLETON),
+        restState:      awilix.asClass(RESTState     ).setLifetime(awilix.Lifetime.SINGLETON),
+        restCommand:    awilix.asClass(RESTCommand   ).setLifetime(awilix.Lifetime.SINGLETON),
         restAttachment: awilix.asClass(RESTAttachment).setLifetime(awilix.Lifetime.SINGLETON),
-        restWS:         awilix.asClass(RESTWS     ).setLifetime(awilix.Lifetime.SINGLETON)
+        restWS:         awilix.asClass(RESTWS        ).setLifetime(awilix.Lifetime.SINGLETON)
     })
 
     /*  initialize classes  */
