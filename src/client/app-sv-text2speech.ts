@@ -139,7 +139,6 @@ export default class Text2Speech extends EventEmitter {
         })
         if (response.status !== 200)
             this.error(`failed to fetch session token: "${JSON.stringify(response.data)}"`)
-        const id    = response.data?.data?.session_id    ?? ""
         const token = response.data?.data?.session_token ?? ""
 
         /*  create new streaming avatar  */
