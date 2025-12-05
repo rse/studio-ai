@@ -101,6 +101,8 @@ export default class RESTAttachment {
             path: "/attachment/{i}",
             handler: async (req: HAPI.Request, h: HAPI.ResponseToolkit) => {
                 const i = req.params.i
+                if (i.match(/^\d+$/) === null)
+                    return Boom.badRequest("invalid request")
                 const filename1 = await glob(`studio-ai-attachment-${i}.txt`,
                     { cwd: this.argv.stateDir, absolute: true })
                 if (filename1.length !== 1)
