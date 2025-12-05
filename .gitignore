@@ -4,3 +4,4 @@ node_modules
 dst
 var/studio-ai-state.yaml
 var/studio-ai-state*.OLD.*
+var/studio-ai-attachment*.*
