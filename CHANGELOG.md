@@ -6,6 +6,7 @@ ChangeLog
 ------------------
 
 - REFACTORING: change from HeyGen Interactive Avatar to Live Avatar SDK
+- REFACTORING: change from NPS to STX as the primary build tool
 - BUGFIX: fix chrome-key filter
 - UPDATE: upgraded NPM dependencies
 

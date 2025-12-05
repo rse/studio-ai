@@ -129,7 +129,7 @@
 
         "patch-package":                         "8.0.1",
         "stmux":                                 "1.8.11",
-        "nps":                                   "5.10.0",
+        "@rse/stx":                              "1.1.2",
         "nodemon":                               "3.1.11",
         "rimraf":                                "6.1.2",
         "delay-cli":                             "3.0.0",
@@ -141,6 +141,6 @@
     },
     "scripts": {
         "postinstall": "npm start patch-apply",
-        "start":       "nps -c etc/nps.yaml"
+        "start":       "stx -v4 -c etc/stx.conf"
     }
 }
