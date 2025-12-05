@@ -1,8 +1,8 @@
 {
     "private":         true,
     "name":            "Studio AI",
-    "version":         "1.4.2",
-    "x-date":          "2025-10-20",
+    "version":         "1.5.0",
+    "x-date":          "2025-12-05",
     "homepage":        "https://github.com/rse/studio-ai",
     "description":     "Interactive Studio Artificial Intelligence",
     "author": {
