@@ -114,7 +114,7 @@ export default class TextExtract extends EventEmitter {
         const fileType = await fileTypeFromBuffer(content)
         if (fileType !== undefined) {
             ext  = fileType.ext
-            type = fileType.ext
+            type = fileType.mime
         }
 
         /*  find text extraction handler  */
